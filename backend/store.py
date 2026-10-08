@@ -61,6 +61,9 @@ CREATE TABLE IF NOT EXISTS workflow_jobs (
  journey TEXT NOT NULL, payload TEXT NOT NULL, status TEXT NOT NULL, proposal_id TEXT,
  operation_id TEXT, next_at TEXT NOT NULL, lease_id TEXT, lease_until TEXT,
  error_code TEXT, PRIMARY KEY(tenant,id), FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
+CREATE TABLE IF NOT EXISTS workflow_scans (
+ tenant TEXT NOT NULL, worker_id TEXT NOT NULL, kind TEXT NOT NULL, cursor TEXT NOT NULL,
+ PRIMARY KEY(tenant,worker_id,kind));
 """
 
 

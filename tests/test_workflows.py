@@ -46,12 +46,12 @@ def test_intake_approval_wait_and_duplicate_enqueue(lab):
 
 
 def test_due_email_requires_its_own_approval_and_due_time(lab):
-    workflow,_,_,double=setup(lab,'due','email')
-    first=workflow.tick(lab[1]['worker'],'due')
+    workflow,_,_,double=setup(lab,'intake','email')
+    first=workflow.tick(lab[1]['worker'],'intake')
     approve(lab,first['proposal_id'],'crm');later(lab)
-    assert workflow.tick(lab[1]['worker'],'due')['status']=='awaiting_approval'
+    assert workflow.tick(lab[1]['worker'],'intake')['status']=='awaiting_approval'
     approve(lab,first['proposal_id'],'email');later(lab)
-    assert workflow.tick(lab[1]['worker'],'due')['status']=='not_due'
+    assert workflow.tick(lab[1]['worker'],'intake')['status']=='not_due'
     assert double.calls==0
 
 

@@ -20,7 +20,7 @@ from backend.providers import ProviderError
 from pydantic import ValidationError
 from backend.bindings import BindingRepository, ConnectorBindingInput
 from backend.read_clients import ReadError
-from backend.workflows import WorkflowService, EnqueueInput
+from backend.workflows import WorkflowService, EnqueueInput, RecoveryInput
 
 
 def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None, connector=None) -> FastAPI:
@@ -160,6 +160,14 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     @app.post('/v1/workflows/jobs',status_code=201)
     def enqueue(data: EnqueueInput,current: Actor=Depends(actor)):
         return workflows.enqueue(current,data)
+
+    @app.get('/v1/workflows/jobs')
+    def workflow_list(current: Actor=Depends(actor)):
+        return {'items':workflows.list(current)}
+
+    @app.post('/v1/workflows/jobs/{ident}/recover')
+    def workflow_recover(ident: str,data: RecoveryInput,current: Actor=Depends(actor)):
+        return workflows.recover(current,ident,data.action)
 
     @app.get('/v1/workflows/jobs/{ident}')
     def workflow_get(ident: str,current: Actor=Depends(actor)):

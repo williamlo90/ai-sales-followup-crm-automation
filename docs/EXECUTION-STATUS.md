@@ -31,7 +31,7 @@ Implement Phase 0 through Phase 6 efficiently and accurately, following PHASES.m
 
 ## Latest verification
 
-2026-10-09 Asia/Jakarta: 201 Python tests passed; MCP TypeScript build and two native protocol suites passed after effect-overlap/read-client changes. Previous unchanged UI: TypeScript/Vite build and two Edge browser scenarios passed. See docs/evidence/skills-providers-checks.md for actual scope and pending gates. One real OpenAI request passed (551 tokens, 3345.69 ms; estimated USD 0.0003812); see docs/evidence/openai-canary.md. No live Graph/Odoo action exists. Upstream Starlette warns HTTPX TestClient is deprecated; tests still pass; resolve dependency compatibility before final freeze.
+2026-10-09 Asia/Jakarta: 207 Python tests passed; MCP TypeScript build and two native protocol suites passed after effect-overlap/read-client changes. TypeScript/Vite build and three Edge browser scenarios passed after adding workflow recovery UI. See docs/evidence/skills-providers-checks.md for actual scope and pending gates. One real OpenAI request passed (551 tokens, 3345.69 ms; estimated USD 0.0003812); see docs/evidence/openai-canary.md. No live Graph/Odoo action exists. Upstream Starlette warns HTTPX TestClient is deprecated; tests still pass; resolve dependency compatibility before final freeze.
 
 Native commands: `.venv/Scripts/python.exe -m pytest -q`; `npm.cmd run build --prefix web`; `npm.cmd run test:e2e --prefix web`. Browser test uses installed Edge (channel msedge), creates temporary fixture data, starts its own servers on 8040/8044 and refuses existing servers. Npm scripts invoke Node entry files directly to avoid Windows shim failures with `&` in the project path. See docs/LOCAL-DEVELOPMENT.md.
 
@@ -98,3 +98,11 @@ Artifacts: backend/workflows.py and queue table/migration 006, scoped enqueue/st
 The queue accepts reviewed commitment candidates and shares preparation, approval, eligibility, execution and reconciliation core. Leases/checkpoints recover after a dispatch-to-job-update crash without duplicate effects. Exports are inactive, use placeholder credentials/host, and make at most two ticks per schedule execution. No n8n runtime, connected effect or model spend was used.
 
 Next: close intake/model-candidate review/enqueue and due discovery handoffs; add recovery/resubmission UI and connector binding review/preparation. Then complete PostgreSQL runtime wiring/config hardening, evaluation rubric/heldout artifacts and access-dependent gates. No Phase 5 pass is claimed from reference-runner results. Automation remains active.
+
+## Latest batch — due discovery and recovery workspace
+
+Artifacts: bounded latest-commitment discovery/cursor, due-before-preparation guard, recovery/list API, migration 007, WorkflowQueue React panel, domain/API and browser coverage. Validation: pytest → 207 passed; web build → passed; Edge → 3 passed. Recovery browser scenario mocks presentation data; Python cases cover actual API/domain authorization/state. Evidence: docs/evidence/due-recovery.md.
+
+Recovery preserves operation IDs and permits observation only for existing effects; expired-proposal renewal requires new approval. Due discovery skips future/cancelled/opted-out/deleted/out-of-scope records and uses idempotent enqueue. No live adapter calls, model spend or engine/container run.
+
+Next: intake extraction → candidate review/record → queue handoff and connector binding/preparation UI; close PostgreSQL persistence/config issues and prepare Phase 6 rubric/evaluation artifacts. Source mapping and restore review, live credentials and provider/local evaluation budgets remain outstanding. Automation active; no complete phase gate claimed.

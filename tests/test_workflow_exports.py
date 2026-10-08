@@ -32,7 +32,9 @@ def test_export_reference_runner_prepare_wait_approve_execute(lab):
 def test_due_export_waits_for_business_eligibility(lab):
     coordinator,_,_,double=setup(lab,'due','email')
     client=TestClient(create_app(lab[0],{hashlib.sha256(k.encode()).hexdigest():v for k,v in lab[1].items()},execution=coordinator.execution))
-    def wait(seconds,result):approve(lab,result['proposal_id'],'email');later(lab,seconds)
+    def wait(seconds,result):
+        assert result['proposal_id'] is None
+        later(lab,seconds)
     assert run(workflow('due'),client,'worker',wait)['result']['status']=='not_due'
     assert double.calls==0
 
