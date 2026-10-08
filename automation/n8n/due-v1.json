@@ -1,0 +1,185 @@
+{
+  "name": "Sales due v1",
+  "active": false,
+  "nodes": [
+    {
+      "id": "f6a80733-2f13-5eb8-a722-4b8f5c110007",
+      "name": "Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "418fb80e-ed15-5345-ba8d-3bf2d6055353",
+      "name": "Advance shared workflow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://sales-domain:8040/v1/workflows/due/tick",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 65000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_SALES_WORKER",
+          "name": "Sales scoped worker"
+        }
+      },
+      "retryOnFail": false
+    },
+    {
+      "id": "e9ec8c8f-66d1-5944-9772-896a8b8e2e6d",
+      "name": "Poll shared workflow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://sales-domain:8040/v1/workflows/due/tick",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 65000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_SALES_WORKER",
+          "name": "Sales scoped worker"
+        }
+      },
+      "retryOnFail": false
+    },
+    {
+      "id": "46cbd0d3-2dcf-5ff3-8900-88fd069ecc97",
+      "name": "Backend requests polling",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "needs-poll",
+              "leftValue": "={{ $json.needs_poll }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "44e6cf34-2c0b-56df-90f7-08e766d1bdcf",
+      "name": "Wait for review",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 60,
+        "unit": "seconds"
+      }
+    }
+  ],
+  "connections": {
+    "Schedule": {
+      "main": [
+        [
+          {
+            "node": "Advance shared workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Advance shared workflow": {
+      "main": [
+        [
+          {
+            "node": "Backend requests polling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backend requests polling": {
+      "main": [
+        [
+          {
+            "node": "Wait for review",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Wait for review": {
+      "main": [
+        [
+          {
+            "node": "Poll shared workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Jakarta",
+    "executionTimeout": 180,
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "all"
+  },
+  "pinData": {},
+  "versionId": "cebdfa5f-f838-575a-9cb3-827025cf2d9d",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}

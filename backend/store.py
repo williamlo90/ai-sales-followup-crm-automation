@@ -56,6 +56,11 @@ CREATE TABLE IF NOT EXISTS connector_bindings (
  connector_proposal TEXT NOT NULL, payload TEXT NOT NULL,
  PRIMARY KEY(tenant,proposal_id), UNIQUE(connector_tenant,connector_proposal),
  FOREIGN KEY(tenant,proposal_id) REFERENCES proposals(tenant,id));
+CREATE TABLE IF NOT EXISTS workflow_jobs (
+ tenant TEXT NOT NULL, id TEXT NOT NULL, worker_id TEXT NOT NULL, deal_id TEXT NOT NULL,
+ journey TEXT NOT NULL, payload TEXT NOT NULL, status TEXT NOT NULL, proposal_id TEXT,
+ operation_id TEXT, next_at TEXT NOT NULL, lease_id TEXT, lease_until TEXT,
+ error_code TEXT, PRIMARY KEY(tenant,id), FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
 """
 
 

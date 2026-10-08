@@ -20,12 +20,14 @@ from backend.providers import ProviderError
 from pydantic import ValidationError
 from backend.bindings import BindingRepository, ConnectorBindingInput
 from backend.read_clients import ReadError
+from backend.workflows import WorkflowService, EnqueueInput
 
 
 def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None, connector=None) -> FastAPI:
     app = FastAPI(title="Sales Follow-up", version="0.1.0")
     bearer = HTTPBearer(auto_error=False)
     skill_service=skills or SkillService(service,execution=execution)
+    workflows=WorkflowService(service,skill_service,execution)
 
     def actor(credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)]):
         if not credentials or len(credentials.credentials) > 256:
@@ -154,6 +156,18 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     @app.get('/v1/proposals/{ident}/connector-binding')
     def binding_get(ident: str,current: Actor=Depends(actor)):
         return BindingRepository(service,current).load(current.tenant_id,ident)
+
+    @app.post('/v1/workflows/jobs',status_code=201)
+    def enqueue(data: EnqueueInput,current: Actor=Depends(actor)):
+        return workflows.enqueue(current,data)
+
+    @app.get('/v1/workflows/jobs/{ident}')
+    def workflow_get(ident: str,current: Actor=Depends(actor)):
+        return workflows.get(current,ident)
+
+    @app.post('/v1/workflows/{journey}/tick')
+    def workflow_tick(journey: Literal['intake','due'],current: Actor=Depends(actor)):
+        return workflows.tick(current,journey)
 
     @app.post('/v1/proposals/{ident}/connector-binding')
     def binding_attach(ident: str,data: ConnectorBindingInput,current: Actor=Depends(actor)):
