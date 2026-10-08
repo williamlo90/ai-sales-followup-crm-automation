@@ -4,10 +4,16 @@ from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 from backend.models import Actor, ApprovalInput, DealInput, ProposalInput, SourceInput
 from backend.store import Store
+from backend.sales_rules import Commitment, match_deal, merge_commitment, due_eligibility
 
 
 def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def effect_key(payload,kind):
+    refs=sorted({(e["source_id"],e["revision"]) for e in payload["evidence"]})
+    return hashlib.sha256(canonical([payload["deal_id"],kind,refs]).encode()).hexdigest()
 
 
 class DomainError(Exception):
@@ -78,6 +84,8 @@ class SalesService:
             raise DomainError("stale_proposal")
         if deal["opt_out"]:
             raise DomainError("customer_opted_out")
+        if "source_snapshot" in payload and payload["source_snapshot"]!=self.source_snapshot(conn,actor,payload["deal_id"]):
+            raise DomainError("source_changed")
         last_contact = datetime.fromisoformat(deal["last_contact_at"]) if deal["last_contact_at"] else None
         for evidence in payload["evidence"]:
             source = conn.execute("SELECT * FROM sources WHERE tenant=? AND id=? AND deal_id=?",
@@ -91,6 +99,11 @@ class SalesService:
                 raise DomainError("already_contacted")
         return deal
 
+    def source_snapshot(self,conn,actor,deal_id):
+        return [dict(row) for row in conn.execute(
+            "SELECT id,revision FROM sources WHERE tenant=? AND deal_id=? ORDER BY id",
+            (actor.tenant_id,deal_id))]
+
     def prepare(self, actor: Actor, data: ProposalInput):
         self.scope(actor, data.deal_id, {"operator", "worker"})
         payload = data.model_dump(mode="json")
@@ -99,6 +112,7 @@ class SalesService:
             deal = self.validate(conn, actor, payload)
             payload["recipient"] = deal["recipient"]
             payload["account_id"] = deal["account_id"]
+            payload["source_snapshot"] = self.source_snapshot(conn,actor,data.deal_id)
             digest = hashlib.sha256(canonical(payload).encode()).hexdigest()
             existing = conn.execute("SELECT * FROM proposals WHERE tenant=? AND payload_hash=? AND expires_at>? ORDER BY version DESC LIMIT 1", (actor.tenant_id, digest, self.clock().isoformat())).fetchone()
             if existing:
@@ -172,3 +186,65 @@ class SalesService:
                              actor.id, data.payload_hash, self.clock().isoformat()))
                 self.audit(conn, actor, f"approval.{data.kind}", ident)
             return self.view(conn, actor, row)
+
+    def match(self, actor, account_id, explicit_deal_id=None):
+        if actor.role not in {"operator","worker","approver","auditor"}:
+            raise DomainError("role_not_permitted",403)
+        with self.store.connect() as conn:
+            rows=conn.execute("SELECT id,payload FROM deals WHERE tenant=?",(actor.tenant_id,)).fetchall()
+        candidates=[{**json.loads(row["payload"]),"id":row["id"]} for row in rows if row["id"] in actor.deal_ids]
+        return match_deal(candidates,account_id,explicit_deal_id)
+
+    def commitment(self, actor, deal_id, data: Commitment):
+        self.scope(actor,deal_id,{"operator","worker"})
+        with self.store.connect() as conn:
+            source=conn.execute("SELECT * FROM sources WHERE tenant=? AND deal_id=? AND id=?",
+                                (actor.tenant_id,deal_id,data.evidence.source_id)).fetchone()
+            if not source or source["revision"]!=data.evidence.revision:
+                raise DomainError("source_changed")
+            body=json.loads(source["payload"])
+            if data.evidence.quote not in body["text"]:
+                raise DomainError("unsupported_evidence",422)
+            if data.observed_at!=datetime.fromisoformat(body["occurred_at"]):
+                raise DomainError("source_timestamp_mismatch",422)
+            history=[Commitment.model_validate_json(row["payload"]) for row in conn.execute(
+                "SELECT payload FROM commitments WHERE tenant=? AND deal_id=? AND id=? ORDER BY revision",
+                (actor.tenant_id,deal_id,data.id))]
+            result=merge_commitment(history,data)
+            if result["status"]=="applied":
+                conn.execute("INSERT INTO commitments VALUES(?,?,?,?,?)",
+                             (actor.tenant_id,deal_id,data.id,data.revision,data.model_dump_json()))
+                self.audit(conn,actor,"commitment.candidate_recorded",data.id)
+            return result
+
+    def commitments(self,actor,deal_id):
+        self.scope(actor,deal_id,{"operator","worker","approver","auditor"})
+        with self.store.connect() as conn:
+            return [json.loads(row["payload"]) for row in conn.execute(
+                "SELECT payload FROM commitments WHERE tenant=? AND deal_id=? ORDER BY id,revision",
+                (actor.tenant_id,deal_id))]
+
+    def due(self,actor,ident,kind):
+        if kind not in {"crm","email"}:
+            raise DomainError("invalid_operation",422)
+        with self.store.connect() as conn:
+            row=self.row(conn,actor,ident)
+            view=self.view(conn,actor,row)
+            payload=view["payload"]
+            operation=conn.execute("SELECT status FROM operations WHERE tenant=? AND effect_key=?",
+                                   (actor.tenant_id,effect_key(payload,kind))).fetchone()
+            if operation:
+                return {"eligible":False,"reason":"already_completed" if operation["status"] in {"verified","accepted"} else "reconciliation_required"}
+            deal=json.loads(conn.execute("SELECT payload FROM deals WHERE tenant=? AND id=?",
+                                         (actor.tenant_id,row["deal_id"])).fetchone()["payload"])
+            source_times=[]
+            for evidence in payload["evidence"]:
+                source=conn.execute("SELECT payload FROM sources WHERE tenant=? AND id=?",
+                                    (actor.tenant_id,evidence["source_id"])).fetchone()
+                if source:
+                    source_times.append(datetime.fromisoformat(json.loads(source["payload"])["occurred_at"]))
+            if not source_times:
+                return {"eligible":False,"reason":"source_changed"}
+            return due_eligibility(datetime.fromisoformat(payload["due_at"]),self.clock(),deal["opt_out"],
+                datetime.fromisoformat(deal["last_contact_at"]) if deal["last_contact_at"] else None,
+                max(source_times),any(a["kind"]==kind for a in view["approvals"]),view["validation_error"] is None)

@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "scope": "synthetic deterministic regression; not model holdout",
+  "matching": [
+    {"id":"one_deal","candidates":[{"id":"d1","account_id":"a1"}],"account_id":"a1","expected":"matched","deal":"d1"},
+    {"id":"two_deals","candidates":[{"id":"d1","account_id":"a1"},{"id":"d2","account_id":"a1"}],"account_id":"a1","expected":"review","deal":null},
+    {"id":"explicit_deal","candidates":[{"id":"d1","account_id":"a1"},{"id":"d2","account_id":"a1"}],"account_id":"a1","explicit":"d2","expected":"matched","deal":"d2"},
+    {"id":"wrong_account","candidates":[{"id":"d1","account_id":"a1"}],"account_id":"a2","explicit":"d1","expected":"review","deal":null},
+    {"id":"deleted","candidates":[{"id":"d1","account_id":"a1","deleted":true}],"account_id":"a1","expected":"review","deal":null},
+    {"id":"empty","candidates":[],"account_id":"a1","expected":"review","deal":null}
+  ],
+  "due": [
+    {"id":"due_approved","due_at":"2026-10-09T14:00:00+07:00","now":"2026-10-09T07:00:00Z","opted_out":false,"last_contact":null,"source_at":"2026-10-09T06:00:00Z","approved":true,"fresh":true,"expected":"due_and_approved"},
+    {"id":"not_due","due_at":"2026-10-09T14:00:01+07:00","now":"2026-10-09T07:00:00Z","opted_out":false,"last_contact":null,"source_at":"2026-10-09T06:00:00Z","approved":true,"fresh":true,"expected":"not_due"},
+    {"id":"opt_out","due_at":"2026-10-09T07:00:00Z","now":"2026-10-09T07:00:00Z","opted_out":true,"last_contact":null,"source_at":"2026-10-09T06:00:00Z","approved":true,"fresh":true,"expected":"opted_out"},
+    {"id":"contacted","due_at":"2026-10-09T07:00:00Z","now":"2026-10-09T07:00:00Z","opted_out":false,"last_contact":"2026-10-09T06:00:00Z","source_at":"2026-10-09T06:00:00Z","approved":true,"fresh":true,"expected":"already_contacted"},
+    {"id":"stale","due_at":"2026-10-09T07:00:00Z","now":"2026-10-09T07:00:00Z","opted_out":false,"last_contact":null,"source_at":"2026-10-09T06:00:00Z","approved":true,"fresh":false,"expected":"stale"},
+    {"id":"unapproved","due_at":"2026-10-09T07:00:00Z","now":"2026-10-09T07:00:00Z","opted_out":false,"last_contact":null,"source_at":"2026-10-09T06:00:00Z","approved":false,"fresh":true,"expected":"approval_required"}
+  ]
+}

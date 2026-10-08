@@ -27,6 +27,17 @@ CREATE TABLE IF NOT EXISTS audit_events (
  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant TEXT NOT NULL,
  actor_id TEXT NOT NULL, action TEXT NOT NULL, resource_id TEXT NOT NULL,
  at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS operations (
+ tenant TEXT NOT NULL, id TEXT NOT NULL, proposal_id TEXT NOT NULL,
+ kind TEXT NOT NULL CHECK(kind IN ('crm','email')), effect_key TEXT NOT NULL,
+ payload_hash TEXT NOT NULL, status TEXT NOT NULL, result TEXT,
+ PRIMARY KEY(tenant,id), UNIQUE(tenant,effect_key),
+ FOREIGN KEY(tenant,proposal_id,kind) REFERENCES approvals(tenant,proposal_id,kind));
+CREATE TABLE IF NOT EXISTS commitments (
+ tenant TEXT NOT NULL, deal_id TEXT NOT NULL, id TEXT NOT NULL,
+ revision INTEGER NOT NULL, payload TEXT NOT NULL,
+ PRIMARY KEY(tenant,deal_id,id,revision),
+ FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
 """
 
 

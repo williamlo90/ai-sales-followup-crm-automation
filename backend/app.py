@@ -12,6 +12,9 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from backend.domain import DomainError, SalesService
 from backend.models import Actor, ApprovalInput, DealInput, ProposalInput, SourceInput
 from backend.store import Store
+from backend.sales_rules import Commitment
+from fastapi import Query
+from typing import Literal
 
 
 def create_app(service: SalesService, identities: dict[str, Actor]) -> FastAPI:
@@ -85,6 +88,23 @@ def create_app(service: SalesService, identities: dict[str, Actor]) -> FastAPI:
     @app.post("/v1/proposals/{ident}/approvals")
     def approve(ident: str, data: ApprovalInput, current: Actor = Depends(actor)):
         return service.approve(current, ident, data)
+
+    @app.get("/v1/deals/match")
+    def match(account_id: str = Query(min_length=1,max_length=200),
+              deal_id: str | None = Query(default=None,max_length=200), current: Actor = Depends(actor)):
+        return service.match(current,account_id,deal_id)
+
+    @app.post("/v1/deals/{deal_id}/commitments")
+    def commitment(deal_id: str,data: Commitment,current: Actor = Depends(actor)):
+        return service.commitment(current,deal_id,data)
+
+    @app.get("/v1/deals/{deal_id}/commitments")
+    def commitments(deal_id: str,current: Actor = Depends(actor)):
+        return {"items":service.commitments(current,deal_id)}
+
+    @app.get("/v1/proposals/{ident}/eligibility")
+    def eligibility(ident: str,kind: Literal["crm","email"],current: Actor = Depends(actor)):
+        return service.due(current,ident,kind)
 
     return app
 
