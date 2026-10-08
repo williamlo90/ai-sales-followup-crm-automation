@@ -1,0 +1,30 @@
+import { test, expect } from '@playwright/test';
+
+test('operator prepares, independent approver reviews both actions, no dispatch',async({page})=>{
+  await page.goto('/');
+  await page.getByLabel('Access token').fill('invalid');
+  await page.getByRole('button',{name:'Continue'}).click();
+  await expect(page.getByRole('alert')).toContainText('invalid session');
+  await page.getByLabel('Access token').fill('test-only-operator');
+  await page.getByRole('button',{name:'Continue'}).click();
+  await expect(page.getByText('No proposals yet.',{exact:false})).toBeVisible();
+  await page.getByRole('button',{name:'Prepare for review'}).click();
+  await expect(page.getByRole('heading',{name:'Proposed CRM activity'})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Approve CRM activity'})).toHaveCount(0);
+  await expect(page.getByText('To: buyer@example.test')).toBeVisible();
+  await page.getByRole('button',{name:'Sign out'}).click();
+  await page.getByLabel('Access token').fill('test-only-approver');
+  await page.getByRole('button',{name:'Continue'}).click();
+  await page.getByRole('button',{name:/Confirm rescheduled demo/}).click();
+  await page.getByRole('button',{name:'Approve CRM activity'}).click();
+  await expect(page.getByText('Awaiting email approval',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Approve email draft'}).click();
+  await expect(page.getByText('Approved by approver',{exact:true})).toHaveCount(2);
+  await expect(page.getByRole('status')).toContainText('No external action has run');
+  await page.screenshot({path:'../local/browser-review.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  await expect(page.getByRole('heading',{name:'Follow-up draft'})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+  await page.getByRole('button',{name:'Sign out'}).click();
+  await expect(page.getByLabel('Access token')).toHaveValue('');
+});

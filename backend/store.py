@@ -1,0 +1,55 @@
+"""Durable SQLite local harness. PostgreSQL acceptance is explicitly separate."""
+import sqlite3
+from contextlib import contextmanager
+from pathlib import Path
+
+SCHEMA = """
+PRAGMA foreign_keys=ON;
+CREATE TABLE IF NOT EXISTS deals (
+ tenant TEXT NOT NULL, id TEXT NOT NULL, version INTEGER NOT NULL,
+ payload TEXT NOT NULL, PRIMARY KEY(tenant,id));
+CREATE TABLE IF NOT EXISTS sources (
+ tenant TEXT NOT NULL, id TEXT NOT NULL, revision INTEGER NOT NULL,
+ deal_id TEXT NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(tenant,id),
+ FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
+CREATE TABLE IF NOT EXISTS proposals (
+ tenant TEXT NOT NULL, id TEXT NOT NULL, deal_id TEXT NOT NULL,
+ actor_id TEXT NOT NULL, payload TEXT NOT NULL, payload_hash TEXT NOT NULL,
+ created_at TEXT NOT NULL, expires_at TEXT NOT NULL, version INTEGER NOT NULL,
+ PRIMARY KEY(tenant,id), UNIQUE(tenant,deal_id,version),
+ FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
+CREATE TABLE IF NOT EXISTS approvals (
+ tenant TEXT NOT NULL, proposal_id TEXT NOT NULL, kind TEXT NOT NULL,
+ actor_id TEXT NOT NULL, payload_hash TEXT NOT NULL,
+ created_at TEXT NOT NULL, PRIMARY KEY(tenant,proposal_id,kind),
+ FOREIGN KEY(tenant,proposal_id) REFERENCES proposals(tenant,id));
+CREATE TABLE IF NOT EXISTS audit_events (
+ id INTEGER PRIMARY KEY AUTOINCREMENT, tenant TEXT NOT NULL,
+ actor_id TEXT NOT NULL, action TEXT NOT NULL, resource_id TEXT NOT NULL,
+ at TEXT NOT NULL);
+"""
+
+
+class Store:
+    def __init__(self, path: str | Path):
+        self.path = str(path)
+        if self.path == ":memory:":
+            raise ValueError("Use a temporary file for isolated durable harness tests")
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        with self.connect() as connection:
+            connection.executescript(SCHEMA)
+
+    @contextmanager
+    def connect(self):
+        connection = sqlite3.connect(self.path, timeout=5)
+        connection.row_factory = sqlite3.Row
+        connection.execute("PRAGMA foreign_keys=ON")
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            yield connection
+            connection.commit()
+        except Exception:
+            connection.rollback()
+            raise
+        finally:
+            connection.close()

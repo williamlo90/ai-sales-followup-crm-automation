@@ -1,0 +1,41 @@
+# Prepared only; no start before Phase 7. Backend PostgreSQL wiring is pending.
+name: sales-followup-lab
+services:
+  postgres:
+    image: postgres:17.6
+    profiles: [data]
+    environment:
+      POSTGRES_DB: sales_lab
+      POSTGRES_USER: sales_lab_owner
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    ports: ["127.0.0.1:5444:5432"]
+    volumes: ["sales_pg:/var/lib/postgresql/data"]
+    mem_limit: 512m
+    cpus: 1.0
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.42.5
+    profiles: [engine]
+    environment:
+      TZ: Asia/Jakarta
+      GENERIC_TIMEZONE: Asia/Jakarta
+      N8N_ENCRYPTION_KEY_FILE: /run/secrets/n8n_encryption_key
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+      N8N_CONCURRENCY_PRODUCTION_LIMIT: "1"
+      EXECUTIONS_DATA_PRUNE: "true"
+      EXECUTIONS_DATA_MAX_AGE: "72"
+    secrets: [n8n_encryption_key]
+    ports: ["127.0.0.1:5684:5678"]
+    volumes: ["sales_n8n:/home/node/.n8n"]
+    mem_limit: 1g
+    cpus: 1.0
+volumes:
+  sales_pg:
+  sales_n8n:
+secrets:
+  postgres_password:
+    file: ../local/secrets/postgres_password
+  n8n_encryption_key:
+    file: ../local/secrets/n8n_encryption_key
