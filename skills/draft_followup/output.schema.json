@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "additionalProperties": false,
+  "$defs": {},
   "required": [
     "skill",
     "version",
@@ -15,6 +16,44 @@
       "const": "1.0"
     },
     "result": {
+      "additionalProperties": false,
+      "properties": {
+        "proposal_id": {
+          "title": "Proposal Id",
+          "type": "string"
+        },
+        "payload_hash": {
+          "title": "Payload Hash",
+          "type": "string"
+        },
+        "recipient": {
+          "title": "Recipient",
+          "type": "string"
+        },
+        "draft": {
+          "title": "Draft",
+          "type": "string"
+        },
+        "review_required": {
+          "const": true,
+          "title": "Review Required",
+          "type": "boolean"
+        },
+        "send_enabled": {
+          "const": false,
+          "title": "Send Enabled",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "proposal_id",
+        "payload_hash",
+        "recipient",
+        "draft",
+        "review_required",
+        "send_enabled"
+      ],
+      "title": "DraftResult",
       "type": "object"
     }
   }

@@ -1,0 +1,234 @@
+{
+  "$defs": {
+    "Commitment": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supersedes"
+        },
+        "owner": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Owner",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "due_at": {
+          "format": "date-time",
+          "title": "Due At",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "state": {
+          "default": "active",
+          "enum": [
+            "active",
+            "cancelled"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "owner",
+        "description",
+        "due_at",
+        "observed_at",
+        "evidence"
+      ],
+      "title": "Commitment",
+      "type": "object"
+    },
+    "DealInput": {
+      "additionalProperties": false,
+      "properties": {
+        "account_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Account Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "recipient": {
+          "maxLength": 254,
+          "minLength": 3,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          "title": "Recipient",
+          "type": "string"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "opt_out": {
+          "default": false,
+          "title": "Opt Out",
+          "type": "boolean"
+        },
+        "last_contact_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Contact At"
+        },
+        "deleted": {
+          "default": false,
+          "title": "Deleted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "account_id",
+        "title",
+        "recipient",
+        "version"
+      ],
+      "title": "DealInput",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "quote": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "SourceInput": {
+      "additionalProperties": false,
+      "properties": {
+        "external_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "External Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 50000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "external_id",
+        "revision",
+        "occurred_at",
+        "text"
+      ],
+      "title": "SourceInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "deal_id": {
+      "title": "Deal Id",
+      "type": "string"
+    },
+    "deal": {
+      "$ref": "#/$defs/DealInput"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/SourceInput"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "commitments": {
+      "items": {
+        "$ref": "#/$defs/Commitment"
+      },
+      "title": "Commitments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "deal_id",
+    "deal",
+    "sources",
+    "commitments"
+  ],
+  "title": "ContextView",
+  "type": "object"
+}

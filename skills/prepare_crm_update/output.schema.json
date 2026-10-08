@@ -2,6 +2,193 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "additionalProperties": false,
+  "$defs": {
+    "ApprovalView": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "crm",
+            "email"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "payload_hash": {
+          "title": "Payload Hash",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "actor_id",
+        "payload_hash",
+        "created_at"
+      ],
+      "title": "ApprovalView",
+      "type": "object"
+    },
+    "CommitmentRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "title": "CommitmentRef",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "quote": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "ProposalPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "deal_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Deal Id",
+          "type": "string"
+        },
+        "deal_version": {
+          "minimum": 1,
+          "title": "Deal Version",
+          "type": "integer"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "summary": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "due_at": {
+          "format": "date-time",
+          "title": "Due At",
+          "type": "string"
+        },
+        "draft": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Draft",
+          "type": "string"
+        },
+        "commitment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CommitmentRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "recipient": {
+          "title": "Recipient",
+          "type": "string"
+        },
+        "account_id": {
+          "title": "Account Id",
+          "type": "string"
+        },
+        "source_snapshot": {
+          "items": {
+            "$ref": "#/$defs/SourceRevision"
+          },
+          "title": "Source Snapshot",
+          "type": "array"
+        }
+      },
+      "required": [
+        "deal_id",
+        "deal_version",
+        "evidence",
+        "summary",
+        "due_at",
+        "draft",
+        "recipient",
+        "account_id",
+        "source_snapshot"
+      ],
+      "title": "ProposalPayload",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    }
+  },
   "required": [
     "skill",
     "version",
@@ -15,6 +202,99 @@
       "const": "1.0"
     },
     "result": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "deal_id": {
+          "title": "Deal Id",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "payload": {
+          "$ref": "#/$defs/ProposalPayload"
+        },
+        "payload_hash": {
+          "title": "Payload Hash",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        },
+        "validation_error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Validation Error"
+        },
+        "approvals": {
+          "items": {
+            "$ref": "#/$defs/ApprovalView"
+          },
+          "title": "Approvals",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "prepared",
+            "review_required"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "approval_valid": {
+          "title": "Approval Valid",
+          "type": "boolean"
+        },
+        "execution_enabled": {
+          "const": false,
+          "title": "Execution Enabled",
+          "type": "boolean"
+        },
+        "draft_validation": {
+          "const": "human_review_required",
+          "title": "Draft Validation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "deal_id",
+        "actor_id",
+        "payload",
+        "payload_hash",
+        "created_at",
+        "expires_at",
+        "version",
+        "validation_error",
+        "approvals",
+        "status",
+        "approval_valid",
+        "execution_enabled",
+        "draft_validation"
+      ],
+      "title": "ProposalView",
       "type": "object"
     }
   }

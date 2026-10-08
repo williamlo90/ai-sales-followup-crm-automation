@@ -41,6 +41,6 @@ Python app pins: FastAPI 0.142.4, Pydantic 2.13.5, HTTPX 0.28.1, Uvicorn 0.54.0,
 
 n8n engine target: **2.42.5**, registry `npm view n8n version` result, no engine installation. Official release notes list 2.43 features but warn that publication does not guarantee availability: https://docs.n8n.io/changelog/release-notes.md . n8n owns scheduling/coordination only; authenticated outbound polling is the local design. Exact-tag node versions are verified in [N8N-MAPPING.md](N8N-MAPPING.md); image execution and complete export parameter validation remain pending.
 
-MCP: protocol 2025-11-25 is an initial interoperability target; SDK selection and negotiated-version reference-client test remain pending. https://modelcontextprotocol.io/specification/2025-11-25
+MCP: SDK server/client 2.3.1 pinned; native reference client negotiated protocol 2026-07-28. Evidence: ../evidence/mcp-native.md. Official SDK: https://github.com/modelcontextprotocol/typescript-sdk
 
 Native readiness and all provider/model versions are reported separately from PostgreSQL/n8n/Odoo/Microsoft 365 acceptance.

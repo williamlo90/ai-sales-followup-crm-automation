@@ -20,10 +20,10 @@ from backend.providers import ProviderError
 from pydantic import ValidationError
 
 
-def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None) -> FastAPI:
+def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None) -> FastAPI:
     app = FastAPI(title="Sales Follow-up", version="0.1.0")
     bearer = HTTPBearer(auto_error=False)
-    skill_service=skills or SkillService(service)
+    skill_service=skills or SkillService(service,execution=execution)
 
     def actor(credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)]):
         if not credentials or len(credentials.credentials) > 256:
@@ -133,6 +133,17 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     @app.post('/v1/skills/{name}')
     def skill(name: str,data: dict,current: Actor=Depends(actor)):
         return skill_service.invoke(current,name,data)
+
+    @app.get('/v1/deals/{deal_id}/context')
+    def context(deal_id: str,current: Actor=Depends(actor)):
+        return service.context(current,deal_id)
+
+    @app.post('/v1/proposals/{ident}/execute/{kind}')
+    def execute(ident: str,kind: Literal['crm','email'],current: Actor=Depends(actor)):
+        service.get(current,ident)
+        if execution is None:raise DomainError('execution_disabled',403)
+        operation=execution.execute(current,ident,kind)
+        return service.operation(current,operation['id'])
 
     return app
 

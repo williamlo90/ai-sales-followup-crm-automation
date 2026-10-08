@@ -208,6 +208,17 @@ class SalesService:
         candidates=[{**json.loads(row["payload"]),"id":row["id"]} for row in rows if row["id"] in actor.deal_ids]
         return match_deal(candidates,account_id,explicit_deal_id)
 
+    def context(self,actor,deal_id):
+        self.scope(actor,deal_id,{'operator','worker','approver','auditor'})
+        with self.store.connect() as conn:
+            row=conn.execute('SELECT payload FROM deals WHERE tenant=? AND id=?',(actor.tenant_id,deal_id)).fetchone()
+            if not row:raise DomainError('record_not_found',404)
+            sources=[json.loads(r['payload']) for r in conn.execute(
+                'SELECT payload FROM sources WHERE tenant=? AND deal_id=? ORDER BY id',(actor.tenant_id,deal_id))]
+            commitments=[json.loads(r['payload']) for r in conn.execute(
+                'SELECT payload FROM commitments WHERE tenant=? AND deal_id=? ORDER BY id,revision',(actor.tenant_id,deal_id))]
+            return {'deal_id':deal_id,'deal':json.loads(row['payload']),'sources':sources,'commitments':commitments}
+
     def commitment(self, actor, deal_id, data: Commitment):
         self.scope(actor,deal_id,{"operator","worker"})
         with self.store.connect() as conn:

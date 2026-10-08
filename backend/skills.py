@@ -6,6 +6,7 @@ from pydantic import Field
 from backend.models import Contract, PrepareCommitmentInput
 from backend.domain import DomainError
 from backend.providers import ModelAdapter, ProviderError, PROMPT_VERSION, SCHEMA_VERSION
+from backend.skill_outputs import OUTPUTS
 
 
 class ExtractInput(Contract):
@@ -35,7 +36,12 @@ class SkillService:
     def invoke(self,actor,name,raw):
         if name not in INPUTS:raise DomainError('skill_not_found',404)
         data=INPUTS[name].model_validate(raw)
-        return {'skill':name,'version':self.version,'result':getattr(self,name)(actor,data)}
+        result=getattr(self,name)(actor,data)
+        try:
+            result=OUTPUTS[name].model_validate(result).model_dump(mode='json')
+        except Exception:
+            raise DomainError('skill_output_invalid',503) from None
+        return {'skill':name,'version':self.version,'result':result}
 
     def extract_commitments(self,actor,data):
         self.sales.scope(actor,data.deal_id,{'operator','worker'})

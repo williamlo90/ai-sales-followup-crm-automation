@@ -2,6 +2,42 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "additionalProperties": false,
+  "$defs": {
+    "Receipt": {
+      "additionalProperties": false,
+      "properties": {
+        "operation_id": {
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "payload_hash": {
+          "title": "Payload Hash",
+          "type": "string"
+        },
+        "tenant_id": {
+          "title": "Tenant Id",
+          "type": "string"
+        },
+        "external_id": {
+          "title": "External Id",
+          "type": "string"
+        },
+        "state": {
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation_id",
+        "payload_hash",
+        "tenant_id",
+        "external_id",
+        "state"
+      ],
+      "title": "Receipt",
+      "type": "object"
+    }
+  },
   "required": [
     "skill",
     "version",
@@ -15,6 +51,92 @@
       "const": "1.0"
     },
     "result": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "proposal_id": {
+          "title": "Proposal Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "crm",
+            "email"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "effect_key": {
+          "title": "Effect Key",
+          "type": "string"
+        },
+        "payload_hash": {
+          "title": "Payload Hash",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "dispatched",
+            "unknown",
+            "verified",
+            "accepted",
+            "failed",
+            "review"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Receipt"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recovery": {
+          "anyOf": [
+            {
+              "const": "reconcile_before_retry",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Recovery"
+        },
+        "observation": {
+          "enum": [
+            "stored_only",
+            "adapter_read_back"
+          ],
+          "title": "Observation",
+          "type": "string"
+        },
+        "adapter_available": {
+          "title": "Adapter Available",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "proposal_id",
+        "kind",
+        "effect_key",
+        "payload_hash",
+        "status",
+        "result",
+        "recovery",
+        "observation",
+        "adapter_available"
+      ],
+      "title": "ReconcileResult",
       "type": "object"
     }
   }
