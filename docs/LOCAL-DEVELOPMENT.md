@@ -1,6 +1,6 @@
 # Local development
 
-Current slice: authenticated preparation and independent CRM/email approval, durable SQLite harness, React review UI. External execution and model extraction are not implemented in this slice. The UI displays that limitation. PostgreSQL is the target persistence layer; SQLite results are not PostgreSQL evidence.
+Current slice: authenticated preparation and independent CRM/email approval, durable SQLite harness, React review UI and shared extraction/preparation/draft/reconciliation skills. Model extraction is available through the skill API when configured. External execution remains disabled. PostgreSQL is the target persistence layer; SQLite results are not PostgreSQL evidence.
 
 From the project directory in PowerShell:
 
@@ -31,3 +31,9 @@ npm.cmd run test:e2e --prefix web
 ```
 
 Ports 8040/8044 must be free. The browser test refuses to reuse an existing server and does not stop unrelated processes. Stop your own dev servers before running it. A restart preserves the local SQLite database but never makes it a connected integration.
+
+## OpenAI configuration and bounded canary
+
+The factory reads only this project's ignored `.env`; process environment overrides its four model keys. No parent configuration discovery or variable interpolation occurs. Set `OPENAI_API_KEY` locally. Normal API extraction also requires an explicit `OPENAI_MODEL`, `SALES_MODEL_ENABLED=true`, and `SALES_MODEL_CALL_LIMIT` from 1 to 10. The limit is per adapter/process lifetime, not a persistent spending allowance; leave disabled outside a supervised session.
+
+Run `.venv/Scripts/python.exe -m scripts.model_canary` for a presence-only check. Explicit `--run` authorizes one synthetic request independently of the app enable switch, using `gpt-4.1-mini-2025-04-14` when the model is blank. A different model is rejected until its canary budget is defined. The command reserves `local/openai-canary.json` before the request and refuses every subsequent run, including after failure, with no automatic retries. Review any intentional new experiment and budget separately. It checks source evidence and expected semantics and exercises the shared proposal/draft core in a temporary database. It does not approve or dispatch actions. The canary snapshot is not a final model-selection decision.

@@ -150,4 +150,8 @@ def from_environment():
         identities[digest] = Actor.model_validate(record)
     if not identities:
         raise RuntimeError("At least one identity is required")
-    return create_app(SalesService(Store(os.environ.get("SALES_DB_PATH", "local/sales.sqlite"))), identities)
+    from backend.config import read_config, openai_profile
+    from backend.providers import ModelAdapter
+    service = SalesService(Store(os.environ.get("SALES_DB_PATH", "local/sales.sqlite")))
+    profile = openai_profile(read_config())
+    return create_app(service, identities, SkillService(service, ModelAdapter(profile) if profile else None))

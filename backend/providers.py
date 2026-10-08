@@ -2,7 +2,7 @@
 import hashlib
 import json
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from threading import Lock
 from typing import Literal
 import httpx
@@ -38,7 +38,7 @@ class ProviderError(Exception):
 class ModelProfile:
     provider: Literal['openai','claude','grok','ollama']
     model: str
-    key: str = ''
+    key: str = field(default='', repr=False)
     local_only: bool = False
     max_calls: int = 0
 
