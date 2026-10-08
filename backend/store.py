@@ -51,6 +51,11 @@ CREATE TABLE IF NOT EXISTS ingestion_messages (
  modified_at TEXT, deleted INTEGER NOT NULL, content_hash TEXT NOT NULL,
  PRIMARY KEY(tenant,stream,external_id),
  FOREIGN KEY(tenant,source_id) REFERENCES sources(tenant,id));
+CREATE TABLE IF NOT EXISTS connector_bindings (
+ tenant TEXT NOT NULL, proposal_id TEXT NOT NULL, connector_tenant TEXT NOT NULL,
+ connector_proposal TEXT NOT NULL, payload TEXT NOT NULL,
+ PRIMARY KEY(tenant,proposal_id), UNIQUE(connector_tenant,connector_proposal),
+ FOREIGN KEY(tenant,proposal_id) REFERENCES proposals(tenant,id));
 """
 
 

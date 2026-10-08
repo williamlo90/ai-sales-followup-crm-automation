@@ -18,9 +18,11 @@ from typing import Literal
 from backend.skills import SkillService
 from backend.providers import ProviderError
 from pydantic import ValidationError
+from backend.bindings import BindingRepository, ConnectorBindingInput
+from backend.read_clients import ReadError
 
 
-def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None) -> FastAPI:
+def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None, connector=None) -> FastAPI:
     app = FastAPI(title="Sales Follow-up", version="0.1.0")
     bearer = HTTPBearer(auto_error=False)
     skill_service=skills or SkillService(service,execution=execution)
@@ -58,6 +60,10 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     @app.exception_handler(ProviderError)
     async def provider_error(request,exc):
         return JSONResponse(status_code=503,content={'error':str(exc)})
+
+    @app.exception_handler(ReadError)
+    async def connector_error(request,exc):
+        return JSONResponse(status_code=503,content={'error':exc.code})
 
     @app.exception_handler(sqlite3.Error)
     async def database_error(request, exc):
@@ -144,6 +150,16 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
         if execution is None:raise DomainError('execution_disabled',403)
         operation=execution.execute(current,ident,kind)
         return service.operation(current,operation['id'])
+
+    @app.get('/v1/proposals/{ident}/connector-binding')
+    def binding_get(ident: str,current: Actor=Depends(actor)):
+        return BindingRepository(service,current).load(current.tenant_id,ident)
+
+    @app.post('/v1/proposals/{ident}/connector-binding')
+    def binding_attach(ident: str,data: ConnectorBindingInput,current: Actor=Depends(actor)):
+        service.get(current,ident)
+        if connector is None:raise DomainError('connector_not_configured',503)
+        return BindingRepository(service,current).attach(ident,data,connector)
 
     return app
 

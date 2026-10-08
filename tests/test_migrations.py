@@ -28,7 +28,7 @@ class ConnectionDouble:
 
 def test_plan_is_deterministic_and_lists_only_sql():
     assert plan()==plan()
-    assert [p['version'] for p in plan()]==['001_foundation','002_sales_rules','003_model_runs','004_ingestion']
+    assert [p['version'] for p in plan()]==['001_foundation','002_sales_rules','003_model_runs','004_ingestion','005_connector_bindings']
     assert all(len(p['sha256'])==64 for p in plan())
 
 
