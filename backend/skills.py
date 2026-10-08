@@ -76,12 +76,13 @@ class SkillService:
             deal=conn.execute('SELECT payload FROM deals WHERE tenant=? AND id=?',(actor.tenant_id,data.deal_id)).fetchone()
             if not deal:raise DomainError('record_not_found',404)
             sources=[json.loads(r['payload']) for r in conn.execute('SELECT payload FROM sources WHERE tenant=? AND deal_id=? ORDER BY id',(actor.tenant_id,data.deal_id))]
-        if not sources:raise DomainError('source_missing',422)
+        active_sources=[s for s in sources if not s.get('deleted')]
+        if not active_sources:raise DomainError('source_missing',422)
         context=json.loads(deal['payload'])
         # Only scoped business fields, never tokens, tenant admin config or arbitrary SQL.
-        result,trace=self.model.extract(sources,{'account_id':context['account_id'],'deal_id':data.deal_id,
+        result,trace=self.model.extract(active_sources,{'account_id':context['account_id'],'deal_id':data.deal_id,
             'title':context['title'],'commitment_history':self.sales.commitments(actor,data.deal_id)})
-        source_map={s['external_id']:s for s in sources}
+        source_map={s['external_id']:s for s in active_sources}
         for commitment in result.commitments:
             evidence=commitment.evidence
             source=source_map.get(evidence.source_id)

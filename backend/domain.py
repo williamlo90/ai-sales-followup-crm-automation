@@ -56,22 +56,25 @@ class SalesService:
         return payload
 
     def put_source(self, actor: Actor, deal_id: str, data: SourceInput):
-        self.scope(actor, deal_id, {"worker"})
-        payload = data.model_dump(mode="json")
         with self.store.connect() as conn:
-            if not conn.execute("SELECT 1 FROM deals WHERE tenant=? AND id=?", (actor.tenant_id, deal_id)).fetchone():
-                raise DomainError("record_not_found", 404)
-            old = conn.execute("SELECT * FROM sources WHERE tenant=? AND id=?", (actor.tenant_id, data.external_id)).fetchone()
-            if old:
-                if old["deal_id"] != deal_id:
-                    raise DomainError("source_link_conflict")
-                if data.revision == old["revision"] and canonical(payload) == old["payload"]:
-                    return payload
-                if data.revision <= old["revision"]:
-                    raise DomainError("stale_source_revision")
-            conn.execute("INSERT INTO sources VALUES(?,?,?,?,?) ON CONFLICT(tenant,id) DO UPDATE SET revision=excluded.revision,payload=excluded.payload",
-                         (actor.tenant_id, data.external_id, data.revision, deal_id, canonical(payload)))
-            self.audit(conn, actor, "source.ingested", data.external_id)
+            return self.put_source_in_transaction(conn,actor,deal_id,data)
+
+    def put_source_in_transaction(self,conn,actor,deal_id,data):
+        self.scope(actor,deal_id,{'worker'})
+        payload=data.model_dump(mode='json')
+        if not conn.execute("SELECT 1 FROM deals WHERE tenant=? AND id=?", (actor.tenant_id, deal_id)).fetchone():
+            raise DomainError("record_not_found", 404)
+        old = conn.execute("SELECT * FROM sources WHERE tenant=? AND id=?", (actor.tenant_id, data.external_id)).fetchone()
+        if old:
+            if old["deal_id"] != deal_id:
+                raise DomainError("source_link_conflict")
+            if data.revision == old["revision"] and payload == SourceInput.model_validate_json(old['payload']).model_dump(mode='json'):
+                return payload
+            if data.revision <= old['revision']:
+                raise DomainError('stale_source_revision')
+        conn.execute('INSERT INTO sources VALUES(?,?,?,?,?) ON CONFLICT(tenant,id) DO UPDATE SET revision=excluded.revision,payload=excluded.payload',
+                     (actor.tenant_id,data.external_id,data.revision,deal_id,canonical(payload)))
+        self.audit(conn,actor,'source.ingested',data.external_id)
         return payload
 
     def validate(self, conn, actor, payload):
@@ -106,6 +109,8 @@ class SalesService:
             if not source or source["revision"] != evidence["revision"]:
                 raise DomainError("source_changed")
             body = json.loads(source["payload"])
+            if body.get("deleted"):
+                raise DomainError("source_deleted")
             if evidence["quote"] not in body["text"]:
                 raise DomainError("unsupported_evidence", 422)
             if last_contact and last_contact >= datetime.fromisoformat(body["occurred_at"]):
@@ -227,6 +232,7 @@ class SalesService:
             if not source or source["revision"]!=data.evidence.revision:
                 raise DomainError("source_changed")
             body=json.loads(source["payload"])
+            if body.get('deleted'):raise DomainError('source_deleted')
             if data.evidence.quote not in body["text"]:
                 raise DomainError("unsupported_evidence",422)
             if data.observed_at!=datetime.fromisoformat(body["occurred_at"]):

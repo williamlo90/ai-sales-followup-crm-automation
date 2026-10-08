@@ -19,6 +19,7 @@ class SourceInput(Contract):
     revision: int = Field(ge=1)
     occurred_at: AwareDatetime
     text: str = Field(min_length=1, max_length=50000)
+    deleted: bool = False
 
 
 class DealInput(Contract):

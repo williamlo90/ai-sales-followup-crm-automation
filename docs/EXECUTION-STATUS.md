@@ -10,7 +10,7 @@ Implement Phase 0 through Phase 6 efficiently and accurately, following PHASES.m
 - Phase 1: in progress; foundation implemented, migration plan/runner contract tests added. PostgreSQL runtime wiring, session/config hardening and final gate review remain; no engine acceptance yet.
 - Phase 2: commitments bound to proposals, revision/cancellation invalidation, operation-read API and recovery UI added. Manual/bound overlap and alias evidence checks now protect dispatch and due checks. Full effect/update review policy and safe connected adapter wiring remain before closing gate.
 - Phase 3: four shared application skills and OpenAI/Claude/Grok/Ollama structured adapters implemented and contract-tested. Safe OpenAI config loading and one real synthetic canary now pass through extraction, proposal and draft. Complete nested output schemas and actual MCP-to-API reuse now pass. Other provider/native inference, quality/security evaluation and workflow reuse remain.
-- Phase 4: native MCP bridge/reference client implemented and protocol-tested against the shared backend; Read-only Graph/Odoo clients now have bounded scope/pagination/retry contract tests. Ingestion/checkpoint wiring and write/reconciliation clients remain. Phase 5–6 pending.
+- Phase 4: native MCP bridge/reference client implemented and protocol-tested against the shared backend; Read-only Graph/Odoo clients now have bounded scope/pagination/retry contract tests. Atomic Graph ingestion/checkpoint core now passes native tests. Scheduler activation, mapping/recovery UI and write/reconciliation clients remain. Phase 5–6 pending.
 - Project 04 now has its own Git repository, Python venv, pinned dependency locks and implementation. Sibling projects were inspected read-only.
 - No phase gates have been marked passed.
 
@@ -31,7 +31,7 @@ Implement Phase 0 through Phase 6 efficiently and accurately, following PHASES.m
 
 ## Latest verification
 
-2026-10-09 Asia/Jakarta: 132 Python tests passed; MCP TypeScript build and two native protocol suites passed after effect-overlap/read-client changes. Previous unchanged UI: TypeScript/Vite build and two Edge browser scenarios passed. See docs/evidence/skills-providers-checks.md for actual scope and pending gates. One real OpenAI request passed (551 tokens, 3345.69 ms; estimated USD 0.0003812); see docs/evidence/openai-canary.md. No live Graph/Odoo action exists. Upstream Starlette warns HTTPX TestClient is deprecated; tests still pass; resolve dependency compatibility before final freeze.
+2026-10-09 Asia/Jakarta: 145 Python tests passed; MCP TypeScript build and two native protocol suites passed after effect-overlap/read-client changes. Previous unchanged UI: TypeScript/Vite build and two Edge browser scenarios passed. See docs/evidence/skills-providers-checks.md for actual scope and pending gates. One real OpenAI request passed (551 tokens, 3345.69 ms; estimated USD 0.0003812); see docs/evidence/openai-canary.md. No live Graph/Odoo action exists. Upstream Starlette warns HTTPX TestClient is deprecated; tests still pass; resolve dependency compatibility before final freeze.
 
 Native commands: `.venv/Scripts/python.exe -m pytest -q`; `npm.cmd run build --prefix web`; `npm.cmd run test:e2e --prefix web`. Browser test uses installed Edge (channel msedge), creates temporary fixture data, starts its own servers on 8040/8044 and refuses existing servers. Npm scripts invoke Node entry files directly to avoid Windows shim failures with `&` in the project path. See docs/LOCAL-DEVELOPMENT.md.
 
@@ -58,3 +58,11 @@ Artifacts: backend/skill_outputs.py, runtime skill output validation, scoped con
 ## Latest batch — overlap guard and read-only clients
 
 Artifacts: SalesService.prior_effect shared by execution/eligibility, backend/read_clients.py, overlap/concurrency and HTTP contract tests, MCP error mapping. Commands: pytest → 132 passed; MCP build → passed; MCP stdio suites → 2 passed. Evidence: docs/evidence/effects-read-clients.md. Read clients are implemented/contract-validated only, not live-validated or scheduler-wired. Odoo collection cap/pagination gap confirmed from #2 read-only source. Next: transactional source/checkpoint ingestion, explicit external-to-local identity mapping, Odoo approval/operation binding and Graph reconciliation contracts, then two n8n exports/reference runner. OpenAI canary reservation unchanged; no paid calls or connected writes. No phase gate newly closed.
+
+## Latest batch — atomic Graph ingestion
+
+Artifacts: backend/ingestion.py, shared transactional source-ingestion helper, deleted source contracts/guards, SQLite ingestion ledger/checkpoints, static PostgreSQL migration 004, updated MCP context schema and tests/test_ingestion.py. Source identity binds mailbox/immutable message ID. Checkpoint generation compare plus atomic rollback prevents lost pages; explicit mapping blocks ambiguity. Tombstones invalidate old evidence and are excluded from model source input.
+
+Commands/results: pytest → 145 passed; migration dry plan → four SQL files, no DB execution; schema exporter → updated; native MCP suites → 2 passed. One migration-plan expectation required updating for migration 004; final suite passes. Evidence: docs/evidence/ingestion-checkpoints.md. No external calls or paid canary repeated.
+
+Next: Odoo #2 proposal/approval/operation binding and Graph draft/send/reconciliation contracts, then scheduler endpoint/queue and two n8n exports. Graph ingestion poll is an internal worker API, not yet exposed/activated. Message mapping, folder-move recovery, resync/review interface, test credentials and real PostgreSQL wiring remain. No complete phase gate changed; automation remains active.

@@ -59,7 +59,7 @@ class GraphReadClient:
         if not tenant_id or not mailbox_id or not folder:raise ReadError('scope_missing')
         self.tenant_id,self.mailbox_id=tenant_id,mailbox_id
         self.path='/v1.0/users/'+quote(mailbox_id,safe='')+'/mailFolders/'+quote(folder,safe='')+'/messages/delta'
-        self.initial='https://graph.microsoft.com'+self.path+'?$select=id,subject,body,from,receivedDateTime,conversationId,changeKey'
+        self.initial='https://graph.microsoft.com'+self.path+'?$select=id,subject,body,from,receivedDateTime,lastModifiedDateTime,conversationId,changeKey'
         self.reader=BoundedReader(token,transport=transport,sleep=sleep)
 
     def validate_link(self,link):

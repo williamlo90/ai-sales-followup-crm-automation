@@ -187,6 +187,11 @@
           "minLength": 1,
           "title": "Text",
           "type": "string"
+        },
+        "deleted": {
+          "default": false,
+          "title": "Deleted",
+          "type": "boolean"
         }
       },
       "required": [

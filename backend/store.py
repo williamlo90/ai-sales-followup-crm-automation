@@ -42,6 +42,15 @@ CREATE TABLE IF NOT EXISTS model_runs (
  tenant TEXT NOT NULL, id TEXT NOT NULL, actor_id TEXT NOT NULL,
  deal_id TEXT NOT NULL, metadata TEXT NOT NULL, PRIMARY KEY(tenant,id),
  FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
+CREATE TABLE IF NOT EXISTS ingestion_streams (
+ tenant TEXT NOT NULL, stream TEXT NOT NULL, generation INTEGER NOT NULL,
+ checkpoint TEXT, PRIMARY KEY(tenant,stream));
+CREATE TABLE IF NOT EXISTS ingestion_messages (
+ tenant TEXT NOT NULL, stream TEXT NOT NULL, external_id TEXT NOT NULL,
+ source_id TEXT NOT NULL, deal_id TEXT NOT NULL, change_key TEXT,
+ modified_at TEXT, deleted INTEGER NOT NULL, content_hash TEXT NOT NULL,
+ PRIMARY KEY(tenant,stream,external_id),
+ FOREIGN KEY(tenant,source_id) REFERENCES sources(tenant,id));
 """
 
 
