@@ -2,7 +2,7 @@ import hashlib
 import json
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
-from backend.models import Actor, ApprovalInput, DealInput, ProposalInput, SourceInput
+from backend.models import Actor, ApprovalInput, DealInput, ProposalInput, SourceInput, PrepareCommitmentInput
 from backend.store import Store
 from backend.sales_rules import Commitment, match_deal, merge_commitment, due_eligibility
 
@@ -12,6 +12,8 @@ def canonical(value):
 
 
 def effect_key(payload,kind):
+    if payload.get("commitment"):
+        return hashlib.sha256(canonical([payload["deal_id"],kind,"commitment",payload["commitment"]["id"]]).encode()).hexdigest()
     refs=sorted({(e["source_id"],e["revision"]) for e in payload["evidence"]})
     return hashlib.sha256(canonical([payload["deal_id"],kind,refs]).encode()).hexdigest()
 
@@ -84,6 +86,17 @@ class SalesService:
             raise DomainError("stale_proposal")
         if deal["opt_out"]:
             raise DomainError("customer_opted_out")
+        if payload.get("commitment"):
+            ref=payload["commitment"]
+            current=conn.execute("SELECT revision,payload FROM commitments WHERE tenant=? AND deal_id=? AND id=? ORDER BY revision DESC LIMIT 1",
+                                 (actor.tenant_id,payload["deal_id"],ref["id"])).fetchone()
+            if not current or current["revision"]!=ref["revision"]:
+                raise DomainError("commitment_changed")
+            commitment=Commitment.model_validate_json(current["payload"])
+            if commitment.state!="active":
+                raise DomainError("commitment_cancelled")
+            if datetime.fromisoformat(payload["due_at"])!=commitment.due_at or commitment.evidence.model_dump(mode="json") not in payload["evidence"]:
+                raise DomainError("commitment_payload_mismatch",422)
         if "source_snapshot" in payload and payload["source_snapshot"]!=self.source_snapshot(conn,actor,payload["deal_id"]):
             raise DomainError("source_changed")
         last_contact = datetime.fromisoformat(deal["last_contact_at"]) if deal["last_contact_at"] else None
@@ -248,3 +261,35 @@ class SalesService:
             return due_eligibility(datetime.fromisoformat(payload["due_at"]),self.clock(),deal["opt_out"],
                 datetime.fromisoformat(deal["last_contact_at"]) if deal["last_contact_at"] else None,
                 max(source_times),any(a["kind"]==kind for a in view["approvals"]),view["validation_error"] is None)
+
+    def prepare_commitment(self,actor,deal_id,data: PrepareCommitmentInput):
+        self.scope(actor,deal_id,{"operator","worker"})
+        with self.store.connect() as conn:
+            row=conn.execute("SELECT payload FROM commitments WHERE tenant=? AND deal_id=? AND id=? AND revision=?",
+                             (actor.tenant_id,deal_id,data.commitment.id,data.commitment.revision)).fetchone()
+            if not row:
+                raise DomainError("record_not_found",404)
+            commitment=Commitment.model_validate_json(row["payload"])
+        # Human review is still required. This deterministic draft quotes evidence
+        # instead of inventing agreement, delivery or new commercial terms.
+        return self.prepare(actor,ProposalInput(deal_id=deal_id,deal_version=data.deal_version,
+            commitment=data.commitment,evidence=[commitment.evidence],summary=commitment.description,
+            due_at=commitment.due_at,draft=f'Thank you for the update: "{commitment.evidence.quote}"\n\nPlease confirm the next step: {commitment.description}.'))
+
+    def operation(self,actor,ident):
+        with self.store.connect() as conn:
+            row=conn.execute("SELECT * FROM operations WHERE tenant=? AND id=?",(actor.tenant_id,ident)).fetchone()
+            if not row:
+                raise DomainError("record_not_found",404)
+            self.row(conn,actor,row["proposal_id"])
+            result=dict(row)
+            result.pop("tenant")
+            result["result"]=json.loads(result["result"]) if result["result"] else None
+            result["recovery"]="reconcile_before_retry" if result["status"] in {"unknown","dispatched"} else None
+            return result
+
+    def proposal_operations(self,actor,ident):
+        with self.store.connect() as conn:
+            self.row(conn,actor,ident)
+            ids=[r["id"] for r in conn.execute("SELECT id FROM operations WHERE tenant=? AND proposal_id=?",(actor.tenant_id,ident))]
+        return [self.operation(actor,op) for op in ids]

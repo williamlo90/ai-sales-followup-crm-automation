@@ -1,0 +1,16 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "operation_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Operation Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "operation_id"
+  ],
+  "title": "ReconcileInput",
+  "type": "object"
+}

@@ -10,16 +10,20 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from backend.domain import DomainError, SalesService
-from backend.models import Actor, ApprovalInput, DealInput, ProposalInput, SourceInput
+from backend.models import Actor, ApprovalInput, DealInput, ProposalInput, SourceInput, PrepareCommitmentInput
 from backend.store import Store
 from backend.sales_rules import Commitment
 from fastapi import Query
 from typing import Literal
+from backend.skills import SkillService
+from backend.providers import ProviderError
+from pydantic import ValidationError
 
 
-def create_app(service: SalesService, identities: dict[str, Actor]) -> FastAPI:
+def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None) -> FastAPI:
     app = FastAPI(title="Sales Follow-up", version="0.1.0")
     bearer = HTTPBearer(auto_error=False)
+    skill_service=skills or SkillService(service)
 
     def actor(credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)]):
         if not credentials or len(credentials.credentials) > 256:
@@ -46,6 +50,14 @@ def create_app(service: SalesService, identities: dict[str, Actor]) -> FastAPI:
     @app.exception_handler(RequestValidationError)
     async def invalid(request, exc):
         return JSONResponse(status_code=422, content={"error": "invalid_input"})
+
+    @app.exception_handler(ValidationError)
+    async def skill_invalid(request,exc):
+        return JSONResponse(status_code=422,content={'error':'invalid_skill_input'})
+
+    @app.exception_handler(ProviderError)
+    async def provider_error(request,exc):
+        return JSONResponse(status_code=503,content={'error':str(exc)})
 
     @app.exception_handler(sqlite3.Error)
     async def database_error(request, exc):
@@ -105,6 +117,22 @@ def create_app(service: SalesService, identities: dict[str, Actor]) -> FastAPI:
     @app.get("/v1/proposals/{ident}/eligibility")
     def eligibility(ident: str,kind: Literal["crm","email"],current: Actor = Depends(actor)):
         return service.due(current,ident,kind)
+
+    @app.post("/v1/deals/{deal_id}/prepare-commitment",status_code=201)
+    def prepare_commitment(deal_id: str,data: PrepareCommitmentInput,current: Actor = Depends(actor)):
+        return service.prepare_commitment(current,deal_id,data)
+
+    @app.get("/v1/operations/{ident}")
+    def operation(ident: str,current: Actor = Depends(actor)):
+        return service.operation(current,ident)
+
+    @app.get("/v1/proposals/{ident}/operations")
+    def proposal_operations(ident: str,current: Actor = Depends(actor)):
+        return {"items":service.proposal_operations(current,ident)}
+
+    @app.post('/v1/skills/{name}')
+    def skill(name: str,data: dict,current: Actor=Depends(actor)):
+        return skill_service.invoke(current,name,data)
 
     return app
 

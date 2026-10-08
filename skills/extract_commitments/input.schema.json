@@ -1,0 +1,16 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "deal_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Deal Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "deal_id"
+  ],
+  "title": "ExtractInput",
+  "type": "object"
+}

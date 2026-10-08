@@ -43,10 +43,13 @@ class ExecutionService:
             key = effect_key(payload,kind)
             old = conn.execute("SELECT * FROM operations WHERE tenant=? AND effect_key=?", (actor.tenant_id,key)).fetchone()
             if old:
+                original=self.sales.row(conn,actor,old["proposal_id"])
+                if payload.get("commitment")!=json.loads(original["payload"]).get("commitment"):
+                    raise DomainError("revision_update_requires_review")
                 return dict(old)
             operation = {"tenant":actor.tenant_id,"id":str(uuid4()),"proposal_id":proposal_id,"kind":kind,
                          "effect_key":key,"payload_hash":proposal["payload_hash"],"status":"dispatched","result":None}
-            conn.execute("INSERT INTO operations VALUES(?,?,?,?,?,?,?,?)",tuple(operation.values()))
+            conn.execute("INSERT INTO operations(tenant,id,proposal_id,kind,effect_key,payload_hash,status,result) VALUES(?,?,?,?,?,?,?,?)",tuple(operation.values()))
             self.sales.audit(conn,actor,"operation.dispatched",operation["id"])
         # The committed ledger survives timeout/process exit. No database transaction
         # spans a remote call; a second caller sees dispatched and cannot redispatch.

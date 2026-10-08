@@ -38,6 +38,10 @@ CREATE TABLE IF NOT EXISTS commitments (
  revision INTEGER NOT NULL, payload TEXT NOT NULL,
  PRIMARY KEY(tenant,deal_id,id,revision),
  FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
+CREATE TABLE IF NOT EXISTS model_runs (
+ tenant TEXT NOT NULL, id TEXT NOT NULL, actor_id TEXT NOT NULL,
+ deal_id TEXT NOT NULL, metadata TEXT NOT NULL, PRIMARY KEY(tenant,id),
+ FOREIGN KEY(tenant,deal_id) REFERENCES deals(tenant,id));
 """
 
 

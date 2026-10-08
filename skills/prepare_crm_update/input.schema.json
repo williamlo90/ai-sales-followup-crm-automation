@@ -1,0 +1,50 @@
+{
+  "$defs": {
+    "CommitmentRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "title": "CommitmentRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "commitment": {
+      "$ref": "#/$defs/CommitmentRef"
+    },
+    "deal_version": {
+      "minimum": 1,
+      "title": "Deal Version",
+      "type": "integer"
+    },
+    "deal_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Deal Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "commitment",
+    "deal_version",
+    "deal_id"
+  ],
+  "title": "PrepareInput",
+  "type": "object"
+}

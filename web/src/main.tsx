@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
 
 type Actor = {id:string;role:string;tenant_id:string;deal_ids:string[]};
+type Operation = {id:string;kind:'crm'|'email';status:string;recovery:string|null};
 type Proposal = {id:string;payload_hash:string;status:string;validation_error:string|null;approval_valid:boolean;
   approvals:{kind:string;actor_id:string}[];payload:{deal_id:string;account_id:string;recipient:string;summary:string;due_at:string;draft:string;evidence:{source_id:string;revision:number;quote:string}[]}};
 
@@ -14,12 +15,14 @@ function App(){
   const [error,setError]=useState('');
   const [busy,setBusy]=useState(false);
   const [notice,setNotice]=useState('');
+  const [operations,setOperations]=useState<Operation[]>([]);
   async function api(path:string, method='GET', data?:unknown){
     const result=await fetch(path,{method,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:data===undefined?undefined:JSON.stringify(data)});
     const value=await result.json();
     if(!result.ok) throw new Error(value.error||`Request failed (${result.status})`);
     return value;
   }
+  useEffect(()=>{let cancelled=false;setOperations([]);if(selected&&actor){void api(`/v1/proposals/${selected.id}/operations`).then(data=>{if(!cancelled)setOperations(data.items);}).catch(()=>{if(!cancelled)setError('Unable to load operation status. Refresh before acting.');});}return()=>{cancelled=true;};},[selected,actor,token]);
   async function run(action:()=>Promise<void>){setBusy(true);setError('');setNotice('');try{await action();}catch(e){setError(e instanceof Error?e.message:'Request failed');}finally{setBusy(false);}}
   async function refresh(){const data=await api('/v1/proposals');setItems(data.items);if(selected){setSelected(data.items.find((p:Proposal)=>p.id===selected.id)||null);}}
   function signIn(e:FormEvent){e.preventDefault();void run(async()=>{const current=await api('/v1/me'); const data=await api('/v1/proposals');setActor(current);setItems(data.items);setSelected(null);});}
@@ -41,6 +44,7 @@ function App(){
       <section><h3>Source evidence</h3>{selected.payload.evidence.map((ev,i)=><blockquote key={i}><p>{ev.quote}</p><footer>{ev.source_id} · revision {ev.revision}</footer></blockquote>)}</section>
       <section><h3>Proposed CRM activity</h3><dl><dt>Action</dt><dd>Create a follow-up activity</dd><dt>Summary</dt><dd>{selected.payload.summary}</dd><dt>Due</dt><dd>{selected.payload.due_at}</dd></dl><Approval kind="crm" proposal={selected} actor={actor} busy={busy} onApprove={()=>approve('crm')}/></section>
       <section><h3>Follow-up draft</h3><p className="recipient">To: {selected.payload.recipient}</p><div className="draft">{selected.payload.draft}</div><p className="muted">Review factual accuracy against the source. Approval records consent; sending is currently disabled.</p><Approval kind="email" proposal={selected} actor={actor} busy={busy} onApprove={()=>approve('email')}/></section>
+      <section><h3>Action outcomes</h3>{operations.length===0?<p className="muted">No operation has been recorded for this proposal.</p>:operations.map(op=><div key={op.id} className={op.recovery?'alert':'notice'}><strong>{op.kind==='crm'?'CRM activity':'Email'} · {op.status==='unknown'||op.status==='dispatched'?'Outcome unknown':op.status==='verified'?'CRM result verified':op.status==='accepted'?'Accepted / sent observed':op.status}</strong><p>{op.recovery?'Reconcile the recorded operation before attempting another action. A lost response may hide a completed action.':op.kind==='email'?'Acceptance or Sent Items does not establish delivery or read status.':'The recorded outcome is available for review.'}</p><small>Operation {op.id}</small></div>)}</section>
       <details><summary>Proposal reference</summary><p className="reference">{selected.id}<br/>Payload: {selected.payload_hash}</p></details></>}</article></div>}
     <footer className="footnote">Local review environment · External CRM changes and email delivery are not enabled.</footer></main></div>;
 }

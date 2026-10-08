@@ -37,6 +37,11 @@ class Evidence(Contract):
     quote: str = Field(min_length=1, max_length=4000)
 
 
+class CommitmentRef(Contract):
+    id: str = Field(min_length=1,max_length=200)
+    revision: int = Field(ge=1)
+
+
 class ProposalInput(Contract):
     deal_id: str = Field(min_length=1, max_length=200)
     deal_version: int = Field(ge=1)
@@ -44,6 +49,12 @@ class ProposalInput(Contract):
     summary: str = Field(min_length=1, max_length=500)
     due_at: AwareDatetime
     draft: str = Field(min_length=1, max_length=10000)
+    commitment: CommitmentRef | None = None
+
+
+class PrepareCommitmentInput(Contract):
+    commitment: CommitmentRef
+    deal_version: int = Field(ge=1)
 
 
 class ApprovalInput(Contract):

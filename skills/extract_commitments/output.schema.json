@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "skill",
+    "version",
+    "result"
+  ],
+  "properties": {
+    "skill": {
+      "const": "extract_commitments"
+    },
+    "version": {
+      "const": "1.0"
+    },
+    "result": {
+      "type": "object"
+    }
+  }
+}

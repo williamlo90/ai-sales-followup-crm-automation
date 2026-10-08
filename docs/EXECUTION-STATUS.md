@@ -7,9 +7,10 @@ Implement Phase 0 through Phase 6 efficiently and accurately, following PHASES.m
 ## Current status
 
 - Phase 0: scope/audit/mapping and initial labeled fixture corpora are recorded. Final gate review must confirm the documented pending access and budgets; no external access is claimed validated.
-- Phase 1: in progress; FastAPI domain, durable SQLite harness, server-owned token/tenant/deal roles, proposal versions, separate approvals, React review UI and static PostgreSQL/deploy artifacts implemented. Adapter doubles, PostgreSQL wiring/migration runner and final gate review remain.
-- Phase 2: scoped matching, candidate commitment history/merge, due eligibility, durable operation dispatch/reconciliation core and contract-double effect deduplication implemented. Bind reviewed commitment revisions to proposals, complete effect/update policy and API/UI recovery before closing gate.
-- Phase 3–6: pending.
+- Phase 1: in progress; foundation implemented, migration plan/runner contract tests added. PostgreSQL runtime wiring, session/config hardening and final gate review remain; no engine acceptance yet.
+- Phase 2: commitments bound to proposals, revision/cancellation invalidation, operation-read API and recovery UI added. Effect/update policy and safe connected adapter wiring remain before closing gate.
+- Phase 3: four shared application skills and OpenAI/Claude/Grok/Ollama structured adapters implemented and contract-tested. Model config loading, live canaries/native inference, full nested output schemas, quality/security evaluation and multi-caller reuse remain.
+- Phase 4–6: pending.
 - Project 04 now has its own Git repository, Python venv, pinned dependency locks and implementation. Sibling projects were inspected read-only.
 - No phase gates have been marked passed.
 
@@ -25,12 +26,12 @@ Implement Phase 0 through Phase 6 efficiently and accurately, following PHASES.m
 
 1. Review Phase 0 gate using docs/phase-0/ and fixtures/rules-v1.json + fixtures/conversations-v1.json. External credentials are pending config location, not assumed unavailable. Model spend defaults to zero until an authorized profile/budget is configured.
 2. Finish Phase 1 PostgreSQL repository/migration runner preparation and security/config gaps; real PostgreSQL checks remain Phase 7. Preserve one business core. An effect contract double and persistent operation ledger now exist.
-3. Phase 2: bind candidate commitments to reviewed proposals, handle multiple commitments/changed-revision activity updates, expose authenticated operation read/recovery states with safe adapter configuration, and add remaining failure cases. Dispatch core remains tests-only: do not enable fake execution in the normal UI and call it a connected result.
-4. Then proceed Phase 3–6 according to PHASES.md. Do not stop independent coding for missing provider credentials.
+3. Phase 2: close manual-vs-bound proposal effect identity overlap and multiple-commitment/update policy; expose recovery actions only with a safe configured adapter. Bound revisions after an existing action currently require review, because connector #2 update capability is absent. Dispatch remains tests-only; no fake-connected UI.
+4. Phase 3: add safe .env profile loading and a bounded synthetic canary command, complete schema/reuse tests, then MCP and workflow contracts. User requested a local .env link for OpenAI and will enter the key. .env is created/ignored; key and model initially blank, calls disabled, limit one. Do not print/read the key into tool output. The app does NOT yet load .env; implement this before claiming configuration works. Model selection/call budget and native profile still need verification. Continue independent Phase 4–6 work while access is pending.
 
 ## Latest verification
 
-2026-10-09 Asia/Jakarta: 58 Python tests passed and Edge browser regression passed after rules/API changes. Earlier TypeScript/Vite build and pip dependency check passed. See docs/evidence/sales-rules-checks.md and foundation-checks.md. No live external dispatch exists. Upstream Starlette warns HTTPX TestClient is deprecated; tests still pass; resolve dependency compatibility before final freeze.
+2026-10-09 Asia/Jakarta: 96 Python tests passed; TypeScript/Vite build and two Edge browser scenarios passed. See docs/evidence/skills-providers-checks.md for actual scope and pending gates. No live provider/Graph/Odoo action exists. Upstream Starlette warns HTTPX TestClient is deprecated; tests still pass; resolve dependency compatibility before final freeze.
 
 Native commands: `.venv/Scripts/python.exe -m pytest -q`; `npm.cmd run build --prefix web`; `npm.cmd run test:e2e --prefix web`. Browser test uses installed Edge (channel msedge), creates temporary fixture data, starts its own servers on 8040/8044 and refuses existing servers. Npm scripts invoke Node entry files directly to avoid Windows shim failures with `&` in the project path. See docs/LOCAL-DEVELOPMENT.md.
 

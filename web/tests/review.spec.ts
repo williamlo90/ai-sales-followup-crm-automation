@@ -28,3 +28,20 @@ test('operator prepares, independent approver reviews both actions, no dispatch'
   await page.getByRole('button',{name:'Sign out'}).click();
   await expect(page.getByLabel('Access token')).toHaveValue('');
 });
+
+test('unknown operation visibly requires reconciliation, with no resend button',async({page,request})=>{
+  const prepared=await request.post('/v1/proposals',{headers:{Authorization:'Bearer test-only-operator'},data:{
+    deal_id:'deal-1',deal_version:1,evidence:[{source_id:'thread-1',revision:1,quote:'15 October 2026 at 14:00 Asia/Jakarta'}],
+    summary:'Recovery review fixture',due_at:'2026-10-15T14:00:00+07:00',draft:'Please confirm the revised demo.'}});
+  expect(prepared.ok()).toBeTruthy();
+  const proposal=await prepared.json();
+  // UI presentation fixture only; backend unknown/reconciliation has separate tests.
+  await page.route(`**/v1/proposals/${proposal.id}/operations`,route=>route.fulfill({json:{items:[{id:'test-unknown',kind:'email',status:'unknown',recovery:'reconcile_before_retry'}]}}));
+  await page.goto('/');
+  await page.getByLabel('Access token').fill('test-only-operator');
+  await page.getByRole('button',{name:'Continue'}).click();
+  await page.getByRole('button',{name:/Recovery review fixture/}).click();
+  await expect(page.getByText('Email · Outcome unknown',{exact:true})).toBeVisible();
+  await expect(page.getByText('Reconcile the recorded operation before',{exact:false})).toBeVisible();
+  await expect(page.getByRole('button',{name:/resend|retry|send now/i})).toHaveCount(0);
+});

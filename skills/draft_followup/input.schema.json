@@ -1,0 +1,16 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "proposal_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Proposal Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "proposal_id"
+  ],
+  "title": "DraftInput",
+  "type": "object"
+}
