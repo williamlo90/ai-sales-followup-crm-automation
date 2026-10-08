@@ -15,7 +15,8 @@ for(const [name,kind] of [['apply_crm_changes','crm'],['send_approved_draft','em
   specs.push({name:`sales.${name}`,input:object({proposal_id:id}),output:shared('operation'),path:a=>`/v1/proposals/${encodeURIComponent(a.proposal_id)}/execute/${kind}`,method:'POST',readOnly:false});
 const errors=new Set(['record_not_found','role_not_permitted','invalid_session','authentication_required','source_changed','stale_proposal',
   'commitment_changed','commitment_cancelled','proposal_expired','execution_disabled','send_not_permitted','approval_required',
-  'model_not_configured','model_call_budget_exhausted','proposal_already_owned','customer_opted_out','context_changed','skill_output_invalid']);
+  'model_not_configured','model_call_budget_exhausted','proposal_already_owned','customer_opted_out','context_changed','skill_output_invalid',
+  'effect_overlap_requires_review','revision_update_requires_review']);
 class Failure extends Error {}
 
 function buildServer(){

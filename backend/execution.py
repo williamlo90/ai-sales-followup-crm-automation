@@ -41,12 +41,12 @@ class ExecutionService:
                 raise DomainError("send_not_permitted",403)
             # Same source revision/deal/kind is one logical effect, even if prose changes.
             key = effect_key(payload,kind)
-            old = conn.execute("SELECT * FROM operations WHERE tenant=? AND effect_key=?", (actor.tenant_id,key)).fetchone()
+            old = self.sales.prior_effect(conn,actor,payload,kind)
             if old:
                 original=self.sales.row(conn,actor,old["proposal_id"])
                 if payload.get("commitment")!=json.loads(original["payload"]).get("commitment"):
                     raise DomainError("revision_update_requires_review")
-                return dict(old)
+                return self.load(conn,actor,old['id'])
             operation = {"tenant":actor.tenant_id,"id":str(uuid4()),"proposal_id":proposal_id,"kind":kind,
                          "effect_key":key,"payload_hash":proposal["payload_hash"],"status":"dispatched","result":None}
             conn.execute("INSERT INTO operations(tenant,id,proposal_id,kind,effect_key,payload_hash,status,result) VALUES(?,?,?,?,?,?,?,?)",tuple(operation.values()))

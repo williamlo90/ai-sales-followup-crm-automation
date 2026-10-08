@@ -255,8 +255,10 @@ class SalesService:
             row=self.row(conn,actor,ident)
             view=self.view(conn,actor,row)
             payload=view["payload"]
-            operation=conn.execute("SELECT status FROM operations WHERE tenant=? AND effect_key=?",
-                                   (actor.tenant_id,effect_key(payload,kind))).fetchone()
+            try:
+                operation=self.prior_effect(conn,actor,payload,kind)
+            except DomainError as exc:
+                return {'eligible':False,'reason':exc.code}
             if operation:
                 return {"eligible":False,"reason":"already_completed" if operation["status"] in {"verified","accepted"} else "reconciliation_required"}
             deal=json.loads(conn.execute("SELECT payload FROM deals WHERE tenant=? AND id=?",
@@ -272,6 +274,31 @@ class SalesService:
             return due_eligibility(datetime.fromisoformat(payload["due_at"]),self.clock(),deal["opt_out"],
                 datetime.fromisoformat(deal["last_contact_at"]) if deal["last_contact_at"] else None,
                 max(source_times),any(a["kind"]==kind for a in view["approvals"]),view["validation_error"] is None)
+
+    def prior_effect(self,conn,actor,payload,kind):
+        exact=None
+        # Runs inside the same write transaction as ledger insertion. Manual
+        # evidence cannot establish a distinct commitment identity, even after
+        # a revision or a switch between manual and bound preparation.
+        rows=conn.execute('SELECT o.*,p.payload AS prior_payload FROM operations o JOIN proposals p ON p.tenant=o.tenant AND p.id=o.proposal_id WHERE o.tenant=? AND p.deal_id=? AND o.kind=?',
+                          (actor.tenant_id,payload['deal_id'],kind))
+        current_ref=payload.get('commitment')
+        sources={e['source_id'] for e in payload['evidence']}
+        for row in rows:
+            if row['effect_key']==effect_key(payload,kind):
+                exact=row
+                continue
+            previous=json.loads(row['prior_payload'])
+            prior_ref=previous.get('commitment')
+            overlap=sources.intersection(e['source_id'] for e in previous['evidence'])
+            if not overlap:continue
+            # Separate bound commitments may share a thread, but not an
+            # identical evidence quote under a new ID to bypass the ledger.
+            same_quote=any(a['source_id']==b['source_id'] and a['quote']==b['quote']
+                           for a in payload['evidence'] for b in previous['evidence'])
+            if not current_ref or not prior_ref or same_quote:
+                raise DomainError('effect_overlap_requires_review')
+        return exact
 
     def prepare_commitment(self,actor,deal_id,data: PrepareCommitmentInput):
         self.scope(actor,deal_id,{"operator","worker"})
