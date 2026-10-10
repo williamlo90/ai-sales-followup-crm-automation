@@ -41,3 +41,22 @@ def test_due_export_waits_for_business_eligibility(lab):
 
 def test_idle_export_stops_without_wait(lab):
     assert run(workflow('intake'),lab[2],'worker',lambda *_:pytest.fail('Unexpected wait'))['result']['status']=='idle'
+
+
+def test_due_export_discovers_prepares_and_observes_accepted_effect(lab):
+    coordinator,_,_,double=setup(lab,'due','email')
+    later(lab,7*86400)
+    client=TestClient(create_app(lab[0],{hashlib.sha256(k.encode()).hexdigest():v for k,v in lab[1].items()},execution=coordinator.execution))
+    def wait(seconds,result):
+        assert result['status']=='awaiting_approval'
+        approve(lab,result['proposal_id'],'email');later(lab,seconds)
+    result=run(workflow('due'),client,'worker',wait)
+    assert result['result']['status']=='completed'
+    assert double.calls==1
+    later(lab)
+    assert run(workflow('due'),client,'worker',lambda *_:pytest.fail('No repeat expected'))['result']['status']=='idle'
+
+
+def test_export_timeout_covers_two_requests_and_wait():
+    doc=workflow('intake');doc['settings']['executionTimeout']=180
+    with pytest.raises(AssertionError):validate(doc)

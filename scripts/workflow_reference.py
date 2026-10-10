@@ -7,6 +7,7 @@ VERSIONS={'scheduleTrigger':1.4,'httpRequest':4.5,'if':2.3,'wait':1.1}
 def validate(document):
     assert document['active'] is False
     assert document['settings']['timezone']=='Asia/Jakarta'
+    assert 190<=document['settings']['executionTimeout']<=300
     nodes={n['name']:n for n in document['nodes']}
     assert len(nodes)==len(document['nodes'])==5
     assert len({n['id'] for n in nodes.values()})==5
