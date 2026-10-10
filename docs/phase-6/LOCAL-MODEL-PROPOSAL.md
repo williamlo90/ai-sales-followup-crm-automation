@@ -1,6 +1,6 @@
 # Proposed bounded local evaluation
 
-User approved this download and bounded native evaluation on 2026-10-10. Runtime archive download is in progress; no extraction/model inference claimed yet. This explicit approval permits the model download, while Docker/container restrictions remain.
+User approved this download and bounded native evaluation on 2026-10-10. Runtime/archive checksum and model digest verified;20 real development cases completed, profile failed quality. Server stopped after evaluation; details in ../evidence/phase-6-local-qwen3.json. This explicit approval permits the model download, while Docker/container restrictions remain.
 
 Read-only NVIDIA inventory: RTX4050 Laptop GPU, 6141 MiB total and 5601 MiB free VRAM at observation. Host has about 16 GiB RAM with about 3.73 GiB free in earlier snapshot; other apps remain untouched. This is a feasibility input, not proven model capacity.
 

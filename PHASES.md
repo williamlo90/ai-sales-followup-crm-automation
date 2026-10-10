@@ -74,7 +74,7 @@ Evidence native: [Phase 5 acceptance](docs/evidence/phase-5-acceptance.md), 2026
 - [x] Bekukan dev/regression dan held-out berdasarkan thread/account families; expected outcomes berasal dari source dan rules. Bukti: docs/phase-6/dataset-freeze.json (20+20 synthetic families, agent-reviewed).
 - [ ] Ukur account/deal linkage, commitment extraction/revisions, proposal correctness, draft factuality, abstention dan policy compliance.
 - [ ] Bandingkan OpenAI/Claude/Grok pada tugas sama dengan real canaries; satu default runtime cukup, adapter-only belum membuktikan ketiga API.
-- [ ] Evaluasi local profile nyata; model gagal tidak disebut sukses hanya karena guardrail menahan write.
+- [x] Evaluasi local profile nyata; Qwen3 1.7B/Ollama0.40.2 diuji pada20 development families dan gagal kualitas (0/20), tidak dipilih. Bukti: docs/evidence/phase-6-local-qwen3.json; guardrail bukan kelulusan model.
 - [ ] Bandingkan direct CRM/manual dan assisted pada tugas setara: correctness, corrections, manual touches, active work dan waiting time. Single-operator mandiri boleh, dilabeli sesuai lingkup; bukan customer ROI.
 - [ ] Tetapkan workload/SLO/resource budget, freeze candidate dan matrix acceptance n8n/Graph/Odoo/Docker. Jangan melaporkan p95 engine dari mock runner.
 

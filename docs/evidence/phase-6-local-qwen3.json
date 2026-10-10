@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-10",
+  "scope": "Actual native Ollama API, 20 frozen development families, one request each. No held-out use for this rejected local profile.",
+  "status": "failed_quality_not_selected",
+  "runtime": "Ollama0.40.2 standalone Windows",
+  "model": "qwen3:1.7b",
+  "model_digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+  "model_size_bytes": 1359293444,
+  "quantization": "Q4_K_M",
+  "profile": {
+    "think": false,
+    "num_ctx": 4096,
+    "num_predict": 4096,
+    "temperature": 0,
+    "keep_alive": 0
+  },
+  "dataset_sha256": "fa7289ca5857cbc8eb69e557430f79e56a37190ecabcc7895f32319f672e03d4",
+  "prompt_sha256": "39cf97a43cce9b423f498724de8946c49744807954b2a707a6944872af9372e2",
+  "schema_sha256": "00c376875a08975947c402e68331ba112533b9f81be54ede443149e891a95ba4",
+  "code_revision": "bce00265e7601c9ab2bd0284aa8317e96f7dd390",
+  "total": 20,
+  "automated_pass": 0,
+  "provider_errors": {
+    "model_output_invalid": 16
+  },
+  "valid_but_wrong": 4,
+  "latency_ms": {
+    "source": "Ollama response total_duration including loading; not client round-trip or engine latency",
+    "n": 20,
+    "method": "nearest rank",
+    "p50": 3895.65,
+    "p90": 4168.06,
+    "p95": 4187.76,
+    "max": 53318.29
+  },
+  "observed_failures": [
+    "Ready responses accompanied by nonempty missing_information; consistency validator rejects.",
+    "Invented commitments for missing-owner, conditional, injected or incomplete sources.",
+    "Observed dev05 timezone wrongly represented as UTC rather than Jakarta."
+  ],
+  "selection": "Keep accepted OpenAI evaluation profile; local profile is rejected. Guardrail abstention is not model correctness.",
+  "resources": {
+    "gpu": "RTX4050 Laptop GPU",
+    "vram_total_mib": 6141,
+    "prelaunch_free_host_kib": 4897320,
+    "prelaunch_free_vram_mib": 5501,
+    "server_peak_working_set_bytes": 170504192,
+    "server_peak_scope": "Ollama server only; does not include child inference runner peak",
+    "sample_during_first_request_free_host_kib": 4596236,
+    "sample_gpu_used_mib": 1911,
+    "sample_gpu_free_mib": 4010,
+    "limits": "Per-case preflight requires >=4GiB host RAM and >=3GiB free VRAM; one request/model,4096 context/output,60s client timeout."
+  },
+  "shutdown": {
+    "owned_pid": 35556,
+    "models_resident_before_stop": 0,
+    "server_stopped": true,
+    "listener_after_stop": false,
+    "child_processes_after_stop": 0
+  },
+  "cases": [
+    {
+      "case_id": "dev-v2-01",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "02eccb4410938899b2e341c7c21add72a0c44904b8e710879e9690b931940cd9"
+    },
+    {
+      "case_id": "dev-v2-02",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "26228761cf70a8a68e4ee0b68be10c1013caa4d5acf975ad604e629d13dcef61"
+    },
+    {
+      "case_id": "dev-v2-03",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "4fd48c63f48ce4f87961cdb1018d285e9108bc5f1d7b4dd37467fc681b8a4bcd"
+    },
+    {
+      "case_id": "dev-v2-04",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "4901b21e59b831782bcaf60a2c7d9b7df07a8495acf37a9f339689e4ec8717a6"
+    },
+    {
+      "case_id": "dev-v2-05",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "c4fa907a2b0f851a66ac61b8bed50ddfaaff88648ff08b0bc38f0142767e66f9"
+    },
+    {
+      "case_id": "dev-v2-06",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "c0f39bfa8cb15d8d1e17dc0552ca6786886d843812fb72eba3978cc797518dde"
+    },
+    {
+      "case_id": "dev-v2-07",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "b730b0d382347a336775425ad84ed109237ad85ea7bde91ebf3a00ff61971b6f"
+    },
+    {
+      "case_id": "dev-v2-08",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "d4761aa571f692522fce14c25cd2a8af67436848ba8d99a520e0ba7a6fa5f8a1"
+    },
+    {
+      "case_id": "dev-v2-09",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "43979c1045ff6c919092ac7efddf6e11fe92bd8c51323b6ee15aa0e74cbd0b6e"
+    },
+    {
+      "case_id": "dev-v2-10",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "4b176d2851a1f528d4588a0797f92b66a495dc6036ed4c9a08d4a2a8e4a63d2a"
+    },
+    {
+      "case_id": "dev-v2-11",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "a5e6b1d966fcf679ba63ba2c64c20db699c9c5da02aff4d3ca8f4dc6824bf823"
+    },
+    {
+      "case_id": "dev-v2-12",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "32924c85edc1d1ef84ea149a88be0882b597d3f1e0d6b509fb94b61f5b98330a"
+    },
+    {
+      "case_id": "dev-v2-13",
+      "automated_pass": false,
+      "failure_reasons": [
+        "commitment_count",
+        "commitment_fields"
+      ],
+      "provider_error": null,
+      "raw_sha256": "60c39ceebff4176506b539be5ef4cd03fc384d6dd2d8f4c2cdef4738be672f40"
+    },
+    {
+      "case_id": "dev-v2-14",
+      "automated_pass": false,
+      "failure_reasons": [
+        "commitment_count",
+        "commitment_fields"
+      ],
+      "provider_error": null,
+      "raw_sha256": "2aa2c7a254c216f321275c045fc3c65d9835ca3ecd6b91dbbcfcdaf3eaa6d54b"
+    },
+    {
+      "case_id": "dev-v2-15",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "f0ea53e2c8d3b29294b485b4c51dd873ff5584040560d18cb4698bdaa84dd818"
+    },
+    {
+      "case_id": "dev-v2-16",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "5738845d3f1f69a14d37b1be9c48397f68073490df8fba0d6f92f269dfb9646e"
+    },
+    {
+      "case_id": "dev-v2-17",
+      "automated_pass": false,
+      "failure_reasons": [
+        "commitment_count",
+        "commitment_fields"
+      ],
+      "provider_error": null,
+      "raw_sha256": "5ac6e810b559fa365ce6022c48aef6285fc89af11dd83ec5d341809b397e610a"
+    },
+    {
+      "case_id": "dev-v2-18",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "121cacd249d6a1bfc57931066cabeab883e1069ee437561cfab45ed9a6134d2d"
+    },
+    {
+      "case_id": "dev-v2-19",
+      "automated_pass": false,
+      "failure_reasons": [
+        "provider_error"
+      ],
+      "provider_error": "model_output_invalid",
+      "raw_sha256": "7cd67f39d6222749467edc020f44dc8e566c9d6d522b1a9a37c12de2fdd4d52f"
+    },
+    {
+      "case_id": "dev-v2-20",
+      "automated_pass": false,
+      "failure_reasons": [
+        "commitment_count",
+        "commitment_fields"
+      ],
+      "provider_error": null,
+      "raw_sha256": "1298b1627eb5ac4231269a6c0a847f10f6578d32e8fbe1f818c18ef3820f641e"
+    }
+  ]
+}
