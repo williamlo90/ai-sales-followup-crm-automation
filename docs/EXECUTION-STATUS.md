@@ -115,3 +115,10 @@ Added a conversation intake panel using the shared extraction, commitment record
 Validation: web TypeScript/Vite build passed; five Edge tests passed. New extraction responses are doubles, while candidate recording and proposal preparation use the actual isolated backend. Browser fixtures now isolate intake into a separate tenant after a shared-state regression was detected and fixed. No model spend, connected write or Docker operation occurred.
 
 Remaining Phase 5: explicit intake scheduler handoff and connector preparation/binding review UI; full engine acceptance remains Phase 7. This panel prepares a proposal in the review queue, not a workflow job. A candidate can remain recorded if subsequent preparation fails; replay uses existing core idempotency. Automation remains PAUSED at user request; work continued only in this interactive session. No phase gate closed.
+
+
+## Goal checkpoint — explicit intake handoff (2026-10-10)
+
+Implemented proposer-only handoff of commitment-based proposals to the unique configured scoped worker, preserving proposal ID, approvals and independent CRM/email job identities. The API fails closed when worker configuration is missing/ambiguous. Local transaction checks freshness/owner/scope and records an audit event. UI exposes separate queue actions without executing or approving.
+
+Validation: seven new handoff tests passed; TypeScript/Vite build passed. Full regression and browser handoff coverage remain to run before Phase 5 gate closure. Remaining goal work: Odoo preparation/binding UI, workflow/export verification and requirement-by-requirement completion audit. Automation stays PAUSED; goal active. No external calls or connected effects.

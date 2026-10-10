@@ -38,6 +38,30 @@ class WorkflowService:
                 self.sales.audit(conn,actor,'workflow.enqueued',ident)
         return self.get(actor,ident)
 
+    def handoff(self,actor,proposal_id,worker,kind):
+        if actor.role!='operator':raise DomainError('role_not_permitted',403)
+        self.worker(worker)
+        if worker.tenant_id!=actor.tenant_id:raise DomainError('worker_scope_mismatch',403)
+        if kind not in {'crm','email'}:raise DomainError('invalid_operation',422)
+        with self.sales.store.connect() as conn:
+            proposal=self.sales.row(conn,actor,proposal_id)
+            self.sales.freshness(conn,actor,proposal)
+            if proposal['actor_id']!=actor.id:raise DomainError('proposal_owner_required',403)
+            payload=json.loads(proposal['payload'])
+            self.sales.scope(worker,payload['deal_id'])
+            if not payload.get('commitment'):raise DomainError('commitment_required',422)
+            data=EnqueueInput(deal_id=payload['deal_id'],deal_version=payload['deal_version'],
+                commitment=payload['commitment'],journey='intake',kind=kind)
+            ident=hashlib.sha256(canonical({'proposal_id':proposal_id,'kind':kind}).encode()).hexdigest()
+            old=conn.execute('SELECT worker_id FROM workflow_jobs WHERE tenant=? AND id=?',(actor.tenant_id,ident)).fetchone()
+            if old and old['worker_id']!=worker.id:raise DomainError('job_already_owned')
+            if not old:
+                conn.execute('INSERT INTO workflow_jobs VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    (actor.tenant_id,ident,worker.id,payload['deal_id'],'intake',canonical(data.model_dump(mode='json')),
+                     'queued',proposal_id,None,self.sales.clock().isoformat(),None,None,None))
+                self.sales.audit(conn,actor,'workflow.handoff',ident)
+        return self.get(actor,ident)
+
     def get(self,actor,ident):
         with self.sales.store.connect() as conn:
             row=conn.execute('SELECT * FROM workflow_jobs WHERE tenant=? AND id=?',(actor.tenant_id,ident)).fetchone()

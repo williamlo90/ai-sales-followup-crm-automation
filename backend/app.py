@@ -161,6 +161,14 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     def enqueue(data: EnqueueInput,current: Actor=Depends(actor)):
         return workflows.enqueue(current,data)
 
+    @app.post('/v1/proposals/{ident}/handoff/{kind}',status_code=201)
+    def handoff(ident: str,kind: Literal['crm','email'],current: Actor=Depends(actor)):
+        proposal=service.get(current,ident)
+        workers={a.id:a for a in identities.values() if a.role=='worker' and a.tenant_id==current.tenant_id
+                 and proposal['payload']['deal_id'] in a.deal_ids}
+        if len(workers)!=1:raise DomainError('workflow_worker_configuration_required',503)
+        return workflows.handoff(current,ident,next(iter(workers.values())),kind)
+
     @app.get('/v1/workflows/jobs')
     def workflow_list(current: Actor=Depends(actor)):
         return {'items':workflows.list(current)}
