@@ -1,0 +1,294 @@
+{
+  "scope": "Offline replay of previously observed OpenAI responses through current scorer/core; no new inference, semantic review or human session.",
+  "code_revision": "e7d54624b3243ee1913c5dbb0e8bb25e1e945399",
+  "total": 40,
+  "unchanged": 40,
+  "cases": [
+    {
+      "case_id": "dev-v2-01",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "8148a93179718b97bb50ba4ac4c186762f2ad8378a85e8bd03e4c3f52c4b113c"
+    },
+    {
+      "case_id": "dev-v2-02",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "a7fc9a4cc699b9de7e457c273dc158674cdfad967e8ea959ae6a1e825e9bdd20"
+    },
+    {
+      "case_id": "dev-v2-03",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "e06b8089feaf37144689e9f7d555d10ae9a1e5be64c7664f36ce70582c83a94f"
+    },
+    {
+      "case_id": "dev-v2-04",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "77b31191e8ff7b7720a3c13a4e104d34fcb7e18ba99585d8fcf2eba882b13e7d"
+    },
+    {
+      "case_id": "dev-v2-05",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "5df28edc05a1ccca193f9bbaff214982064144b6c94469f9d9800434ee39f6fa"
+    },
+    {
+      "case_id": "dev-v2-06",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "69e9a792d70e131bbc0da85a5c21e11f75ed97489e3a514c1bc60d72b2247466"
+    },
+    {
+      "case_id": "dev-v2-07",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "5efa4f3447a190d2aacce45675ef0a73816d32f0a6abaabb486327a5d64b7969"
+    },
+    {
+      "case_id": "dev-v2-08",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "7aa9e3fb5cf1d0430096d90e6630f5858f88f9cd3696a307d2f3ea1c1858f3cb"
+    },
+    {
+      "case_id": "dev-v2-09",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "7ba973afddf51621a58ac9de752d41bbd14319f2e695c40352810466da5af428"
+    },
+    {
+      "case_id": "dev-v2-10",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "5d793c96034f58639292a7e7371501041198d21257e088d5f6ce0cd429fd006e"
+    },
+    {
+      "case_id": "dev-v2-11",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "a7274cc94ba19ee8e4a75813d9d722c9e947550ba3c32aa4f597102b7b4c89d7"
+    },
+    {
+      "case_id": "dev-v2-12",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "b2f5671dab7563807f856300fe854d3ae631692bda786ff0237808d20126e576"
+    },
+    {
+      "case_id": "dev-v2-13",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "c57ca5d93258a7b75905a3fc925f7cb41b6209bca767fab2e54c055982eae1d9"
+    },
+    {
+      "case_id": "dev-v2-14",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "49f2743a34e2735f532a1d63d97cb87c86abdac37f740bfa34bbcdda74adaf59"
+    },
+    {
+      "case_id": "dev-v2-15",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "830809abc1084eefc4e314f6b9e715f754448c232bb6844160177f561897b7c0"
+    },
+    {
+      "case_id": "dev-v2-16",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "0dce726e3451e92db9a29a7d67c875a6e5c59681459f91a5a172858ca1aa22b3"
+    },
+    {
+      "case_id": "dev-v2-17",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "9123d49bad98ad00fcfd9c302565e79f487ade0e8f41b300d18192da8d899e46"
+    },
+    {
+      "case_id": "dev-v2-18",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "303024b7127f2a7f2d7fa7602609735dbeae09025d29aa971b6a08325161f307"
+    },
+    {
+      "case_id": "dev-v2-19",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "55ca318bed707c3b498b5e751bba29e35dbea6732568f053c3186446f9f54005"
+    },
+    {
+      "case_id": "dev-v2-20",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "4caa1dd3cf7dfe4f42001146856d227cb6d6707da5ed2fbc9cc2e3c035c87f24"
+    },
+    {
+      "case_id": "held-v2-01",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "d259c887669e53fcc893351e410b8fec8c1c5ae7ba476b326aafab5c2bae15fb"
+    },
+    {
+      "case_id": "held-v2-02",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "a51c159adec70544184f8a39e0fdeb73276c78cb72c69a4a00418a5d0e32bc0a"
+    },
+    {
+      "case_id": "held-v2-03",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "ce74c884150d867099d866e9678332db0719b2e21f415f1cf7ae5b489905b64f"
+    },
+    {
+      "case_id": "held-v2-04",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "430e5bc20c20989db9ce147ca8e697341215e56b6e96c01ced276628422f0d34"
+    },
+    {
+      "case_id": "held-v2-05",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "cbb6b46e8faa03704eb73f3eb13283193e6539db30edda41ecab795fd2215b52"
+    },
+    {
+      "case_id": "held-v2-06",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "a6195aa42ef5e217d37dbc7c3c525f675a5ce6a3f0e62db0d022755d82d6f1eb"
+    },
+    {
+      "case_id": "held-v2-07",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "240175309dc05846e14865bc937285bc9f0f7ebd6046f9b4800283a05ad7f4ae"
+    },
+    {
+      "case_id": "held-v2-08",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "69b679778469302479dae5041ffef4ae6de569dbc483d06056cf8ab7b6d961c9"
+    },
+    {
+      "case_id": "held-v2-09",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "ca9d8e1fdfe365738afffc2d889d3b7d071f0a90713651b4806a2cf120de8945"
+    },
+    {
+      "case_id": "held-v2-10",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "4eec1b0d8ed4e9a3379fb84a14c45ad0683bc88046e7d6d0fc1ee30e6bea8966"
+    },
+    {
+      "case_id": "held-v2-11",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "696d97a81ac9cdaa1c08a8d3b944d43b41aa79e2f683d9f4bef7e210f200a532"
+    },
+    {
+      "case_id": "held-v2-12",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "5d6f3a977e43c982507991c9e71699b871d5d494a0cf826fabf3fe0be02ef7e6"
+    },
+    {
+      "case_id": "held-v2-13",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "be6c647b1b3b37775beb15ab61caea6e2fd3adcd953e8bbfae7722906134aef2"
+    },
+    {
+      "case_id": "held-v2-14",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "f1235b30a2aa172574f9ac745ec8a8c671808ada53941203420b61bdda10544c"
+    },
+    {
+      "case_id": "held-v2-15",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "d3668b8fb4f5743ef5cc1cbda7dd909266c36e4c675c4ac31c3a0fbe74f8ca54"
+    },
+    {
+      "case_id": "held-v2-16",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "ede2fc084516539801e488fbb726cccfb0f96cbb009838e73ca4518dc406b20b"
+    },
+    {
+      "case_id": "held-v2-17",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "0f8b063bfe5876c1a8fb6ccbece675ef20f2146e90f954bf56f32703225453c9"
+    },
+    {
+      "case_id": "held-v2-18",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "9286fb705f0f5dd5a52718d440d3d8699a4f255116eedcfae7a12df17040949d"
+    },
+    {
+      "case_id": "held-v2-19",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "275fa52ad43d73ef1e582a48f8b1f424f26e7798f82bcd38741a401316d9bdd6"
+    },
+    {
+      "case_id": "held-v2-20",
+      "scorer_unchanged": true,
+      "core_unchanged": true,
+      "recorded_semantic_review_pass": true,
+      "raw_record_sha256": "864827104115dd5de3284fac32339b2b84365bcdcdd6eb0266c2a6a4787fc19e"
+    }
+  ],
+  "phase6_complete": false,
+  "remaining": [
+    "Claude/Grok real comparison",
+    "Observed waiting-time comparison",
+    "Final candidate audit/freeze"
+  ]
+}

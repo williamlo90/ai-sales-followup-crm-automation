@@ -1,6 +1,6 @@
 # Phase 6 evaluation protocol
 
-Status: datasets frozen; real OpenAI development evaluation in progress. Existing phase-0 acceptance thresholds remain unchanged. See EXECUTION-STATUS.md and evidence for measured results.
+Status: datasets frozen; real OpenAI development and held-out evaluation completed. Local profile evaluated and rejected. First human worksheet session recorded; live waiting and Claude/Grok comparison remain pending. Existing phase-0 acceptance thresholds remain unchanged. See COMPLETION-AUDIT.md for gate status.
 
 ## Dataset and freeze
 

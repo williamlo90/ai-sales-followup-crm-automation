@@ -18,4 +18,8 @@ Status: incomplete. Native/OpenAI evidence is available; the full goal is not ac
 
 Human-session scorer validates exact fixture hash, task order/mode, initial answers, event transitions, timestamps, interval/count consistency and answer replay. It reports correctness and raw work/edit totals; data consistency cannot prove human authorship. It does not replace missing session data or report ROI.
 
+Current-core replay: scripts/replay_phase6.py reproduced the frozen scorer result and complete core pipeline for all40 accepted OpenAI development/held-out responses, ignoring only newly generated proposal UUIDs. Evidence: docs/evidence/phase-6-offline-replay.json. Each response matches its published semantic-review hash; each local record has a retained raw hash. Six tests reject response, payload, score, count and dataset drift. This is offline regression evidence, not new model evaluation or independent semantic review.
+
+Live local worksheet instrumentation and receipt validation are ready (MANUAL-SESSION.md), with eight-task automated browser QA. No follow-up human result exists yet. The first session remains valid for its cached-assistance scope; do not replace it with automated measurements.
+
 Stop conditions remain: no Docker/build/pull/container, connected mutation, email, cloud or Phase7 in this goal. Other-model access and actual operator observation are external inputs. Preserve remaining scope; do not reinterpret this audit as completion approval.
