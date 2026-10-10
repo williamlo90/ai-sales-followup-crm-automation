@@ -13,6 +13,9 @@ test('reviewed extraction uses real commitment and proposal endpoints',async({pa
   await page.getByRole('checkbox',{name:'I checked the owner'}).check();await prepare.click();
   await expect(page.getByText('Proposal prepared in the review queue.',{exact:false})).toBeVisible();
   await expect(page.getByRole('button',{name:'Proposal prepared',exact:true})).toBeDisabled();
+  await page.getByRole('navigation',{name:'Proposals'}).getByRole('button').first().click();
+  await page.getByRole('button',{name:'Queue CRM activity'}).click();
+  await expect(page.getByText('Queued CRM activity for the configured worker.',{exact:false})).toBeVisible();
 });
 
 test('ambiguous extraction cannot be recorded',async({page})=>{

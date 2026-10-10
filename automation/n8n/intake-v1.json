@@ -173,7 +173,7 @@
   "settings": {
     "executionOrder": "v1",
     "timezone": "Asia/Jakarta",
-    "executionTimeout": 180,
+    "executionTimeout": 240,
     "saveDataSuccessExecution": "none",
     "saveDataErrorExecution": "all"
   },

@@ -24,7 +24,7 @@ def workflow(journey):
     return {'name':f'Sales {journey} v1','active':False,'nodes':nodes,'connections':{
         'Schedule':{'main':[[edge('Advance shared workflow')]]},'Advance shared workflow':{'main':[[edge('Backend requests polling')]]},
         'Backend requests polling':{'main':[[edge('Wait for review')],[]]},'Wait for review':{'main':[[edge('Poll shared workflow')]]}},
-        'settings':{'executionOrder':'v1','timezone':'Asia/Jakarta','executionTimeout':180,'saveDataSuccessExecution':'none','saveDataErrorExecution':'all'},
+        'settings':{'executionOrder':'v1','timezone':'Asia/Jakarta','executionTimeout':240,'saveDataSuccessExecution':'none','saveDataErrorExecution':'all'},
         'pinData':{},'versionId':str(uuid5(NAMESPACE_URL,'sales-workflow-v1-'+journey)),
         'meta':{'templateCredsSetupCompleted':False}}
 

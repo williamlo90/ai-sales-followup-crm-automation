@@ -4,6 +4,7 @@ import './style.css';
 import { WorkflowQueue } from './WorkflowQueue';
 import { IntakeReview } from './IntakeReview';
 import { ProposalHandoff } from './ProposalHandoff';
+import { ConnectorBinding } from './ConnectorBinding';
 
 type Actor = {id:string;role:string;tenant_id:string;deal_ids:string[]};
 type Operation = {id:string;kind:'crm'|'email';status:string;recovery:string|null};
@@ -48,7 +49,7 @@ function App(){
       <section><h3>Proposed CRM activity</h3><dl><dt>Action</dt><dd>Create a follow-up activity</dd><dt>Summary</dt><dd>{selected.payload.summary}</dd><dt>Due</dt><dd>{selected.payload.due_at}</dd></dl><Approval kind="crm" proposal={selected} actor={actor} busy={busy} onApprove={()=>approve('crm')}/></section>
       <section><h3>Follow-up draft</h3><p className="recipient">To: {selected.payload.recipient}</p><div className="draft">{selected.payload.draft}</div><p className="muted">Review factual accuracy against the source. Approval records consent; sending is currently disabled.</p><Approval kind="email" proposal={selected} actor={actor} busy={busy} onApprove={()=>approve('email')}/></section>
       <section><h3>Action outcomes</h3>{operations.length===0?<p className="muted">No operation has been recorded for this proposal.</p>:operations.map(op=><div key={op.id} className={op.recovery?'alert':'notice'}><strong>{op.kind==='crm'?'CRM activity':'Email'} · {op.status==='unknown'||op.status==='dispatched'?'Outcome unknown':op.status==='verified'?'CRM result verified':op.status==='accepted'?'Accepted / sent observed':op.status}</strong><p>{op.recovery?'Reconcile the recorded operation before attempting another action. A lost response may hide a completed action.':op.kind==='email'?'Acceptance or Sent Items does not establish delivery or read status.':'The recorded outcome is available for review.'}</p><small>Operation {op.id}</small></div>)}</section>
-      <ProposalHandoff key={selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><details><summary>Proposal reference</summary><p className="reference">{selected.id}<br/>Payload: {selected.payload_hash}</p></details></>}</article></div>}
+      <ConnectorBinding key={"binding-"+selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><ProposalHandoff key={selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><details><summary>Proposal reference</summary><p className="reference">{selected.id}<br/>Payload: {selected.payload_hash}</p></details></>}</article></div>}
     {actor?.role==='operator'&&<IntakeReview token={token} onPrepared={async()=>{await refresh();}}/>}
     {actor&&<WorkflowQueue token={token} role={actor.role}/>}
     <footer className="footnote">Local review environment · External CRM changes and email delivery are not enabled.</footer></main></div>;

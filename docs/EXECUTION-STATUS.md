@@ -122,3 +122,14 @@ Remaining Phase 5: explicit intake scheduler handoff and connector preparation/b
 Implemented proposer-only handoff of commitment-based proposals to the unique configured scoped worker, preserving proposal ID, approvals and independent CRM/email job identities. The API fails closed when worker configuration is missing/ambiguous. Local transaction checks freshness/owner/scope and records an audit event. UI exposes separate queue actions without executing or approving.
 
 Validation: seven new handoff tests passed; TypeScript/Vite build passed. Full regression and browser handoff coverage remain to run before Phase 5 gate closure. Remaining goal work: Odoo preparation/binding UI, workflow/export verification and requirement-by-requirement completion audit. Automation stays PAUSED; goal active. No external calls or connected effects.
+
+
+## Goal checkpoint — connector binding workspace (2026-10-10)
+
+Added operator binding form and scoped saved-binding display, including exact remote activity preview, identity/proposal/approval references, immutable result and explicit connector-not-configured failures. Preparation instructions refer to the existing #2 workspace; no remote creation or approval is performed by this UI. Native app still has no connector configured.
+
+Validation: full Python suite 214 passed (existing Starlette deprecation warning); TypeScript/Vite build passed; six Edge scenarios passed. Intake browser test now records/prepares/hands off against the actual local backend; only model extraction is mocked. Binding browser test checks submitted fields and disabled-connector error; adapter validation/read-only persistence is covered by Python boundary doubles. Separate browser tenants avoid fixture interference.
+
+Both generated n8n exports now allow 240 seconds for two 65-second HTTP requests and a 60-second wait. Generator parity and reference traversal passed within the full suite. Updated workflow setup documentation covers explicit operator handoff and unique worker configuration.
+
+Goal remains active pending final audit: preparation UX must provide a concrete field mapping/diff (current binding form requires copying the approved connector preview); strengthen positive binding browser coverage and configuration failure tests; verify Phase 5 requirements against current artifacts. PostgreSQL runtime/connected n8n/Odoo acceptance remains unproven, not inferred from local tests. Automation PAUSED. No connected writes, model spend, email or Docker.
