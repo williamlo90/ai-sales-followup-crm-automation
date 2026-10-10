@@ -1,0 +1,171 @@
+{
+  "session_id": "8c9811c0-7df0-4a40-b22b-00286816743c",
+  "dataset_sha256": "d1e6699e1f51e8607b66a1a7c1b93993ca46175dba1710994bd14b87e8fe1bc2",
+  "groups": {
+    "manual": {
+      "n": 4,
+      "correct": 3,
+      "active_seconds": 205.2980000001192,
+      "field_changes": 8,
+      "submit_touches": 4
+    },
+    "assisted": {
+      "n": 4,
+      "correct": 4,
+      "active_seconds": 125.2705000001192,
+      "field_changes": 0,
+      "submit_touches": 4
+    }
+  },
+  "cases": [
+    {
+      "case_id": "manual-p1-1",
+      "pair": 1,
+      "mode": "manual",
+      "correct": true,
+      "active_seconds": 141.81970000004767,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    },
+    {
+      "case_id": "manual-p1-2",
+      "pair": 1,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 25.03939999997616,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    },
+    {
+      "case_id": "manual-p2-1",
+      "pair": 2,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 16.66360000002384,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    },
+    {
+      "case_id": "manual-p2-2",
+      "pair": 2,
+      "mode": "manual",
+      "correct": true,
+      "active_seconds": 13.783100000023842,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    },
+    {
+      "case_id": "manual-p3-1",
+      "pair": 3,
+      "mode": "manual",
+      "correct": false,
+      "active_seconds": 34.28779999995232,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    },
+    {
+      "case_id": "manual-p3-2",
+      "pair": 3,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 78.60760000002384,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    },
+    {
+      "case_id": "manual-p4-1",
+      "pair": 4,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 4.9599000000953675,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    },
+    {
+      "case_id": "manual-p4-2",
+      "pair": 4,
+      "mode": "manual",
+      "correct": true,
+      "active_seconds": 15.407400000095368,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false
+    }
+  ],
+  "scope": "Synthetic due-follow-up review worksheet; cached deterministic assistance, not live CRM or model latency.",
+  "limitations": [
+    "Operator completion is user-attested; export passed hash/order/event/time/answer consistency checks.",
+    "Single operator, four pairs; learning/carry-over possible. Cached deterministic assistance, no live AI/CRM latency or ROI claim.",
+    "Field edits are not necessarily corrections. Active interval includes reading and page overhead; system wait unmeasured."
+  ],
+  "source_sha256": "038adb3f8fb92f5e531d2c83240764014c777de340f7e9dfe6a31a57fc751677",
+  "operator_attestation": "User stated the manual session was completed; matching exported file retrieved from Downloads.",
+  "source_local_file": "local/phase-6/sales-manual-session-8c9811c0-7df0-4a40-b22b-00286816743c.json",
+  "pairs": [
+    {
+      "pair": 1,
+      "manual_seconds": 141.82,
+      "assisted_seconds": 25.039,
+      "manual_correct": true,
+      "assisted_correct": true
+    },
+    {
+      "pair": 2,
+      "manual_seconds": 13.783,
+      "assisted_seconds": 16.664,
+      "manual_correct": true,
+      "assisted_correct": true
+    },
+    {
+      "pair": 3,
+      "manual_seconds": 34.288,
+      "assisted_seconds": 78.608,
+      "manual_correct": false,
+      "assisted_correct": true
+    },
+    {
+      "pair": 4,
+      "manual_seconds": 15.407,
+      "assisted_seconds": 4.96,
+      "manual_correct": true,
+      "assisted_correct": true
+    }
+  ],
+  "incorrect_answers": [
+    {
+      "case_id": "manual-p3-1",
+      "answer": {
+        "eligible": true,
+        "reason": "not_due"
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "already_contacted"
+      }
+    }
+  ],
+  "assisted_faster_pairs": 2,
+  "system_wait_seconds": null,
+  "correction_summary": {
+    "assisted_suggestions_corrected": 0,
+    "manual_initial_field_entries": 8,
+    "manual_final_errors": 1,
+    "post_submission_correction_time": "not measured"
+  },
+  "interpretation": "Observed synthetic due-review worksheet, one operator and four pairs. Total active time lower with cached deterministic assistance; per-pair speed advantage not consistent. No end-to-end CRM/AI waiting-time or ROI claim."
+}

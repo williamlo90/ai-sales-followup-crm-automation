@@ -1,6 +1,6 @@
 # Sesi manual vs assisted
 
-Status: paket siap, belum ada pengamatan manusia atau hasil manfaat. Buka local/phase-6/manual-review.html di browser. Halaman mandiri tanpa server, API, email atau perubahan CRM.
+Status: satu sesi manusia selesai dan tervalidasi pada2026-10-10; bukti docs/evidence/phase-6-manual-comparison.json. Manual3/4 benar,205.298s aktif; assisted4/4 benar,125.2705s aktif. Scope worksheet/cached assistance; belum mengukur waktu tunggu sistem live. Buka local/phase-6/manual-review.html di browser. Halaman mandiri tanpa server, API, email atau perubahan CRM.
 
 1. Baca aturan pada halaman sebelum mulai. Kerjakan sendiri tanpa bantuan AI atau membuka label fixture.
 2. Klik Mulai tugas. Tinjau data dan isi keputusan beserta alasan. Pada mode assisted, periksa saran core yang sudah terisi; koreksi bila perlu.

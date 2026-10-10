@@ -31,6 +31,6 @@ Every result stores dataset hash/split, code revision, provider/model snapshot, 
 
 ## Manual comparison and workload
 
-Same frozen task distribution; one operator, counterbalanced manual/assisted order. Record correctness, edits, touches, active seconds and waiting seconds separately with observed timestamps. Do not synthesize manual timing or infer customer ROI. No manual session is recorded yet.
+Same frozen task distribution; one operator, counterbalanced manual/assisted order. Record correctness, edits, touches, active seconds and waiting seconds separately with observed timestamps. Do not synthesize manual timing or infer customer ROI. One user-attested four-pair worksheet session is now recorded in docs/evidence/phase-6-manual-comparison.json. Cached assistance means live system wait remains unmeasured; do not combine separate API timing with operator timing as if paired.
 
 Native domain workload target remains p95 <=500ms over 100 declared operations. Run separately from model calls, publish machine, scenario mix, sample count and error rate. No n8n/connected latency claim from this harness. Freeze candidate only after declared targets pass and gaps are explicit; no Phase 7 execution here.
