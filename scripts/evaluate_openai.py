@@ -13,12 +13,12 @@ from backend.evaluation_budget import EvaluationBudget
 from backend.evaluation_scoring import score_extraction
 
 MODEL='gpt-4.1-mini-2025-04-14'
-RUNNER_VERSION='evaluation-3-extract-v2'
+RUNNER_VERSION='evaluation-5-baseline-v3'
 PRICE_SOURCE='https://developers.openai.com/api/docs/models/gpt-4.1-mini'
 PRICE_CHECKED='2026-10-10'
 PROFILES={
     'baseline': {'model':MODEL,'input_rate':0.4,'output_rate':1.6,'reasoning':None,'version':RUNNER_VERSION,'price_source':PRICE_SOURCE},
-    'luna-low': {'model':'gpt-5.6-luna','input_rate':0.25,'output_rate':1.2,'reasoning':'low','version':'evaluation-4-luna-low','price_source':'https://developers.openai.com/api/docs/models/gpt-5.6-luna'},
+    'luna-low': {'model':'gpt-5.6-luna','input_rate':0.25,'output_rate':1.2,'reasoning':'low','version':'evaluation-5-luna-low-v3','price_source':'https://developers.openai.com/api/docs/models/gpt-5.6-luna'},
 }
 
 
