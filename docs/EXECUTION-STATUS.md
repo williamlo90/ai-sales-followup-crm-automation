@@ -187,3 +187,16 @@ Implemented scripts/evaluate_openai.py using the existing adapter and persistent
 One authorized actual OpenAI pilot dev-v2-01 passed automated extraction checks and agent source inspection. 547 tokens, 4552.32ms, estimated USD0.0003748 (ledger rounds to 375 microdollars); USD0.010614 reservation retained. Evidence: docs/evidence/phase-6-openai-pilot.md. Old canary untouched; no connected write or email. Claude/Grok and local-model access remain pending.
 
 Next: complete label/semantic coverage audit, full domain/proposal/draft scoring and frozen held-out evaluation; native workload and observed manual comparison still required. Goal active, automation PAUSED. No broad quality gate or default-provider decision from N=1.
+
+
+## Phase 6 checkpoint - frozen labels, real-core pipeline and native workload
+
+Frozen version 2.0 synthetic dataset: 20 development plus 20 held-out disjoint account/thread families, exact file/scorer hashes in docs/phase-6/dataset-freeze.json. Label reviewer is explicitly the implementation agent, not an independent human annotator; shared scenario taxonomy is disclosed. Field labels, abstention, proposal counts/recipient and draft review rule are fixed before held-out use. Pilot from the earlier draft remains separate.
+
+Added backend/evaluation_pipeline.py invoking actual SalesService/Store/match/merge/preparation with isolated local state, preserving history and rejecting unsupported evidence. Four new tests passed; 25 focused evaluation tests passed. Runner now enforces frozen file/scorer hashes and captures actual core proposals/drafts without external effects.
+
+Measured native workload: scripts/native_workload.py, 100 calls (20 each prepare/get/context/match/due), concurrency one, temporary SQLite, Python 3.13.6 Windows. Zero errors; p50 0.498ms, p90 3.132ms, p95 3.267ms, max 5.702ms; declared 500ms p95 target met for this workload only. Evidence docs/evidence/phase-6-native-workload.json; individual samples ignored/local. No HTTP/model/PostgreSQL/n8n/platform performance inference.
+
+Ran three additional real OpenAI development cases after freeze: reschedule dev-v2-03, cancellation dev-v2-19, ambiguity dev-v2-16. All automated extraction checks passed; actual core produced one revised proposal, no cancelled proposal, and ambiguous linkage review respectively, with zero approvals/operations. Agent inspected response and generated draft against source/history. Four total Phase 6 API calls including earlier pilot; estimated cumulative usage cost rounded USD0.001474, conservative reserved USD0.042805, reservable balance USD0.957195. No held-out API calls yet.
+
+Next: run remaining frozen development then held-out profiles, aggregate field and semantic review results; manual comparison and Claude/Grok/local evaluation still require external inputs. Goal active, heartbeat PAUSED. No connected effects or Phase 7 execution.
