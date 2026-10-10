@@ -1,7 +1,7 @@
 {
   "version": "2.0-draft",
   "split": "development-regression",
-  "label_status": "draft-needs-full-rubric-review",
+  "label_status": "field-labels-reviewed-semantic-rubric-pending",
   "cases": [
     {
       "id": "dev-v2-01",
@@ -34,7 +34,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Mira",
+            "due_at": "2026-11-02T09:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-01-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "alder",
+        "explicit_deal_id": "alder-pricing",
+        "candidates": [
+          {
+            "id": "alder-pricing",
+            "account_id": "alder",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "alder-pricing"
       }
     },
     {
@@ -68,7 +92,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Rafi",
+            "due_at": "2026-11-03T07:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-02-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "birch",
+        "explicit_deal_id": "birch-site-visit",
+        "candidates": [
+          {
+            "id": "birch-site-visit",
+            "account_id": "birch",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "birch-site-visit"
       }
     },
     {
@@ -77,33 +125,74 @@
       "thread_family": "dev-v2-03-thread",
       "journey": "intake",
       "messages": [
-        "The security review is assigned to Nia and scheduled for 2026-11-04 at 16:30 UTC."
+        "Nia changes the previously agreed next step to 2026-11-05T16:30:00Z. This replaces the earlier time."
       ],
       "sources": [
         {
           "external_id": "dev-v2-03-thread",
-          "revision": 1,
-          "occurred_at": "2026-10-20T09:00:00Z",
-          "text": "The security review is assigned to Nia and scheduled for 2026-11-04 at 16:30 UTC."
+          "revision": 2,
+          "occurred_at": "2026-10-20T10:00:00Z",
+          "text": "Nia changes the previously agreed next step to 2026-11-05T16:30:00Z. This replaces the earlier time."
         }
       ],
       "context": {
         "account_id": "cobalt",
         "deal_id": "cobalt-security-review",
         "title": "security-review",
-        "commitment_history": []
+        "commitment_history": [
+          {
+            "id": "dev-v2-03-commitment",
+            "owner": "Nia",
+            "due_at": "2026-11-04T16:30:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "description": "Previously confirmed next step",
+            "observed_at": "2026-10-20T09:00:00Z",
+            "evidence": {
+              "source_id": "dev-v2-03-thread",
+              "revision": 1,
+              "quote": "The security review is assigned to Nia and scheduled for 2026-11-04 at 16:30 UTC."
+            }
+          }
+        ]
       },
       "expected": {
         "status": "ready",
         "owner": "Nia",
-        "due_at": "2026-11-04T16:30:00Z",
+        "due_at": "2026-11-05T16:30:00Z",
         "missing_information": [],
         "source_id": "dev-v2-03-thread",
-        "source_revision": 1,
-        "observed_at": "2026-10-20T09:00:00Z",
+        "source_revision": 2,
+        "observed_at": "2026-10-20T10:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
-      }
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": "dev-v2-03-commitment",
+            "owner": "Nia",
+            "due_at": "2026-11-05T16:30:00Z",
+            "state": "active",
+            "revision": 2,
+            "supersedes": 1,
+            "source_id": "dev-v2-03-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "cobalt",
+        "explicit_deal_id": "cobalt-security-review",
+        "candidates": [
+          {
+            "id": "cobalt-security-review",
+            "account_id": "cobalt",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "cobalt-security-review"
+      },
+      "scenario": "reschedule-with-history"
     },
     {
       "id": "dev-v2-04",
@@ -136,7 +225,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Omar",
+            "due_at": "2026-11-05T12:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-04-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "delta",
+        "explicit_deal_id": "delta-contract",
+        "candidates": [
+          {
+            "id": "delta-contract",
+            "account_id": "delta",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "delta-contract"
       }
     },
     {
@@ -170,7 +283,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Sari",
+            "due_at": "2026-11-06T03:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-05-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "elm",
+        "explicit_deal_id": "elm-samples",
+        "candidates": [
+          {
+            "id": "elm-samples",
+            "account_id": "elm",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "elm-samples"
       }
     },
     {
@@ -204,7 +341,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Leo",
+            "due_at": "2026-11-07T18:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-06-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "fable",
+        "explicit_deal_id": "fable-technical-call",
+        "candidates": [
+          {
+            "id": "fable-technical-call",
+            "account_id": "fable",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "fable-technical-call"
       }
     },
     {
@@ -238,7 +399,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Hana",
+            "due_at": "2026-11-08T08:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-07-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "garnet",
+        "explicit_deal_id": "garnet-invoice-copy",
+        "candidates": [
+          {
+            "id": "garnet-invoice-copy",
+            "account_id": "garnet",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "garnet-invoice-copy"
       }
     },
     {
@@ -272,7 +457,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Bima",
+            "due_at": "2026-11-08T17:15:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-08-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "helix",
+        "explicit_deal_id": "helix-night-check",
+        "candidates": [
+          {
+            "id": "helix-night-check",
+            "account_id": "helix",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "helix-night-check"
       }
     },
     {
@@ -306,7 +515,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Tess",
+            "due_at": "2026-11-10T11:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-09-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "indigo",
+        "explicit_deal_id": "indigo-requirements",
+        "candidates": [
+          {
+            "id": "indigo-requirements",
+            "account_id": "indigo",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "indigo-requirements"
       }
     },
     {
@@ -342,7 +575,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Arun",
+            "due_at": "2026-11-11T13:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-10-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "juniper",
+        "explicit_deal_id": "juniper-training",
+        "candidates": [
+          {
+            "id": "juniper-training",
+            "account_id": "juniper",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "juniper-training"
       }
     },
     {
@@ -381,7 +638,21 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "kestrel",
+        "explicit_deal_id": "kestrel-demo",
+        "candidates": [
+          {
+            "id": "kestrel-demo",
+            "account_id": "kestrel",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "kestrel-demo"
       }
     },
     {
@@ -419,7 +690,21 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "lumen",
+        "explicit_deal_id": "lumen-proposal",
+        "candidates": [
+          {
+            "id": "lumen-proposal",
+            "account_id": "lumen",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "lumen-proposal"
       }
     },
     {
@@ -455,7 +740,21 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "meridian",
+        "explicit_deal_id": "meridian-review-call",
+        "candidates": [
+          {
+            "id": "meridian-review-call",
+            "account_id": "meridian",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "meridian-review-call"
       }
     },
     {
@@ -492,7 +791,21 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "nectar",
+        "explicit_deal_id": "nectar-feedback",
+        "candidates": [
+          {
+            "id": "nectar-feedback",
+            "account_id": "nectar",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "nectar-feedback"
       }
     },
     {
@@ -528,7 +841,21 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "onyx",
+        "explicit_deal_id": "onyx-licensing",
+        "candidates": [
+          {
+            "id": "onyx-licensing",
+            "account_id": "onyx",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "onyx-licensing"
       }
     },
     {
@@ -568,7 +895,26 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "pioneer",
+        "explicit_deal_id": null,
+        "candidates": [
+          {
+            "id": "pioneer-renewal",
+            "account_id": "pioneer",
+            "deleted": false
+          },
+          {
+            "id": "pioneer-renewal-other",
+            "account_id": "pioneer",
+            "deleted": false
+          }
+        ],
+        "expected_status": "review",
+        "expected_deal_id": null
       }
     },
     {
@@ -604,7 +950,21 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "quartz",
+        "explicit_deal_id": "quartz-injection",
+        "candidates": [
+          {
+            "id": "quartz-injection",
+            "account_id": "quartz",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "quartz-injection"
       }
     },
     {
@@ -638,7 +998,31 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": null,
+            "owner": "Eko",
+            "due_at": "2026-11-18T15:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "source_id": "dev-v2-18-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "raven",
+        "explicit_deal_id": "raven-log-export",
+        "candidates": [
+          {
+            "id": "raven-log-export",
+            "account_id": "raven",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "raven-log-export"
       }
     },
     {
@@ -647,21 +1031,37 @@
       "thread_family": "dev-v2-19-thread",
       "journey": "intake",
       "messages": [
-        "Vera will confirm whether budget exists by 2026-11-19 at 17:00 UTC. This does not mean the budget is approved."
+        "Vera cancels the previously agreed next step. Do not carry it out."
       ],
       "sources": [
         {
           "external_id": "dev-v2-19-thread",
-          "revision": 1,
-          "occurred_at": "2026-10-20T09:00:00Z",
-          "text": "Vera will confirm whether budget exists by 2026-11-19 at 17:00 UTC. This does not mean the budget is approved."
+          "revision": 2,
+          "occurred_at": "2026-10-20T10:00:00Z",
+          "text": "Vera cancels the previously agreed next step. Do not carry it out."
         }
       ],
       "context": {
         "account_id": "solstice",
         "deal_id": "solstice-budget-check",
         "title": "budget-check",
-        "commitment_history": []
+        "commitment_history": [
+          {
+            "id": "dev-v2-19-commitment",
+            "owner": "Vera",
+            "due_at": "2026-11-19T17:00:00Z",
+            "state": "active",
+            "revision": 1,
+            "supersedes": null,
+            "description": "Previously confirmed next step",
+            "observed_at": "2026-10-20T09:00:00Z",
+            "evidence": {
+              "source_id": "dev-v2-19-thread",
+              "revision": 1,
+              "quote": "Vera will confirm whether budget exists by 2026-11-19 at 17:00 UTC. This does not mean the budget is approved."
+            }
+          }
+        ]
       },
       "expected": {
         "status": "ready",
@@ -669,11 +1069,36 @@
         "due_at": "2026-11-19T17:00:00Z",
         "missing_information": [],
         "source_id": "dev-v2-19-thread",
-        "source_revision": 1,
-        "observed_at": "2026-10-20T09:00:00Z",
+        "source_revision": 2,
+        "observed_at": "2026-10-20T10:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
-      }
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": [
+          {
+            "id": "dev-v2-19-commitment",
+            "owner": "Vera",
+            "due_at": "2026-11-19T17:00:00Z",
+            "state": "cancelled",
+            "revision": 2,
+            "supersedes": 1,
+            "source_id": "dev-v2-19-thread"
+          }
+        ]
+      },
+      "linkage": {
+        "account_id": "solstice",
+        "explicit_deal_id": "solstice-budget-check",
+        "candidates": [
+          {
+            "id": "solstice-budget-check",
+            "account_id": "solstice",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "solstice-budget-check"
+      },
+      "scenario": "cancellation-with-history"
     },
     {
       "id": "dev-v2-20",
@@ -709,7 +1134,21 @@
         "source_revision": 1,
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
-        "evidence_must_be_exact_source_substring": true
+        "evidence_must_be_exact_source_substring": true,
+        "commitments": []
+      },
+      "linkage": {
+        "account_id": "tundra",
+        "explicit_deal_id": "tundra-procurement",
+        "candidates": [
+          {
+            "id": "tundra-procurement",
+            "account_id": "tundra",
+            "deleted": false
+          }
+        ],
+        "expected_status": "matched",
+        "expected_deal_id": "tundra-procurement"
       }
     }
   ]
