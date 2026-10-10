@@ -33,3 +33,13 @@ def test_rejects_insufficient_families_missing_labels_and_duplicate_ids():
     assert any('missing expected' in i for i in result['issues'])
     assert any('duplicate' in i for i in result['issues'])
     assert any('20 account families' in i for i in result['issues'])
+
+
+def test_thread_lineage_and_model_input_mismatch_are_rejected():
+    dev,held=datasets()
+    dev['cases'][0]['thread_family']='shared'
+    held['cases'][0]['thread_family']='SHARED'
+    held['cases'][0]['sources']=[{'text':'different from scored source'}]
+    result=audit(dev,held)
+    assert 'thread families overlap across splits' in result['issues']
+    assert any('model inputs' in issue for issue in result['issues'])

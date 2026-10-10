@@ -167,3 +167,12 @@ Added backend/evaluation_budget.py: immutable integer-microdollar cap, transacti
 Authored fixtures/evaluation/development-v2.json with 20 synthetic development families covering diverse tasks, caveats, incomplete commitments, timezone rollover and injection. Labels are explicitly draft, not frozen; revision/cancellation/multi-message coverage and full field-level expected outputs still need expansion/review. Original eight regression families remain unchanged. No held-out cases promoted from development.
 
 Validation: 12 focused budget/dataset tests passed; existing Starlette warning only. Budget stays USD1 additional Phase 6; no spend. Next: complete family coverage and labels, author 20 separate held-out families, implement scoring/runner, verify current prices before the development pilot. Claude/Grok/native access and observed manual session remain user-dependent; question queued while independent work continues. Goal active, heartbeat PAUSED.
+
+
+## Phase 6 checkpoint - local inventory and held-out candidates
+
+User confirms OpenAI is the only hosted access available. Windows PATH, common directories, uninstall registry, processes and local ports showed no matching model runtime; bounded Ubuntu WSL shell inspection also found no common Ollama/llama executable or model manifest. No model/server/container/download started. Inventory limitations recorded in phase-6/GAP-AUDIT.md.
+
+Authored twenty distinct held-out candidate families in fixtures/evaluation/heldout-v2.json. Combined preflight reports 20 development and 20 held-out families, no lexical/account/thread overlap and matching model/source text. Semantic label review, multi-message revision/cancellation coverage and richer expected outputs remain before freeze; no quality or generalization claim. Strengthened preflight lineage/input checks. Thirteen focused dataset/budget tests pass after correcting an edit-time indentation error.
+
+No paid requests or new spend. Next: complete labels/coverage and scoring runner, then OpenAI development pilot under persistent USD1 ceiling. Goal remains active; unavailable providers do not block independent work. Heartbeat remains PAUSED.
