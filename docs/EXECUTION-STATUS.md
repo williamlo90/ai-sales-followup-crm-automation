@@ -142,3 +142,10 @@ Added read-only connector preparation endpoint and before/proposed-value table f
 Validation: 218 Python tests passed; TypeScript/Vite build passed; six Edge tests passed. New cases cover read-only mapping, context changes during remote read and missing/ambiguous worker configuration. Browser binding scenario verifies failed attachment then successful immutable display using boundary mocks; actual validation remains in Python tests. Full integration is not claimed. Existing Starlette deprecation warning remains.
 
 Next: finish requirement-by-requirement Phase 5 audit, including workflow handoff ownership across renewal, connector-ready configuration boundaries, static PostgreSQL/engine deployment dependencies and reference-runner coverage. No phase gate closed yet. Goal active, automation PAUSED; no Docker/model spend/email/connected write.
+
+
+## Phase 5 native gate completed (2026-10-10)
+
+Requirement audit: docs/evidence/phase-5-acceptance.md. Intake handoff, Odoo read-only preparation/binding UI, both generated exports, reference endpoint traversal, evidence/diff/approvals/unknown recovery are implemented and contract-validated. Final checks: 220 Python tests, six Edge scenarios, TypeScript/Vite build and diff check passed. Renewed worker-owned proposals can use binding controls without weakening proposer-only authorization. Both due success/replay and workflow timeout budget now have explicit reference tests.
+
+Phase 5 checklist reflects its native gate only. PostgreSQL runtime wiring remains an earlier-phase prerequisite; connected Odoo/Graph/n8n and container acceptance remain unvalidated Phase 7 work. Normal factory has no connector/execution adapter. No Phase 6/7 work was entered, no external effect occurred. Automation remains PAUSED. Next work outside this goal: resolve earlier-phase runtime/access gaps, then Phase 6 evaluation.

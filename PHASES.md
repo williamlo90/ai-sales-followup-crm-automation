@@ -58,14 +58,16 @@ Urutan V1: **0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8**. **Phase 9 opsi
 
 ## Phase 5 — Workflow n8n siap import dan workspace
 
-- [ ] Buat dua export versioned di `automation/n8n/`: intake → prepare → approval wait → apply/verify; due follow-up → eligibility → prepare/review → apply/verify.
-- [ ] n8n memiliki trigger/jadwal/koordinasi. Python/PostgreSQL memiliki permissions, proposal, approval, idempotency dan outcome. Jangan menduplikasi business rules pada nodes.
-- [ ] Local V1 memakai authenticated outbound polling supaya tidak wajib webhook publik. Approval disimpan di backend; workflow memeriksa status dengan izin yang benar.
-- [ ] Siapkan node/version mapping, service identity, credential placeholders, timezone, checkpoints dan bounded retry; export tidak memuat secrets.
-- [ ] Periksa export/schema statis dan endpoint contracts melalui reference runner. Itu bukan bukti engine n8n; import/execute/wait/restart nyata wajib Phase 7.
-- [ ] UI menampilkan evidence, field diff, separate approvals, unknown outcomes dan operator recovery.
+- [x] Buat dua export versioned di `automation/n8n/`: intake → prepare → approval wait → apply/verify; due follow-up → eligibility → prepare/review → apply/verify.
+- [x] n8n memiliki trigger/jadwal/koordinasi. Python/PostgreSQL memiliki permissions, proposal, approval, idempotency dan outcome. Jangan menduplikasi business rules pada nodes.
+- [x] Local V1 memakai authenticated outbound polling supaya tidak wajib webhook publik. Approval disimpan di backend; workflow memeriksa status dengan izin yang benar.
+- [x] Siapkan node/version mapping, service identity, credential placeholders, timezone, checkpoints dan bounded retry; export tidak memuat secrets.
+- [x] Periksa export/schema statis dan endpoint contracts melalui reference runner. Itu bukan bukti engine n8n; import/execute/wait/restart nyata wajib Phase 7.
+- [x] UI menampilkan evidence, field diff, separate approvals, unknown outcomes dan operator recovery.
 
 **Gate:** workflow definitions/endpoints/UI siap sesi engine nyata; status workflow-designed/contract-validated, belum n8n-validated.
+
+Evidence native: [Phase 5 acceptance](docs/evidence/phase-5-acceptance.md), 2026-10-10. PostgreSQL runtime wiring (Phase 1 prerequisite) dan connected/engine acceptance tetap pending; gate ini tidak menutup fase lain.
 
 ## Phase 6 — Kualitas dan manfaat sebelum Docker
 
