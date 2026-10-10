@@ -149,3 +149,12 @@ Next: finish requirement-by-requirement Phase 5 audit, including workflow handof
 Requirement audit: docs/evidence/phase-5-acceptance.md. Intake handoff, Odoo read-only preparation/binding UI, both generated exports, reference endpoint traversal, evidence/diff/approvals/unknown recovery are implemented and contract-validated. Final checks: 220 Python tests, six Edge scenarios, TypeScript/Vite build and diff check passed. Renewed worker-owned proposals can use binding controls without weakening proposer-only authorization. Both due success/replay and workflow timeout budget now have explicit reference tests.
 
 Phase 5 checklist reflects its native gate only. PostgreSQL runtime wiring remains an earlier-phase prerequisite; connected Odoo/Graph/n8n and container acceptance remain unvalidated Phase 7 work. Normal factory has no connector/execution adapter. No Phase 6/7 work was entered, no external effect occurred. Automation remains PAUSED. Next work outside this goal: resolve earlier-phase runtime/access gaps, then Phase 6 evaluation.
+
+
+## Phase 6 started - gap audit and evaluation protocol (2026-10-10)
+
+Artifacts: docs/phase-6/GAP-AUDIT.md, EVALUATION-PROTOCOL.md, dataset-preflight.json, scripts/evaluation_dataset.py and four passing tests. Preflight verifies minimum family counts, IDs, expected outcomes, source/family cross-split overlap and deterministic dataset hash; it never claims quality or semantic independence. Actual current dataset fails readiness: eight dev families and zero held-out. No dataset freeze claimed.
+
+Read-only config check: project OpenAI key present, model ID absent, app model disabled, old canary reservation present. No key value printed. Ollama/PostgreSQL not on PATH; installation status not inferred. PostgreSQL runtime/schema mismatch and missing composition are documented with concrete next actions. User allowed discretion USD1 vs USD5; selected USD1 total additional OpenAI Phase 6 ceiling. No spend yet; persistent budget enforcement and official price verification required before paid calls.
+
+Next: author/review the complete 20+20 family dataset, implement scoring and persistent bounded runner, then run a development pilot within the cap. PostgreSQL repository wiring remains earlier-phase work; no native/connected quality gate has been closed. Automation remains PAUSED and no new goal/automation was created.

@@ -1,0 +1,17 @@
+{
+  "ready_for_label_review": false,
+  "case_counts": {
+    "development-regression": 8,
+    "held-out": 0
+  },
+  "family_counts": {
+    "development-regression": 8,
+    "held-out": 0
+  },
+  "dataset_sha256": "25d370935fcf466a8c3e5665d8be1dfdbf53f7336e3289e6bf3832a7bc1fa81d",
+  "issues": [
+    "development-regression: requires at least 20 account families",
+    "held-out: requires at least 20 account families"
+  ],
+  "quality_evaluated": false
+}
