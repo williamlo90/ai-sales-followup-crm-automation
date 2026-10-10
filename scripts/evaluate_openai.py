@@ -13,7 +13,7 @@ from backend.evaluation_budget import EvaluationBudget
 from backend.evaluation_scoring import score_extraction
 
 MODEL='gpt-4.1-mini-2025-04-14'
-RUNNER_VERSION='evaluation-2-diagnostics'
+RUNNER_VERSION='evaluation-3-extract-v2'
 PRICE_SOURCE='https://developers.openai.com/api/docs/models/gpt-4.1-mini'
 PRICE_CHECKED='2026-10-10'
 
