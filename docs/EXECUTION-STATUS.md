@@ -176,3 +176,14 @@ User confirms OpenAI is the only hosted access available. Windows PATH, common d
 Authored twenty distinct held-out candidate families in fixtures/evaluation/heldout-v2.json. Combined preflight reports 20 development and 20 held-out families, no lexical/account/thread overlap and matching model/source text. Semantic label review, multi-message revision/cancellation coverage and richer expected outputs remain before freeze; no quality or generalization claim. Strengthened preflight lineage/input checks. Thirteen focused dataset/budget tests pass after correcting an edit-time indentation error.
 
 No paid requests or new spend. Next: complete labels/coverage and scoring runner, then OpenAI development pilot under persistent USD1 ceiling. Goal remains active; unavailable providers do not block independent work. Heartbeat remains PAUSED.
+
+
+## Phase 6 checkpoint - scoring and real OpenAI pilot
+
+Added extraction scorer with exact field/revision/evidence checks and missing/error denominators. Semantic factuality remains explicitly unscored until review. Updated both 20-family draft splits with expected commitment fields, linkage and history-based reschedule/cancellation. Full semantic label/coverage review and final freeze remain pending.
+
+Implemented scripts/evaluate_openai.py using the existing adapter and persistent USD1 ledger; explicit --run only, development case selector, no retries, exclusive output, deterministic call reservation, bounded bytes/output and conservative current-price accounting. Twenty-one focused tests passed; dry run verified no call.
+
+One authorized actual OpenAI pilot dev-v2-01 passed automated extraction checks and agent source inspection. 547 tokens, 4552.32ms, estimated USD0.0003748 (ledger rounds to 375 microdollars); USD0.010614 reservation retained. Evidence: docs/evidence/phase-6-openai-pilot.md. Old canary untouched; no connected write or email. Claude/Grok and local-model access remain pending.
+
+Next: complete label/semantic coverage audit, full domain/proposal/draft scoring and frozen held-out evaluation; native workload and observed manual comparison still required. Goal active, automation PAUSED. No broad quality gate or default-provider decision from N=1.
