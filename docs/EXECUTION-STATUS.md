@@ -158,3 +158,12 @@ Artifacts: docs/phase-6/GAP-AUDIT.md, EVALUATION-PROTOCOL.md, dataset-preflight.
 Read-only config check: project OpenAI key present, model ID absent, app model disabled, old canary reservation present. No key value printed. Ollama/PostgreSQL not on PATH; installation status not inferred. PostgreSQL runtime/schema mismatch and missing composition are documented with concrete next actions. User allowed discretion USD1 vs USD5; selected USD1 total additional OpenAI Phase 6 ceiling. No spend yet; persistent budget enforcement and official price verification required before paid calls.
 
 Next: author/review the complete 20+20 family dataset, implement scoring and persistent bounded runner, then run a development pilot within the cap. PostgreSQL repository wiring remains earlier-phase work; no native/connected quality gate has been closed. Automation remains PAUSED and no new goal/automation was created.
+
+
+## Phase 6 goal checkpoint - persistent budget and development draft
+
+Added backend/evaluation_budget.py: immutable integer-microdollar cap, transactional reservations, one pending call globally, no call-ID replay, immutable settlement and retained full reservation on unknown/low usage. Observed overruns stop further calls. Restart/concurrency/unknown/replay tests pass. This component is not yet wired into a paid runner; no real budget ledger or model request was created.
+
+Authored fixtures/evaluation/development-v2.json with 20 synthetic development families covering diverse tasks, caveats, incomplete commitments, timezone rollover and injection. Labels are explicitly draft, not frozen; revision/cancellation/multi-message coverage and full field-level expected outputs still need expansion/review. Original eight regression families remain unchanged. No held-out cases promoted from development.
+
+Validation: 12 focused budget/dataset tests passed; existing Starlette warning only. Budget stays USD1 additional Phase 6; no spend. Next: complete family coverage and labels, author 20 separate held-out families, implement scoring/runner, verify current prices before the development pilot. Claude/Grok/native access and observed manual session remain user-dependent; question queued while independent work continues. Goal active, heartbeat PAUSED.
