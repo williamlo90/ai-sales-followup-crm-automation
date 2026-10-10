@@ -57,11 +57,21 @@ def run_case(case,adapter,budget,dataset_hash,profile_name="baseline"):
             'score':score_extraction(case,raw,provider_error=error),'budget':budget.snapshot()}
 
 
+def verify_profile_freeze(root,profile):
+    freeze=json.loads((root/'docs/phase-6/openai-profile-freeze.json').read_text())
+    checks=[freeze['profile']==profile,
+            freeze['prompt_sha256']==hashlib.sha256(SYSTEM.encode()).hexdigest(),
+            freeze['wire_schema_sha256']==hashlib.sha256(json.dumps(wire_schema(),sort_keys=True).encode()).hexdigest(),
+            freeze['dataset_manifest_sha256']==hashlib.sha256((root/'docs/phase-6/dataset-freeze.json').read_bytes()).hexdigest()]
+    if not all(checks):raise ValueError('Profile differs from held-out freeze')
+
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--case',required=True);parser.add_argument('--run',action='store_true');parser.add_argument('--split',choices=['development','heldout'],default='development')
     parser.add_argument('--profile',choices=list(PROFILES),default='baseline')
     args=parser.parse_args()
     profile=PROFILES[args.profile];model=profile['model']
+    if args.split=='heldout':verify_profile_freeze(ROOT,profile)
     path=ROOT/f'fixtures/evaluation/{args.split}-v2.json';data=path.read_bytes();doc=json.loads(data)
     manifest=json.loads((ROOT/'docs/phase-6/dataset-freeze.json').read_text())
     if hashlib.sha256(data).hexdigest()!=manifest['dataset_files'][path.relative_to(ROOT).as_posix()]:raise ValueError('Dataset differs from frozen labels')

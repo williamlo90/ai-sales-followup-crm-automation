@@ -55,3 +55,11 @@ def test_unpriced_reasoning_never_calls(tmp_path):
     case,_=example();case['context']={}
     with pytest.raises(ValueError,match='Unpriced'):run_case(case,adapter,EvaluationBudget(tmp_path/'budget.sqlite'),'dataset')
     assert adapter.calls==0
+
+
+def test_heldout_freeze_rejects_changed_profile():
+    from scripts.evaluate_openai import verify_profile_freeze,PROFILES
+    from backend.config import ROOT
+    verify_profile_freeze(ROOT,PROFILES['luna-low'])
+    with pytest.raises(ValueError,match='differs'):
+        verify_profile_freeze(ROOT,{**PROFILES['luna-low'],'reasoning':'high'})
