@@ -47,6 +47,7 @@ class ModelProfile:
     local_only: bool = False
     max_calls: int = 0
     reasoning_effort: str | None = None
+    ollama_think: bool | None = None
 
 
 def wire_schema():
@@ -72,6 +73,8 @@ class ModelAdapter:
             raise ProviderError('remote_model_forbidden')
         if profile.reasoning_effort is not None and (profile.provider!='openai' or profile.reasoning_effort not in {'none','low','medium','high','xhigh','max'}):
             raise ProviderError('invalid_reasoning_profile')
+        if profile.ollama_think is not None and (profile.provider!='ollama' or type(profile.ollama_think) is not bool):
+            raise ProviderError('invalid_local_thinking_profile')
         self.profile,self.transport=profile,transport
         self.capture_response=capture_response
         self.response_envelope=None
@@ -108,6 +111,7 @@ class ModelAdapter:
         else:
             body={'model':p.model,'messages':messages,'stream':False,'format':schema,
                   'options':{'num_ctx':4096,'num_predict':4096,'temperature':0},'keep_alive':0}
+            if p.ollama_think is not None:body['think']=p.ollama_think
         started=time.monotonic()
         if not self.request_lock.acquire(blocking=False):
             raise ProviderError('model_busy')

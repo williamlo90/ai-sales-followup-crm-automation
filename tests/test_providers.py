@@ -97,3 +97,15 @@ def test_explicit_openai_reasoning_profile():
     adapter.extract([],{})
     with pytest.raises(ProviderError,match='invalid_reasoning_profile'):
         ModelAdapter(ModelProfile('ollama','test',reasoning_effort='low'))
+
+
+def test_ollama_thinking_is_explicit_and_local_only():
+    def respond(request):
+        body=json.loads(request.content)
+        assert body['think'] is False and body['keep_alive']==0
+        assert body['options']['num_ctx']==4096
+        return httpx.Response(200,json=envelope('ollama',json.dumps(REVIEW)))
+    adapter=ModelAdapter(ModelProfile('ollama','qwen3:1.7b',local_only=True,max_calls=1,ollama_think=False),transport=httpx.MockTransport(respond))
+    adapter.extract([],{})
+    with pytest.raises(ProviderError,match='invalid_local_thinking_profile'):
+        ModelAdapter(ModelProfile('openai','test',ollama_think=False))
