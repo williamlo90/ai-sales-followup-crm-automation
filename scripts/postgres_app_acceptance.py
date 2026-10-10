@@ -150,6 +150,8 @@ def check_application(owner, dsn, tenants, restart_container=None):
                 with PostgresStore(dsn).connect(Actor.model_validate(actors['auditor'])) as conn:
                     assert conn.execute('SELECT count(*) FROM operations').fetchone()[0] == 0
                 passed.append('app_no_external_operations')
+                from scripts.postgres_boundary_acceptance import check_boundaries
+                passed.extend(check_boundaries(dsn,actors))
         finally:
             for key,value in previous.items():
                 if value is None: os.environ.pop(key,None)

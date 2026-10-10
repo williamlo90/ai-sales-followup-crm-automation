@@ -1,0 +1,18 @@
+{
+  "local_tenant": "00000000-0000-0000-0000-000000000001",
+  "worker_id": "00000000-0000-0000-0000-000000000002",
+  "odoo": {
+    "base_url": "http://127.0.0.1:8002",
+    "connector_tenant": "00000000-0000-0000-0000-000000000003",
+    "company_id": 1,
+    "token_file": "local/secrets/odoo-token",
+    "timezone": "Asia/Jakarta",
+    "deals": {"test-deal": {"opportunity_id": 1, "assignee_id": 1}}
+  },
+  "graph": {
+    "mailbox": "replace-with-project-test-mailbox@example.test",
+    "folder": "inbox",
+    "token_file": "local/secrets/graph-token",
+    "message_deals": {"replace-with-test-message-id": "test-deal"}
+  }
+}

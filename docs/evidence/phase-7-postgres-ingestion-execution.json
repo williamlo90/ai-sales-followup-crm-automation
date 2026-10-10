@@ -1,0 +1,151 @@
+{
+  "name": "sales-phase7-pg256-20261010132818",
+  "limit_bytes": 268435456,
+  "stop_free_bytes": 805306368,
+  "samples": [
+    {
+      "stage": "startup",
+      "free_bytes": 2965061632
+    },
+    {
+      "stage": "startup",
+      "free_bytes": 2961195008
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2951213056
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2934804480
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2926022656
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2906607616
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2892333056
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2892046336
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2870743040
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2871828480
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2852933632
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2897960960
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2902462464
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2905194496
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2888159232
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2875502592
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2864840704
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2823102464
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2820009984
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2816729088
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2784772096
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2772680704
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 2784985088
+    }
+  ],
+  "other_running_before": [
+    "e655f0b7f646|invoice-erpnext-frontend-1",
+    "d6e512d85671|invoice-erpnext-scheduler-1",
+    "71623c8bcfa8|invoice-erpnext-websocket-1"
+  ],
+  "container_id": "921720e0a909517dbd0b68e35ab3dc78f55292a30a00ff1b46d46c2b5a3c5fa1",
+  "probe_exit_code": 0,
+  "probe_result": {
+    "scope": "Real PostgreSQL plus FastAPI/shared-core persistence, approval and concurrent requests; no connected effects",
+    "server": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "checks": [
+      "all_seven_migrations_and_replay",
+      "unscoped_runtime_sees_zero_rows",
+      "tenant_read_isolation",
+      "cross_tenant_write_denied",
+      "transaction_rollback_and_reconnect",
+      "app_concurrent_prepare_8_requests_one_proposal_and_audit",
+      "app_concurrent_approval_8_requests_one_approval_and_audit",
+      "app_role_and_tenant_access_denied",
+      "app_fresh_process_persistence_separate_crm_approval",
+      "workflow_duplicate_enqueue_and_concurrent_ticks_one_claim",
+      "due_discovery_cursor_replay_no_duplicate_job_or_proposal",
+      "real_database_restart_preserves_approval_job_schedule_and_lease",
+      "app_source_revision_invalidates_approval",
+      "app_no_external_operations",
+      "postgres_ingestion_invalid_page_atomic_rollback_mock_graph",
+      "postgres_ingestion_checkpoint_reconnect_and_replay_mock_graph",
+      "postgres_concurrent_execution_one_ledger_and_one_simulated_dispatch",
+      "postgres_unknown_reconciliation_no_redispatch_simulated_remote",
+      "migration_checksum_drift_denied"
+    ],
+    "passed": 19
+  },
+  "container_stats": "{\"BlockIO\":\"0B / 0B\",\"CPUPerc\":\"0.08%\",\"Container\":\"921720e0a909517dbd0b68e35ab3dc78f55292a30a00ff1b46d46c2b5a3c5fa1\",\"ID\":\"921720e0a909\",\"MemPerc\":\"5.31%\",\"MemUsage\":\"13.61MiB / 256MiB\",\"Name\":\"sales-phase7-pg256-20261010132818\",\"NetIO\":\"137kB / 191kB\",\"PIDs\":\"6\"}",
+  "oom_killed": false,
+  "actual_memory_limit": 268435456,
+  "actual_swap_limit": 268435456,
+  "status": "passed",
+  "container_stopped": true,
+  "other_running_after": [
+    "e655f0b7f646|invoice-erpnext-frontend-1",
+    "d6e512d85671|invoice-erpnext-scheduler-1",
+    "71623c8bcfa8|invoice-erpnext-websocket-1"
+  ],
+  "min_free_bytes": 2772680704,
+  "source_sha256": "2a35032930a1ffd78497f032d423e9ffcb8cf2ab3d2fc04e98b09282f75c819d",
+  "limitations": [
+    "Real PostgreSQL; Graph message response and external effect are explicit doubles, not vendor integration.",
+    "One simulated operation persisted and reconciled; zero real external effects.",
+    "ASGI transport and controlled database restart, not deployed HTTP load or abrupt power loss.",
+    "Container usage is post-probe snapshot, not peak."
+  ]
+}

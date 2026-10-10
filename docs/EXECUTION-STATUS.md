@@ -338,3 +338,10 @@ Full native suite286 passed11.03s, existing Starlette warning; git diff check pa
 ## Phase7 restart and intake/due persistence
 
 User requested continuation. Extended postgres acceptance with actual controlled owned-container restart and intake/due workflow checks.15 real checks passed including duplicate enqueue,2 simultaneous ticks ->one claim, due cursor replay, real postmaster restart preserving approval/intake+due jobs/schedule/released lease.14 targeted native tests passed0.74s, including restart guard refusing nonmatching container ID/label/memory. Evidence docs/evidence/phase-7-postgres-workflow-restart.json.256MiB cap retained, sampled host minimum2.82GiB free, post-probe13.56MiB (not peak), no OOM. Owned container stopped and same3 sibling ERPNext IDs remain running. No email/CRM/model/other project changes. n8n engine/Graph/Odoo and abrupt-failure/load acceptance remain pending; no full Phase7 claim.
+
+
+## Phase7 ingestion/execution and connector composition
+
+User authorized continuation.19 actual PostgreSQL checks pass under256MiB, including invalid-page atomic rollback, ingestion reconnect/replay, concurrent one-operation ledger, unknown reconciliation without redispatch using explicitly simulated remote adapters. Evidence docs/evidence/phase-7-postgres-ingestion-execution.json. Host RAM minimum sampled2.58GiB, no OOM, owned container stopped, same3 sibling containers untouched.
+
+Added connector_runtime strict project-local configuration, Odoo/Graph adapter/router composition, exact-worker Graph polling and Odoo local-tenant checks. Writes/sends unconditionally disabled; startup does not read missing tokens or contact remote services.7 composition tests passed plus prior full suite289. Example/setup ready. Real Graph/Odoo acceptance awaits authorized sandbox mappings/token paths; do not describe doubles as connected proof. No model/email/cloud or sibling data changes.

@@ -34,3 +34,10 @@ Real test in fresh isolated256MiB container passed12 combined checks.8 concurren
 ## Database restart and workflow persistence verified
 
 Extended application probe to intake/due discovery, duplicate enqueue/cursor replay, concurrent worker claims and controlled real container restart. Restart checks exact container ID, ownership label and256MiB memory limit; postmaster start timestamp must increase.15 combined real checks passed;14 targeted native tests passed0.74s. Saved approval/job state and next_at survive restart; lease is released; polling does not double-prepare. No business effects. Evidence phase-7-postgres-workflow-restart.json. Minimum sampled free host RAM3,025,039,360bytes (~2.82GiB), post-probe13.56MiB/256MiB, no OOM. Owned container stopped after probe; sibling container IDs unchanged. Controlled restart is not abrupt crash/host reboot, Python workflow is not n8n acceptance. Next: broader execution/ingestion on PostgreSQL and connector composition before real sandbox/engine tests.
+
+
+## Ingestion/ledger and connector composition
+
+19 combined checks passed on real PostgreSQL256MiB. Added atomic rollback of invalid Graph page, persistent checkpoint/replay without source inflation,8 concurrent execution calls yielding1 ledger row/1 simulated dispatch, unknown-result read-back without redispatch. Graph/effect adapters are doubles: no vendor integration or real writes. Minimum sampled free RAM2,772,680,704bytes (~2.58GiB), post-probe13.61MiB/256MiB, no OOM; owned container stopped, same3 sibling IDs running. Evidence phase-7-postgres-ingestion-execution.json.
+
+Explicit project-local connector JSON composes Odoo/Graph/router/ingestion into app factory. Strict worker/tenant/deal mapping and local token-file paths; one-page authenticated Graph poll endpoint; Odoo tenant boundary. Runtime effects remain disabled with no enabling config flag.7 composition tests passed0.63s; prior full suite289 passed11s before adding those tests. Setup docs/phase-7/CONNECTOR-SETUP.md and deploy/connectors.example.json. Next requires authorized project sandbox configuration for bounded real read-only connector tests; no credentials borrowed.

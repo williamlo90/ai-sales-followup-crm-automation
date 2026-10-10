@@ -1,0 +1,94 @@
+"""Explicit project-scoped connector composition; writes/sends remain disabled."""
+from dataclasses import dataclass
+import json
+from pathlib import Path
+from uuid import UUID
+from pydantic import BaseModel, ConfigDict, Field
+from backend.config import ROOT
+from backend.bindings import BindingRepository
+from backend.execution import ExecutionService
+from backend.graph_effects import EffectRouter, GraphMailAdapter
+from backend.ingestion import GraphIngestion
+from backend.odoo_effects import OdooActivityAdapter
+from backend.read_clients import GraphReadClient, OdooReadClient
+
+
+class Strict(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+
+class DealMapping(Strict):
+    opportunity_id: int = Field(gt=0, strict=True)
+    assignee_id: int = Field(gt=0, strict=True)
+
+
+class OdooConfig(Strict):
+    base_url: str
+    connector_tenant: UUID
+    company_id: int = Field(gt=0, strict=True)
+    token_file: str
+    timezone: str = 'Asia/Jakarta'
+    deals: dict[str, DealMapping]
+
+
+class GraphConfig(Strict):
+    mailbox: str = Field(min_length=1)
+    folder: str = 'inbox'
+    token_file: str
+    message_deals: dict[str,str]
+
+
+class ConnectorConfig(Strict):
+    local_tenant: UUID
+    worker_id: UUID
+    odoo: OdooConfig | None = None
+    graph: GraphConfig | None = None
+
+
+def local_file(name, root=ROOT):
+    path = (root/Path(name)).resolve()
+    if not path.is_relative_to((root/'local').resolve()):
+        raise ValueError('Connector files must be inside project local directory')
+    return path
+
+
+def token_reader(name, root=ROOT):
+    path = local_file(name,root)
+    def read():
+        value = path.read_text(encoding='utf-8').strip()
+        if not value or any(c.isspace() for c in value):
+            raise ValueError('Invalid connector token file')
+        return value
+    return read
+
+
+@dataclass
+class Runtime:
+    execution: ExecutionService
+    connector: OdooActivityAdapter | None
+    ingestion: GraphIngestion | None
+
+
+def compose(service, identities, name, *, root=ROOT):
+    cfg = ConnectorConfig.model_validate(json.loads(local_file(name,root).read_text(encoding='utf-8')))
+    workers = {a.id:a for a in identities.values() if a.id==str(cfg.worker_id) and a.tenant_id==str(cfg.local_tenant) and a.role=='worker'}
+    if len(workers)!=1:raise ValueError('Configured connector worker identity missing')
+    worker = next(iter(workers.values()))
+    repository = BindingRepository(service,worker)
+    crm = mail = ingestion = None
+    if cfg.odoo:
+        item = cfg.odoo
+        if not set(item.deals)<=worker.deal_ids:raise ValueError('Odoo deal mapping exceeds worker scope')
+        client = OdooReadClient(item.base_url,str(item.connector_tenant),item.company_id,token_reader(item.token_file,root))
+        crm = OdooActivityAdapter(client,repository.load,{k:v.model_dump() for k,v in item.deals.items()},timezone_name=item.timezone,write_enabled=False)
+        crm.local_tenant = str(cfg.local_tenant)
+    if cfg.graph:
+        item = cfg.graph
+        if not set(item.message_deals.values())<=worker.deal_ids:raise ValueError('Graph mapping exceeds worker scope')
+        token = token_reader(item.token_file,root)
+        client = GraphReadClient(str(cfg.local_tenant),item.mailbox,token,folder=item.folder)
+        ingestion = GraphIngestion(service,worker,client,item.message_deals)
+        mail = GraphMailAdapter(str(cfg.local_tenant),item.mailbox,token,repository.payload,send_enabled=False)
+    if crm is None and ingestion is None:raise ValueError('No connectors configured')
+    execution = ExecutionService(service,EffectRouter(crm,mail),enabled=False,send_enabled=False)
+    return Runtime(execution,crm,ingestion)

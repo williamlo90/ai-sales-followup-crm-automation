@@ -24,7 +24,7 @@ from backend.read_clients import ReadError
 from backend.workflows import WorkflowService, EnqueueInput, RecoveryInput
 
 
-def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None, connector=None) -> FastAPI:
+def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None, connector=None, ingestion=None) -> FastAPI:
     app = FastAPI(title="Sales Follow-up", version="0.1.0")
     bearer = HTTPBearer(auto_error=False)
     skill_service=skills or SkillService(service,execution=execution)
@@ -94,6 +94,14 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     def deal(deal_id: str, data: DealInput, current: Actor = Depends(actor)):
         return service.put_deal(current, deal_id, data)
 
+    @app.post('/v1/ingest/graph/poll')
+    def graph_poll(current: Actor = Depends(actor)):
+        if current.role!='worker':raise DomainError('role_not_permitted',403)
+        if ingestion is None:raise DomainError('graph_not_configured',503)
+        if current.id!=ingestion.actor.id or current.tenant_id!=ingestion.actor.tenant_id:
+            raise DomainError('record_not_found',404)
+        return ingestion.poll()  # One bounded page; caller coordinates pagination.
+
     @app.put("/v1/ingest/deals/{deal_id}/sources")
     def source(deal_id: str, data: SourceInput, current: Actor = Depends(actor)):
         return service.put_source(current, deal_id, data)
@@ -162,6 +170,7 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     def connector_preparation(ident: str,current: Actor=Depends(actor)):
         service.get(current,ident)
         if connector is None:raise DomainError('connector_not_configured',503)
+        if getattr(connector,'local_tenant',current.tenant_id)!=current.tenant_id:raise DomainError('record_not_found',404)
         return BindingRepository(service,current).preparation(ident,connector)
 
     @app.get('/v1/proposals/{ident}/connector-binding')
@@ -200,6 +209,7 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
     def binding_attach(ident: str,data: ConnectorBindingInput,current: Actor=Depends(actor)):
         service.get(current,ident)
         if connector is None:raise DomainError('connector_not_configured',503)
+        if getattr(connector,'local_tenant',current.tenant_id)!=current.tenant_id:raise DomainError('record_not_found',404)
         return BindingRepository(service,current).attach(ident,data,connector)
 
     return app
@@ -230,4 +240,10 @@ def from_environment():
     else: raise RuntimeError('Unsupported SALES_STORAGE')
     service = SalesService(store)
     profile = openai_profile(read_config())
+    path = os.environ.get('SALES_CONNECTORS_PATH')
+    if path:
+        from backend.connector_runtime import compose
+        runtime = compose(service,identities,path)
+        skills = SkillService(service,ModelAdapter(profile) if profile else None,execution=runtime.execution)
+        return create_app(service,identities,skills,execution=runtime.execution,connector=runtime.connector,ingestion=runtime.ingestion)
     return create_app(service, identities, SkillService(service, ModelAdapter(profile) if profile else None))
