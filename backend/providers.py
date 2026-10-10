@@ -46,6 +46,7 @@ class ModelProfile:
     key: str = field(default='', repr=False)
     local_only: bool = False
     max_calls: int = 0
+    reasoning_effort: str | None = None
 
 
 def wire_schema():
@@ -69,6 +70,8 @@ class ModelAdapter:
             raise ProviderError('hosted_fallback_forbidden')
         if profile.provider=='ollama' and 'cloud' in profile.model.lower():
             raise ProviderError('remote_model_forbidden')
+        if profile.reasoning_effort is not None and (profile.provider!='openai' or profile.reasoning_effort not in {'none','low','medium','high','xhigh','max'}):
+            raise ProviderError('invalid_reasoning_profile')
         self.profile,self.transport=profile,transport
         self.capture_response=capture_response
         self.response_envelope=None
@@ -93,6 +96,7 @@ class ModelAdapter:
             headers['Authorization']='Bearer '+p.key
             body={'model':p.model,'store':False,'max_output_tokens':4096,'input':messages,
                   'text':{'format':{'type':'json_schema','name':'sales_extraction','strict':True,'schema':schema}}}
+            if p.reasoning_effort is not None:body['reasoning']={'effort':p.reasoning_effort}
         elif p.provider=='claude':
             headers.update({'x-api-key':p.key,'anthropic-version':'2023-06-01'})
             body={'model':p.model,'system':SYSTEM,'messages':[messages[1]],'max_tokens':4096,

@@ -85,3 +85,15 @@ def test_one_inflight_request_and_budget_not_consumed_by_busy_call():
             assert adapter.calls==1
         finally:release.set()
         assert future.result()[0].status=='review'
+
+
+def test_explicit_openai_reasoning_profile():
+    def respond(request):
+        body=json.loads(request.content)
+        assert body['reasoning']=={'effort':'low'}
+        assert body['max_output_tokens']==4096
+        return httpx.Response(200,json=envelope('openai',json.dumps(REVIEW)))
+    adapter=ModelAdapter(ModelProfile('openai','gpt-5.6-luna',key='test',max_calls=1,reasoning_effort='low'),transport=httpx.MockTransport(respond))
+    adapter.extract([],{})
+    with pytest.raises(ProviderError,match='invalid_reasoning_profile'):
+        ModelAdapter(ModelProfile('ollama','test',reasoning_effort='low'))

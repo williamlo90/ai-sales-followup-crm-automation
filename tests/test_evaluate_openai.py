@@ -38,3 +38,20 @@ def test_over_budget_never_calls_provider(tmp_path):
     case,_=example();case['context']={};adapter=Adapter()
     with pytest.raises(BudgetError,match='exhausted'):run_case(case,adapter,EvaluationBudget(tmp_path/'budget.sqlite',1),'dataset')
     assert adapter.calls==0
+
+
+def test_luna_pricing_includes_cache_write_upper_rate(tmp_path):
+    class Luna(Adapter):
+        profile=SimpleNamespace(provider='openai',model='gpt-5.6-luna',reasoning_effort='low')
+    case,_=example();case['context']={}
+    result=run_case(case,Luna(),EvaluationBudget(tmp_path/'budget.sqlite'),'dataset','luna-low')
+    assert result['estimated_actual_microusd']==145
+    assert result['profile']['input_rate']==0.25
+    assert result['reserved_microusd']>result['estimated_actual_microusd']
+
+
+def test_unpriced_reasoning_never_calls(tmp_path):
+    adapter=Adapter();adapter.profile=SimpleNamespace(provider='openai',model=MODEL,reasoning_effort='high')
+    case,_=example();case['context']={}
+    with pytest.raises(ValueError,match='Unpriced'):run_case(case,adapter,EvaluationBudget(tmp_path/'budget.sqlite'),'dataset')
+    assert adapter.calls==0
