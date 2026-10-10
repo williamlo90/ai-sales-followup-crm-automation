@@ -211,3 +211,12 @@ Added opt-in response capture before schema validation for evaluation only; norm
 Three bounded v2 development probes produced one pass and two failures: dev-v2-05 abstained despite supported named owner/date, dev-v2-10 emitted ready plus nonempty missing_information and failed the existing consistency validator. Raw diagnostic evidence now preserved, no relaxed schema or hidden repair. Further development tuning/model comparison is needed before held-out; no final quality gate claimed.
 
 Persistent ledger: 25 calls including baseline/pilots, USD0.268028 conservative reservations, USD0.731972 reservable. Known-usage estimated total USD0.005889 is incomplete because nine earlier invalid responses lost usage; their full reservations remain charged against cap. No extra secret access, external writes, email or Docker. Goal active; heartbeat PAUSED.
+
+
+## Phase 6 checkpoint - OpenAI development profile accepted for held-out
+
+Added explicitly priced Luna low-reasoning evaluation profile, sharing the same USD1 ledger; conservative input rate includes cache-write multiplier. Three initial probes: two pass, one missed whole-thread readiness. Prompt extract-v3 clarifies incomplete activity review without changing frozen labels or scorer. Latest complete development run: 20/20 automated extraction passes, 20/20 actual-core linkage checks, expected proposal counts/recipients, zero approvals/operations. Implementation-agent source/history review passes all twenty; detailed notes and response hashes in docs/evidence/phase-6-development-luna.json. This is development evidence, not generalization or full policy acceptance.
+
+Profile frozen before any held-out call in docs/phase-6/openai-profile-freeze.json. Luna uses an alias (no dated snapshot listed); response model retained. Full suite passed 248 tests before final prompt clarification; 30 affected provider/runner tests passed afterward. All 48 paid Phase6 calls retained: conservative committed USD0.451308, reservable USD0.548692, known-usage estimate USD0.014620 incomplete due to nine earlier unknown-usage responses. No retries, budget reset, app-config change or external effects.
+
+Next: run untouched held-out with frozen profile, score and inspect semantics, then finish manual measurement tools and Phase7 acceptance matrix. Claude/Grok absent; no common local runtime found; manual observation still pending. Goal active, heartbeat PAUSED. Dataset-freeze checklist now checked with explicit synthetic/agent-review scope; remaining gates open.

@@ -1,0 +1,18 @@
+{
+  "status": "profile frozen before held-out calls; not release candidate acceptance",
+  "profile": {
+    "model": "gpt-5.6-luna",
+    "input_rate": 0.25,
+    "output_rate": 1.2,
+    "reasoning": "low",
+    "version": "evaluation-5-luna-low-v3",
+    "price_source": "https://developers.openai.com/api/docs/models/gpt-5.6-luna"
+  },
+  "prompt_sha256": "39cf97a43cce9b423f498724de8946c49744807954b2a707a6944872af9372e2",
+  "wire_schema_sha256": "00c376875a08975947c402e68331ba112533b9f81be54ede443149e891a95ba4",
+  "code_revision": "c9543f99e8610869ce41f8472b623a459e326d51",
+  "dataset_manifest_sha256": "6674253aa8e9fa17ee114dc08d4a08e0167a9789c696774c5636825fc3110bd3",
+  "date": "2026-10-10",
+  "model_alias_limitation": "No dated Luna snapshot listed; raw envelopes retain response model.",
+  "development_evidence": "docs/evidence/phase-6-development-luna.json"
+}

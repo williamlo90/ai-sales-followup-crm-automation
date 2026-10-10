@@ -71,7 +71,7 @@ Evidence native: [Phase 5 acceptance](docs/evidence/phase-5-acceptance.md), 2026
 
 ## Phase 6 — Kualitas dan manfaat sebelum Docker
 
-- [ ] Bekukan dev/regression dan held-out berdasarkan thread/account families; expected outcomes berasal dari source dan rules.
+- [x] Bekukan dev/regression dan held-out berdasarkan thread/account families; expected outcomes berasal dari source dan rules. Bukti: docs/phase-6/dataset-freeze.json (20+20 synthetic families, agent-reviewed).
 - [ ] Ukur account/deal linkage, commitment extraction/revisions, proposal correctness, draft factuality, abstention dan policy compliance.
 - [ ] Bandingkan OpenAI/Claude/Grok pada tugas sama dengan real canaries; satu default runtime cukup, adapter-only belum membuktikan ketiga API.
 - [ ] Evaluasi local profile nyata; model gagal tidak disebut sukses hanya karena guardrail menahan write.

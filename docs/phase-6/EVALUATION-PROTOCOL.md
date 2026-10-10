@@ -1,10 +1,10 @@
 # Phase 6 evaluation protocol
 
-Status: preparation, no new model evaluation or quality result. Existing phase-0 acceptance thresholds remain unchanged.
+Status: datasets frozen; real OpenAI development evaluation in progress. Existing phase-0 acceptance thresholds remain unchanged. See EXECUTION-STATUS.md and evidence for measured results.
 
 ## Dataset and freeze
 
-Require at least 20 development/regression and 20 disjoint held-out account/thread families. Existing conversations-v1 has eight development families and no held-out set. Expand source-backed labels before freezing. Never relabel a development case as held-out. A holdout used for debugging becomes regression; new generalization claims need a new holdout.
+Require at least 20 development/regression and 20 disjoint held-out account/thread families. The frozen development-v2 and heldout-v2 datasets each contain twenty synthetic families; hashes and reviewer scope are in dataset-freeze.json. Never relabel a development case as held-out. A holdout used for debugging becomes regression; new generalization claims need a new holdout.
 
 Use scripts/evaluation_dataset.py DEV.json HELDOUT.json for counts, normalized family/source overlap and a content hash. Exit 2 means preflight rejected. Passing only permits label review: lexical checks do not establish semantic independence, label correctness or quality. Review account/thread relations and near-duplicates manually before freezing. Keep held-out answers outside model inputs.
 
@@ -25,7 +25,7 @@ Record provider failures, malformed output and timeouts in the denominator. Do n
 
 ## Run record and spend
 
-User selected discretion between USD1 and USD5; the chosen operational cap is USD1 total for additional OpenAI Phase 6 calls, stated in chat on 2026-10-10. Do not spend toward USD5 without a new decision. No Phase 6 call has run. Keep the prior one-shot canary reservation untouched. Before paid execution, implement persistent reservations and cumulative accounting, verify current official pricing/model availability, bound input/output tokens and stop before a reservation would exceed the cap. Missing usage must retain the worst-case reservation. No automatic retries or provider fallback; concurrency one.
+User selected discretion between USD1 and USD5; the chosen operational cap is USD1 total for additional OpenAI Phase 6 calls, stated in chat on 2026-10-10. Do not spend toward USD5 without a new decision. Phase 6 calls are recorded in the persistent local budget ledger. Keep the prior one-shot canary reservation untouched. Before paid execution, implement persistent reservations and cumulative accounting, verify current official pricing/model availability, bound input/output tokens and stop before a reservation would exceed the cap. Missing usage must retain the worst-case reservation. No automatic retries or provider fallback; concurrency one.
 
 Every result stores dataset hash/split, code revision, provider/model snapshot, prompt/schema hashes, input/output usage, observed latency, validated cost estimate and raw-response location (local/ignored). Freeze labels and scoring version before calls. One small development pilot precedes held-out runs. Claude/Grok/local statuses remain separate until actually evaluated.
 
