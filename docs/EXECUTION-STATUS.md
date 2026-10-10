@@ -231,3 +231,14 @@ Model-call latency N=20 nearest-rank: p50 2386.79ms, p90 2951.87ms, p95 3092.24m
 Budget ledger now 68 calls: USD0.610983 conservative committed, USD0.389017 reservable, USD0.022155 known-usage upper estimate (incomplete total because nine early invalid outputs lost usage, reservations retained). No cap increase/reset, pending call, overrun, app-model enablement, connected effect, Docker or Phase7 execution.
 
 Next: audit native policy matrix against actual assertions and JUnit, prepare observed manual-vs-assisted capture/session and resource/candidate audit. Other hosted APIs unavailable per user; no local model runtime found in bounded inventory. Model installation/access and real manual observation remain external dependencies. Full Phase6 is not complete; goal active, heartbeat PAUSED. Previous goal turn was substantive progress, not a blocked/no-progress turn.
+
+
+## Phase 6 checkpoint - policy mapping and human session prepared
+
+Mapped acceptance A01-A22 to observed passing native assertions in docs/evidence/phase-6-policy-coverage.json, tied to the 249-test JUnit hash. A18 remains actual engine pending; PostgreSQL/MCP/real local inference/connected effects are explicitly not inferred from API/SQLite/transport doubles. This mapping is not a claim that all connected layers passed.
+
+User agreed to a real manual session. Prepared frozen four paired/eight task due-review worksheet, alternating manual/assisted order, using actual due_eligibility core for cached assistance. Artifact local/phase-6/manual-review.html; instructions docs/phase-6/MANUAL-SESSION.md. Browser records active/paused intervals, field changes, submissions, source hash and answers; export JSON awaits human execution. Assistance is deterministic/cached, so system waiting is unmeasured/null, not fabricated AI latency. Single-operator synthetic worksheet scope remains distinct from full CRM workflow/ROI. Optional CLI interval recorder has two passing tests.
+
+Native Edge headless QA passed eight-task traversal, required fields, pause hiding and JSON download. Automated QA output was not saved as human evidence. Screenshot visually inspected; no overflow at 1100x900. Resource inventory: 16 logical processors, 16,868,962,304 bytes physical RAM, approx 3.73 GiB free at observation; RTX4050 Laptop GPU plus Intel UHD identified (WMI VRAM not trusted as true VRAM capacity), C: 464,784,535,552 bytes free. This is an idle snapshot, not peak workload resource evidence or local-model acceptance.
+
+No new API spend. Next: receive/validate human session, complete native resource/candidate audit and address remaining local/Claude/Grok access. Independent preparatory work progressed this turn; no blocked threshold. Goal active, heartbeat PAUSED, no Phase7 execution.

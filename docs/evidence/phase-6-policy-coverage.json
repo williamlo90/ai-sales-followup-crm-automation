@@ -1,0 +1,548 @@
+{
+  "date": "2026-10-10",
+  "scope": "Assertion-reviewed native core/API and adapter contracts; SQLite and boundary doubles. Selected tests mapped to expectations, not proof of every layer named in acceptance v1.",
+  "junit_sha256": "c4e4c055fdbec811c4e091ffe9fb1f53eba78ec0a0887113119194ae81adb2e9",
+  "suite_passed": 249,
+  "rows": [
+    {
+      "acceptance_id": "A01",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_matching_fixtures[one_deal]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_matching_fixtures[two_deals]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_matching_fixtures[explicit_deal]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_matching_fixtures[wrong_account]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_matching_fixtures[deleted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_matching_fixtures[empty]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A02",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_matching_does_not_guess_between_two_deals",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A03",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_commitment_revised_then_cancelled_preserves_history",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A04",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_commitment_proposals",
+          "name": "test_bound_proposal_uses_candidate_and_requires_review",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A05",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[source-source_changed]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[deal-stale_proposal]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[expired-proposal_expired]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_execution",
+          "name": "test_new_message_invalidates_previous_approval_before_dispatch",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A06",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[source-source_changed]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[deal-stale_proposal]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[expired-proposal_expired]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A07",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_source_revision_cannot_regress_or_change_in_place",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_execution",
+          "name": "test_concurrent_execution_one_effect",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_ingestion",
+          "name": "test_poll_restart_and_replay_no_revision_inflation",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A08",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_cross_tenant_reads_hidden",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[operator-403]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[worker-403]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[administrator-403]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[outsider-404]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[unscoped-404]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A09",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_self_approval_with_changed_role",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[operator-403]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[worker-403]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[administrator-403]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[outsider-404]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_approval_scope[unscoped-404]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A10",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_execution",
+          "name": "test_crm_approval_never_authorizes_send",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A11",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change0-customer_opted_out]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change1-deal_deleted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change2-already_contacted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[due_approved]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[not_due]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[opt_out]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[contacted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[stale]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[unapproved]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A12",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change0-customer_opted_out]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change1-deal_deleted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change2-already_contacted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[due_approved]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[not_due]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[opt_out]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[contacted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[stale]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_sales_rules",
+          "name": "test_due_fixtures[unapproved]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A13",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_untrusted_authority_fields_rejected[tenant_id-other]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_untrusted_authority_fields_rejected[recipient-attacker@example.test]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_untrusted_authority_fields_rejected[approved-True]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A14",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_execution",
+          "name": "test_lost_response_reconciles_without_duplicate_after_restart",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_graph_effects",
+          "name": "test_timeout_can_only_observe_never_resend",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A15",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[source-source_changed]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[deal-stale_proposal]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_stale_approval_invalidated[expired-proposal_expired]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change0-customer_opted_out]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change1-deal_deleted]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_foundation",
+          "name": "test_contact_eligibility[change2-already_contacted]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A16",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_quote_must_exist_in_scoped_source",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A17",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_foundation",
+          "name": "test_separate_approvals_and_restart",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A18",
+      "native_status": "engine pending Phase7",
+      "tests": []
+    },
+    {
+      "acceptance_id": "A19",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[not json-openai]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[not json-claude]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[not json-grok]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[not json-ollama]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"review\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": [], \"approved\": true}-openai]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"review\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": [], \"approved\": true}-claude]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"review\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": [], \"approved\": true}-grok]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"review\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": [], \"approved\": true}-ollama]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"ready\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": []}-openai]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"ready\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": []}-claude]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"ready\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": []}-grok]",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_malformed_or_authority_output_rejected[{\"status\": \"ready\", \"commitments\": [], \"missing_information\": [\"exact date\"], \"conflicts\": []}-ollama]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A20",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_providers",
+          "name": "test_local_only_no_hosted_fallback_and_no_cloud_alias",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_providers",
+          "name": "test_timeout_no_fallback",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A21",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_execution",
+          "name": "test_sent_is_not_delivered_and_partial_outcomes_stay_separate",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "A22",
+      "native_status": "selected assertions passed",
+      "tests": [
+        {
+          "module": "tests.test_graph_effects",
+          "name": "test_202_is_request_acceptance_then_sent_observation",
+          "status": "passed"
+        },
+        {
+          "module": "tests.test_execution",
+          "name": "test_sent_is_not_delivered_and_partial_outcomes_stay_separate",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "remaining_scope": {
+    "A04": "Odoo configured-zone mapping has additional adapter tests; real timezone round trip Phase7.",
+    "A08": "API/application tenant behavior only; PostgreSQL RLS and real MCP route coverage separate.",
+    "A13": "Real model injection cases dev-v2-17 and held-v2-17 also passed; finite synthetic coverage.",
+    "A17": "Restart native SQLite service only, not PostgreSQL host recovery.",
+    "A18": "Reference runner is not actual n8n restart/wait.",
+    "A19_A20": "Mock transport rejection/no-fallback tested; native model runtime unavailable.",
+    "all_connected": "No actual Graph/Odoo/n8n effects or container acceptance inferred."
+  }
+}

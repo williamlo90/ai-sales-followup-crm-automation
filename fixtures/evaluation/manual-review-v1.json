@@ -1,0 +1,158 @@
+{
+  "version": "1.0",
+  "scope": "Synthetic due-follow-up review worksheet; cached deterministic assistance, not live CRM or model latency.",
+  "tasks": [
+    {
+      "id": "manual-p1-1",
+      "pair": 1,
+      "mode": "manual",
+      "account": "Acacia",
+      "input": {
+        "due_at": "2026-11-03T09:00:00Z",
+        "now": "2026-11-03T10:00:00Z",
+        "opted_out": false,
+        "last_contact": null,
+        "source_at": "2026-11-03T08:00:00Z",
+        "approved": true,
+        "fresh": true
+      },
+      "expected": {
+        "eligible": true,
+        "reason": "due_and_approved"
+      }
+    },
+    {
+      "id": "manual-p1-2",
+      "pair": 1,
+      "mode": "assisted",
+      "account": "Banyan",
+      "input": {
+        "due_at": "2026-11-04T09:00:00Z",
+        "now": "2026-11-04T10:00:00Z",
+        "opted_out": false,
+        "last_contact": null,
+        "source_at": "2026-11-04T08:00:00Z",
+        "approved": true,
+        "fresh": true
+      },
+      "expected": {
+        "eligible": true,
+        "reason": "due_and_approved"
+      }
+    },
+    {
+      "id": "manual-p2-1",
+      "pair": 2,
+      "mode": "assisted",
+      "account": "Cedar",
+      "input": {
+        "due_at": "2026-11-05T09:00:00Z",
+        "now": "2026-11-05T10:00:00Z",
+        "opted_out": true,
+        "last_contact": null,
+        "source_at": "2026-11-05T08:00:00Z",
+        "approved": true,
+        "fresh": true
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "opted_out"
+      }
+    },
+    {
+      "id": "manual-p2-2",
+      "pair": 2,
+      "mode": "manual",
+      "account": "Dahlia",
+      "input": {
+        "due_at": "2026-11-06T09:00:00Z",
+        "now": "2026-11-06T10:00:00Z",
+        "opted_out": true,
+        "last_contact": null,
+        "source_at": "2026-11-06T08:00:00Z",
+        "approved": true,
+        "fresh": true
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "opted_out"
+      }
+    },
+    {
+      "id": "manual-p3-1",
+      "pair": 3,
+      "mode": "manual",
+      "account": "Elm",
+      "input": {
+        "due_at": "2026-11-07T09:00:00Z",
+        "now": "2026-11-07T10:00:00Z",
+        "opted_out": false,
+        "last_contact": "2026-11-07T09:30:00Z",
+        "source_at": "2026-11-07T08:00:00Z",
+        "approved": true,
+        "fresh": true
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "already_contacted"
+      }
+    },
+    {
+      "id": "manual-p3-2",
+      "pair": 3,
+      "mode": "assisted",
+      "account": "Fir",
+      "input": {
+        "due_at": "2026-11-08T09:00:00Z",
+        "now": "2026-11-08T10:00:00Z",
+        "opted_out": false,
+        "last_contact": "2026-11-08T09:30:00Z",
+        "source_at": "2026-11-08T08:00:00Z",
+        "approved": true,
+        "fresh": true
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "already_contacted"
+      }
+    },
+    {
+      "id": "manual-p4-1",
+      "pair": 4,
+      "mode": "assisted",
+      "account": "Gardenia",
+      "input": {
+        "due_at": "2026-11-09T09:00:00Z",
+        "now": "2026-11-09T10:00:00Z",
+        "opted_out": false,
+        "last_contact": null,
+        "source_at": "2026-11-09T08:00:00Z",
+        "approved": true,
+        "fresh": false
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "stale"
+      }
+    },
+    {
+      "id": "manual-p4-2",
+      "pair": 4,
+      "mode": "manual",
+      "account": "Hazel",
+      "input": {
+        "due_at": "2026-11-10T09:00:00Z",
+        "now": "2026-11-10T10:00:00Z",
+        "opted_out": false,
+        "last_contact": null,
+        "source_at": "2026-11-10T08:00:00Z",
+        "approved": true,
+        "fresh": false
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "stale"
+      }
+    }
+  ]
+}
