@@ -15,7 +15,7 @@ from backend.postgres_session import PostgresSession, PostgresSessionError
 from scripts.migrations import apply
 
 
-def probe(dsn, application=False):
+def probe(dsn, application=False, restart_container=None):
     suffix = uuid4().hex
     schema = 'sales_probe_' + suffix
     role = 'sales_probe_' + suffix
@@ -74,7 +74,10 @@ def probe(dsn, application=False):
                 from psycopg.conninfo import make_conninfo
                 from scripts.postgres_app_acceptance import check_application
                 runtime_dsn = make_conninfo(dsn, user=role, password=password, options=f'-c search_path={schema}')
-                passed.extend(check_application(owner, runtime_dsn, tenants))
+                passed.extend(check_application(owner, runtime_dsn, tenants, restart_container=restart_container))
+                if owner.closed:
+                    owner = psycopg.connect(dsn,autocommit=True,connect_timeout=5)
+                    owner.execute(sql.SQL('SET search_path TO {}').format(sql.Identifier(schema)))
             owner.execute("UPDATE migration_checksums SET sha256=%s WHERE version='001_foundation'", ('0'*64,))
             try:
                 apply(owner)
@@ -88,17 +91,22 @@ def probe(dsn, application=False):
         finally:
             # Names are generated in this function, never from user input. These
             # objects contain only the above disposable probes in the fixed lab DB.
+            if owner.closed:
+                owner = psycopg.connect(dsn,autocommit=True,connect_timeout=5)
             owner.execute('SET search_path TO public')
             if created_schema:
                 owner.execute(sql.SQL('DROP SCHEMA {} CASCADE').format(sql.Identifier(schema)))
             if created_role:
                 owner.execute(sql.SQL('DROP ROLE {}').format(sql.Identifier(role)))
+            owner.close()
 
 
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--application', action='store_true')
+    parser.add_argument('--restart-container', help='Exact owned256MiB acceptance container ID; requires --application')
     args = parser.parse_args()
+    if args.restart_container and not args.application: raise SystemExit('Restart requires application probe')
     if os.environ.get('SALES_PHASE7_ACCEPTANCE') != 'enabled':
         raise SystemExit('Explicit SALES_PHASE7_ACCEPTANCE=enabled required')
     dsn = os.environ.get('SALES_POSTGRES_DSN')
@@ -106,7 +114,7 @@ def main():
     # Reserve output before touching the database; preserve failed runs as failed.
     with args.output.open('x') as out:
         try:
-            result = probe(dsn, args.application)
+            result = probe(dsn, args.application, args.restart_container)
         except Exception as exc:
             json.dump({'status':'failed','error_type':type(exc).__name__},out)
             raise SystemExit('PostgreSQL probe failed; output contains sanitized status') from None

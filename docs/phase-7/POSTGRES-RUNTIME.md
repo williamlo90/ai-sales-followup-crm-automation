@@ -14,4 +14,7 @@ Real PostgreSQL17.11 under256MiB, FastAPI ASGI TestClient calling the actual app
 
 The test provisions a random schema/role and actor identities in the dedicated sales_phase7_acceptance database, then cleans up only those generated test objects. Normal deployment must use its own durable provisioned identities/schema. No ongoing app server or database container is left running after this test.
 
-Remaining acceptance includes real server restart, richer workflow/ingestion/execution paths on PostgreSQL, connector composition, n8n, Odoo/Graph sandbox interactions and stack-level load/recovery. This document does not mark all Phase7 complete.
+Controlled database-server restart plus intake/due job persistence are now validated in phase-7-postgres-workflow-restart.json. Remaining acceptance includes abrupt failure, richer ingestion/execution paths on PostgreSQL, connector composition, n8n, Odoo/Graph sandbox interactions and stack-level load/recovery. This document does not mark all Phase7 complete.
+
+
+Restart/workflow evidence:15 real checks passed under256MiB. Duplicate intake enqueue is idempotent;2 concurrent ticks yield one awaiting-approval and one idle. Due discovery/replay creates no duplicate job/proposal and stores its cursor. A controlled restart of the exact owned container changes pg_postmaster_start_time; approval, intake/due jobs, schedule and released lease remain intact, with subsequent intake tick idle. No dispatch.14 targeted native tests pass, including3 restart guard cases that reject wrong ID/owner label/memory limit before any mutation.

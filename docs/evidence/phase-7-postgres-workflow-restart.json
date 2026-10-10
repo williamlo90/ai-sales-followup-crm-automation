@@ -1,0 +1,135 @@
+{
+  "name": "sales-phase7-pg256-20261010132329",
+  "limit_bytes": 268435456,
+  "stop_free_bytes": 805306368,
+  "samples": [
+    {
+      "stage": "startup",
+      "free_bytes": 3117780992
+    },
+    {
+      "stage": "startup",
+      "free_bytes": 3131768832
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3127881728
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3091845120
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3084472320
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3074871296
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3060801536
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3060076544
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3060170752
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3049394176
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3052855296
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3087306752
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3045351424
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3046924288
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3053350912
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3037413376
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3040935936
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3027390464
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3025039360
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 3029655552
+    }
+  ],
+  "other_running_before": [
+    "e655f0b7f646|invoice-erpnext-frontend-1",
+    "d6e512d85671|invoice-erpnext-scheduler-1",
+    "71623c8bcfa8|invoice-erpnext-websocket-1"
+  ],
+  "container_id": "6a82e4cb53f6a23e3fa1ec6368966bacba5b8d167fd3b449460158067552b3b5",
+  "probe_exit_code": 0,
+  "probe_result": {
+    "scope": "Real PostgreSQL plus FastAPI/shared-core persistence, approval and concurrent requests; no connected effects",
+    "server": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "checks": [
+      "all_seven_migrations_and_replay",
+      "unscoped_runtime_sees_zero_rows",
+      "tenant_read_isolation",
+      "cross_tenant_write_denied",
+      "transaction_rollback_and_reconnect",
+      "app_concurrent_prepare_8_requests_one_proposal_and_audit",
+      "app_concurrent_approval_8_requests_one_approval_and_audit",
+      "app_role_and_tenant_access_denied",
+      "app_fresh_process_persistence_separate_crm_approval",
+      "workflow_duplicate_enqueue_and_concurrent_ticks_one_claim",
+      "due_discovery_cursor_replay_no_duplicate_job_or_proposal",
+      "real_database_restart_preserves_approval_job_schedule_and_lease",
+      "app_source_revision_invalidates_approval",
+      "app_no_external_operations",
+      "migration_checksum_drift_denied"
+    ],
+    "passed": 15
+  },
+  "container_stats": "{\"BlockIO\":\"0B / 0B\",\"CPUPerc\":\"0.07%\",\"Container\":\"6a82e4cb53f6a23e3fa1ec6368966bacba5b8d167fd3b449460158067552b3b5\",\"ID\":\"6a82e4cb53f6\",\"MemPerc\":\"5.30%\",\"MemUsage\":\"13.56MiB / 256MiB\",\"Name\":\"sales-phase7-pg256-20261010132329\",\"NetIO\":\"32kB / 37.1kB\",\"PIDs\":\"6\"}",
+  "oom_killed": false,
+  "actual_memory_limit": 268435456,
+  "actual_swap_limit": 268435456,
+  "status": "passed",
+  "container_stopped": true,
+  "other_running_after": [
+    "e655f0b7f646|invoice-erpnext-frontend-1",
+    "d6e512d85671|invoice-erpnext-scheduler-1",
+    "71623c8bcfa8|invoice-erpnext-websocket-1"
+  ],
+  "min_free_bytes": 3025039360,
+  "source_sha256": "29191832edc31f1d29b801faa4c53a56647236a45e588a5b7d391a3725fd1583",
+  "limitations": [
+    "Controlled PostgreSQL container restart, confirmed changed pg_postmaster_start_time; not abrupt power loss or host reboot.",
+    "Real database and FastAPI ASGI transport; workflow coordinator is Python, not n8n engine.",
+    "No external operation dispatched; CRM/email disabled.",
+    "Memory readings sampled; post-probe container usage is not peak."
+  ]
+}
