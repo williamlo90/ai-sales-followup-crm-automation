@@ -19,7 +19,7 @@ Pemeriksaan hasil oleh agent: `.venv/Scripts/python.exe -m scripts.score_manual_
 
 ## Instrumen lanjutan: waktu tunggu core lokal
 
-Sesi pertama tetap sah untuk scope di atas dan tidak perlu diganti. Instrumen lanjutan tersedia untuk mengamati request aktual, belum dijalankan oleh manusia. Jalankan `.venv/Scripts/python.exe -m scripts.live_manual_review` dari root proyek, lalu buka `http://127.0.0.1:8046/`. Hentikan server dengan Ctrl+C setelah ekspor selesai. Tidak ada model berbayar, email atau perubahan CRM.
+Sesi pertama tetap sah untuk scope di atas dan tidak perlu diganti. Sesi lanjutan manusia selesai2026-10-10: manual3/4 benar,96.1336s aktif; assisted4/4 benar,64.2043s aktif dan0.0343s total tunggu core lokal. Bukti: docs/evidence/phase-6-live-manual-comparison.json. Server sesi telah dihentikan. Petunjuk berikut disimpan untuk reproduksi. Jalankan `.venv/Scripts/python.exe -m scripts.live_manual_review` dari root proyek, lalu buka `http://127.0.0.1:8046/`. Hentikan server dengan Ctrl+C setelah ekspor selesai. Tidak ada model berbayar, email atau perubahan CRM.
 
 Delapan tugas menggunakan fixture yang sama. Pada assisted, waktu request hingga respons dicatat terpisah sebelum interval kerja aktif; server memanggil `due_eligibility` dan menyimpan receipt di `local/phase-6/live-manual/`. Jeda tetap berlaku; ekspor bernama `sales-live-manual-session-*.json`. Validasi dengan `.venv/Scripts/python.exe -m scripts.score_live_manual_review PATH_HASIL.json --output local/phase-6/live-manual-scored.json`. Simpan receipt bersama hasil; scorer menolak hasil tanpa receipt yang cocok.
 

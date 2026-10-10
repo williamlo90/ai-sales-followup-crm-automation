@@ -1,0 +1,171 @@
+{
+  "session_id": "6d581f29-a3b9-4a66-978e-490e71c13f16",
+  "dataset_sha256": "d1e6699e1f51e8607b66a1a7c1b93993ca46175dba1710994bd14b87e8fe1bc2",
+  "groups": {
+    "manual": {
+      "n": 4,
+      "correct": 3,
+      "active_seconds": 96.13359999978542,
+      "field_changes": 8,
+      "submit_touches": 4,
+      "system_wait_seconds": 0,
+      "revisions_to_populated_fields": 0
+    },
+    "assisted": {
+      "n": 4,
+      "correct": 4,
+      "active_seconds": 64.20429999995233,
+      "field_changes": 0,
+      "submit_touches": 4,
+      "system_wait_seconds": 0.034299999952316286,
+      "revisions_to_populated_fields": 0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "manual-p1-1",
+      "pair": 1,
+      "mode": "manual",
+      "correct": true,
+      "active_seconds": 47.79869999992847,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0,
+      "revisions_to_populated_fields": 0
+    },
+    {
+      "case_id": "manual-p1-2",
+      "pair": 1,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 26.32989999997616,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0.012799999952316284,
+      "revisions_to_populated_fields": 0
+    },
+    {
+      "case_id": "manual-p2-1",
+      "pair": 2,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 13.086399999976159,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0.009300000071525573,
+      "revisions_to_populated_fields": 0
+    },
+    {
+      "case_id": "manual-p2-2",
+      "pair": 2,
+      "mode": "manual",
+      "correct": true,
+      "active_seconds": 19.800399999976158,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0,
+      "revisions_to_populated_fields": 0
+    },
+    {
+      "case_id": "manual-p3-1",
+      "pair": 3,
+      "mode": "manual",
+      "correct": false,
+      "active_seconds": 19.320199999928473,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0,
+      "revisions_to_populated_fields": 0
+    },
+    {
+      "case_id": "manual-p3-2",
+      "pair": 3,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 15.939,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0.0055,
+      "revisions_to_populated_fields": 0
+    },
+    {
+      "case_id": "manual-p4-1",
+      "pair": 4,
+      "mode": "assisted",
+      "correct": true,
+      "active_seconds": 8.849,
+      "paused_seconds": 0,
+      "field_changes": 0,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0.006699999928474427,
+      "revisions_to_populated_fields": 0
+    },
+    {
+      "case_id": "manual-p4-2",
+      "pair": 4,
+      "mode": "manual",
+      "correct": true,
+      "active_seconds": 9.214299999952317,
+      "paused_seconds": 0,
+      "field_changes": 2,
+      "submit_touches": 1,
+      "changed_assisted_answer": false,
+      "system_wait_seconds": 0,
+      "revisions_to_populated_fields": 0
+    }
+  ],
+  "scope": "Observed live local deterministic due-review worksheet; browser request waiting verified against native core receipts.",
+  "limitations": [
+    "User attestation still required; receipt consistency does not prove human authorship.",
+    "Repeated four-pair synthetic tasks, one operator; learning/carry-over possible. No live model, connected CRM or customer ROI claim.",
+    "Active interval includes reading/page overhead. Field revisions are not automatically successful corrections."
+  ],
+  "source_sha256": "20250ed3e0770aba581791d05193b0bf937a8973db6cdac20f2be47ae0fa865b",
+  "operator_attestation": "User confirmed completion and provided exact export path on 2026-10-10.",
+  "source_local_file": "local/phase-6/sales-live-manual-session-6d581f29-a3b9-4a66-978e-490e71c13f16.json",
+  "server_receipts": [
+    {
+      "case_id": "manual-p1-2",
+      "receipt_sha256": "050e6be58cb17ea9ffc2aa6c5fc4863bf89f9bd5aad3624aa531d71d5c832e49"
+    },
+    {
+      "case_id": "manual-p2-1",
+      "receipt_sha256": "b2c67816f825387d67f6932c81607cf41dcec34387e301c054440a5c844874cd"
+    },
+    {
+      "case_id": "manual-p3-2",
+      "receipt_sha256": "f8f17273bbfaf8795aeba866c7f02923891fb10617572e381330a3b8f19edbf0"
+    },
+    {
+      "case_id": "manual-p4-1",
+      "receipt_sha256": "dd555f3bb907c0b8e8fcd029bd83f02a6f1bae9065d08a9b7d0ee784c9a9cdd2"
+    }
+  ],
+  "incorrect_answers": [
+    {
+      "case_id": "manual-p3-1",
+      "answer": {
+        "eligible": true,
+        "reason": "due_and_approved"
+      },
+      "expected": {
+        "eligible": false,
+        "reason": "already_contacted"
+      }
+    }
+  ],
+  "post_submission_rework": "Not part of this decision-review task; final answer correctness reported without inventing correction time."
+}

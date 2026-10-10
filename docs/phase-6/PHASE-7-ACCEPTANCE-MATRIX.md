@@ -1,6 +1,6 @@
 # Connected acceptance handoff (not executed)
 
-Phase 6 preparation only. Candidate release freeze remains pending full quality/manual/provider audit. No row below is connected-validated. Existing native tests exercise the shared business core with SQLite and boundary doubles.
+Phase 6 preparation only. Native evaluation candidate is frozen in candidate-freeze.json under OpenAI-only V1; connected release is not accepted. No row below is connected-validated. Existing native tests exercise the shared business core with SQLite and boundary doubles.
 
 | Acceptance | Existing native evidence | Required Phase 7 observation |
 | --- | --- | --- |
@@ -16,4 +16,4 @@ Phase 6 preparation only. Candidate release freeze remains pending full quality/
 
 Before any Phase 7 launch: inventory active workloads read-only, choose isolated project name/ports/data and explicit session resource limits. No global cleanup, stopping sibling services or shared volumes. Run components sequentially where possible; final vertical slice still requires its minimum components simultaneously. Missing resources remain blocked rather than replaced with mocks or cloud provisioning.
 
-Open dependencies for OpenAI-only V1: observed waiting-time comparison, PostgreSQL/connector composition, Microsoft 365 and Odoo sandbox mappings. Local Qwen3 inference was evaluated and rejected (0/20); the first single-operator cached worksheet session is recorded. Neither result establishes connected acceptance. These dependencies are not satisfied by this matrix.
+Open dependencies for OpenAI-only V1: PostgreSQL/connector composition, Microsoft 365 and Odoo sandbox mappings. Local Qwen3 inference was evaluated and rejected (0/20); both single-operator worksheet sessions are recorded, including live local core waiting. Neither result establishes connected acceptance. These dependencies are not satisfied by this matrix.

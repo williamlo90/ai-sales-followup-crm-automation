@@ -72,13 +72,13 @@ Evidence native: [Phase 5 acceptance](docs/evidence/phase-5-acceptance.md), 2026
 ## Phase 6 — Kualitas dan manfaat sebelum Docker
 
 - [x] Bekukan dev/regression dan held-out berdasarkan thread/account families; expected outcomes berasal dari source dan rules. Bukti: docs/phase-6/dataset-freeze.json (20+20 synthetic families, agent-reviewed).
-- [ ] Ukur account/deal linkage, commitment extraction/revisions, proposal correctness, draft factuality, abstention dan policy compliance.
+- [x] Ukur account/deal linkage, commitment extraction/revisions, proposal correctness, draft factuality, abstention dan policy compliance.
 - [x] Validasi OpenAI sebagai satu-satunya hosted provider V1: development20/20 dan held-out20/20 (docs/evidence/phase-6-heldout-luna.json). Sesuai keputusan user2026-10-10, perbandingan Claude/Grok opsional, bukan gate V1; adapter implemented belum berarti API-validated.
 - [x] Evaluasi local profile nyata; Qwen3 1.7B/Ollama0.40.2 diuji pada20 development families dan gagal kualitas (0/20), tidak dipilih. Bukti: docs/evidence/phase-6-local-qwen3.json; guardrail bukan kelulusan model.
-- [ ] Bandingkan direct CRM/manual dan assisted pada tugas setara: correctness, corrections, manual touches, active work dan waiting time. Single-operator mandiri boleh, dilabeli sesuai lingkup; bukan customer ROI.
-- [ ] Tetapkan workload/SLO/resource budget, freeze candidate dan matrix acceptance n8n/Graph/Odoo/Docker. Jangan melaporkan p95 engine dari mock runner.
+- [x] Bandingkan direct CRM/manual dan assisted pada tugas setara: correctness, corrections, manual touches, active work dan waiting time. Single-operator mandiri boleh, dilabeli sesuai lingkup; bukan customer ROI.
+- [x] Tetapkan workload/SLO/resource budget, freeze candidate dan matrix acceptance n8n/Graph/Odoo/Docker. Jangan melaporkan p95 engine dari mock runner.
 
-**Gate:** kualitas native/domain memenuhi rubric scope; dependency/live-provider gaps tetap terlihat. Release menunggu connected/container acceptance Phase 7.
+**Gate:** selesai2026-10-10 untuk native/domain OpenAI-only V1. Bukti dan hash: docs/phase-6/candidate-freeze.json; audit: docs/phase-6/COMPLETION-AUDIT.md. Manual baseline berupa worksheet sintetis satu operator dengan waktu tunggu core lokal. Release tetap menunggu connected/container acceptance Phase 7.
 
 ## Phase 7 — Docker, n8n dan connected acceptance nyata
 

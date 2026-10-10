@@ -308,3 +308,10 @@ Six new replay tests passed in0.55s via `.venv/Scripts/python.exe -m pytest test
 ## User-approved V1 scope decision - 2026-10-10
 
 User approved OpenAI as the sole V1 hosted provider; Claude/Grok evaluation is optional, not a remaining V1 blocker. Existing adapters are implemented, not live API-validated. Updated Phase6 checklist, protocol, completion audit and Phase7 handoff; historical evidence is unchanged. Remaining Phase6 work: observed waiting-time session using prepared live worksheet, then final audit/candidate freeze. No new model calls, fees or Phase7 execution. Heartbeat remains paused.
+
+
+## Phase6 completion - approved OpenAI-only V1, 2026-10-10
+
+User supplied actual live worksheet export6d581f29-a3b9-4a66-978e-490e71c13f16. Preserved raw SHA25620250ed3e0770aba581791d05193b0bf937a8973db6cdac20f2be47ae0fa865b. score_live_manual_review validated frozen fixture/order/time/answers and four authoritative receipts. Manual3/4 correct,96.1336s active,8 initial field entries; assisted4/4,64.2043s active,0 edits,0.0343s total HTTP/core wait. Four submissions each. Manual already-contacted case answered eligible; no correction time invented. User-attested repeated synthetic worksheet, not customer ROI or AI/CRM latency. Evidence phase-6-live-manual-comparison.json. Owned server94107 stopped after export.
+
+Final pytest274 passed11.30s (existing Starlette warning); final offline replay40/40 unchanged. Read-only ledger:68 calls,610983microUSD committed of1000000cap,pending0; no new calls. candidate-freeze.json pins source/evidence hashes and selected scope. Completion audit closes Phase6 native gates after user-approved Claude/Grok deferral. PostgreSQL runtime and connector composition remain Phase7 prerequisites; matrix explicitly preserves connected/engine/send/load/operations acceptance. No Phase7 execution, email, cloud or container work. Heartbeat remains paused. Other portfolio edits left untouched.

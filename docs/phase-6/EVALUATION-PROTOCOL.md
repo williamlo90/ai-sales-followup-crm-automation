@@ -1,6 +1,6 @@
 # Phase 6 evaluation protocol
 
-Status: datasets frozen; real OpenAI development and held-out evaluation completed. Local profile evaluated and rejected. First human worksheet session recorded; live waiting remains pending. User approved OpenAI-only V1 on2026-10-10; Claude/Grok comparison is optional and does not block V1. Existing phase-0 acceptance thresholds remain unchanged. See COMPLETION-AUDIT.md for gate status.
+Status: datasets frozen; real OpenAI development and held-out evaluation completed. Local profile evaluated and rejected. First human worksheet session recorded; local core waiting is measured in the completed follow-up worksheet session. User approved OpenAI-only V1 on2026-10-10; Claude/Grok comparison is optional and does not block V1. Existing phase-0 acceptance thresholds remain unchanged. See COMPLETION-AUDIT.md for gate status.
 
 ## Dataset and freeze
 
@@ -31,6 +31,6 @@ Every result stores dataset hash/split, code revision, provider/model snapshot, 
 
 ## Manual comparison and workload
 
-Same frozen task distribution; one operator, counterbalanced manual/assisted order. Record correctness, edits, touches, active seconds and waiting seconds separately with observed timestamps. Do not synthesize manual timing or infer customer ROI. One user-attested four-pair worksheet session is now recorded in docs/evidence/phase-6-manual-comparison.json. Cached assistance means live system wait remains unmeasured; do not combine separate API timing with operator timing as if paired.
+Same frozen task distribution; one operator, counterbalanced manual/assisted order. Record correctness, edits, touches, active seconds and waiting seconds separately with observed timestamps. Do not synthesize manual timing or infer customer ROI. One user-attested four-pair worksheet session is now recorded in docs/evidence/phase-6-manual-comparison.json. The initial cached session has unmeasured wait. A separate follow-up in phase-6-live-manual-comparison.json measures actual local core requests; do not combine independent API timing with operator timing as if paired.
 
 Native domain workload target remains p95 <=500ms over 100 declared operations. Run separately from model calls, publish machine, scenario mix, sample count and error rate. No n8n/connected latency claim from this harness. Freeze candidate only after declared targets pass and gaps are explicit; no Phase 7 execution here.
