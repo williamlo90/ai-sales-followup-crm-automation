@@ -200,3 +200,14 @@ Measured native workload: scripts/native_workload.py, 100 calls (20 each prepare
 Ran three additional real OpenAI development cases after freeze: reschedule dev-v2-03, cancellation dev-v2-19, ambiguity dev-v2-16. All automated extraction checks passed; actual core produced one revised proposal, no cancelled proposal, and ambiguous linkage review respectively, with zero approvals/operations. Agent inspected response and generated draft against source/history. Four total Phase 6 API calls including earlier pilot; estimated cumulative usage cost rounded USD0.001474, conservative reserved USD0.042805, reservable balance USD0.957195. No held-out API calls yet.
 
 Next: run remaining frozen development then held-out profiles, aggregate field and semantic review results; manual comparison and Claude/Grok/local evaluation still require external inputs. Goal active, heartbeat PAUSED. No connected effects or Phase 7 execution.
+
+
+## Phase 6 checkpoint - complete development baseline and diagnosed failures
+
+Completed frozen development baseline (20 cases): 11 automated extraction passes, 9 model_output_invalid failures, all retained in denominator. Evidence docs/evidence/phase-6-development-v1.json. Held-out remains unused; gate failed, not downgraded. Paid result files remain ignored/local. Original pre-freeze pilot is separate from this denominator.
+
+Added opt-in response capture before schema validation for evaluation only; normal app capture remains off. A diagnostic development response incorrectly requested owner/metadata already in source. Revised shared prompt to extract-v2 with explicit ID/revision initialization, source field mapping, timestamp/owner rules, history/cancellation and review consistency. Provider/runner tests: 27 passed.
+
+Three bounded v2 development probes produced one pass and two failures: dev-v2-05 abstained despite supported named owner/date, dev-v2-10 emitted ready plus nonempty missing_information and failed the existing consistency validator. Raw diagnostic evidence now preserved, no relaxed schema or hidden repair. Further development tuning/model comparison is needed before held-out; no final quality gate claimed.
+
+Persistent ledger: 25 calls including baseline/pilots, USD0.268028 conservative reservations, USD0.731972 reservable. Known-usage estimated total USD0.005889 is incomplete because nine earlier invalid responses lost usage; their full reservations remain charged against cap. No extra secret access, external writes, email or Docker. Goal active; heartbeat PAUSED.

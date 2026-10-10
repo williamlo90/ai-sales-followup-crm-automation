@@ -1,0 +1,28 @@
+{
+  "automated_extraction": {
+    "correct": 11,
+    "total": 20
+  },
+  "review_cases": {
+    "correct": 3,
+    "total": 9
+  },
+  "missing_results": 0,
+  "semantic_quality_pass": null,
+  "note": "Missing/provider-error cases remain in denominator; factuality and proposal quality require separate evidence.",
+  "profile": "extract-v1 / frozen development v2",
+  "dataset_sha256": "fa7289ca5857cbc8eb69e557430f79e56a37190ecabcc7895f32319f672e03d4",
+  "failed_cases": [
+    "dev-v2-05",
+    "dev-v2-06",
+    "dev-v2-08",
+    "dev-v2-10",
+    "dev-v2-13",
+    "dev-v2-14",
+    "dev-v2-15",
+    "dev-v2-17",
+    "dev-v2-20"
+  ],
+  "status": "failed-targets",
+  "heldout_used": false
+}
