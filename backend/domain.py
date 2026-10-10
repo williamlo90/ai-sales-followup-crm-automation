@@ -43,7 +43,7 @@ class SalesService:
         # Ingestion is a separate privileged adapter boundary, never an LLM tool.
         self.scope(actor, deal_id, {"worker"})
         payload = data.model_dump(mode="json")
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             old = conn.execute("SELECT * FROM deals WHERE tenant=? AND id=?", (actor.tenant_id, deal_id)).fetchone()
             if old:
                 if data.version == old["version"] and canonical(payload) == old["payload"]:
@@ -56,7 +56,7 @@ class SalesService:
         return payload
 
     def put_source(self, actor: Actor, deal_id: str, data: SourceInput):
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             return self.put_source_in_transaction(conn,actor,deal_id,data)
 
     def put_source_in_transaction(self,conn,actor,deal_id,data):
@@ -126,7 +126,7 @@ class SalesService:
         self.scope(actor, data.deal_id, {"operator", "worker"})
         payload = data.model_dump(mode="json")
         # Recipient comes only from the scoped CRM snapshot, not client input.
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             deal = self.validate(conn, actor, payload)
             payload["recipient"] = deal["recipient"]
             payload["account_id"] = deal["account_id"]
@@ -177,20 +177,20 @@ class SalesService:
         return result
 
     def get(self, actor, ident):
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             return self.view(conn, actor, self.row(conn, actor, ident))
 
     def list(self, actor):
         if actor.role == "administrator":
             raise DomainError("role_not_permitted", 403)
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             rows = conn.execute("SELECT * FROM proposals WHERE tenant=? ORDER BY created_at DESC", (actor.tenant_id,)).fetchall()
             return [self.view(conn, actor, row) for row in rows if row["deal_id"] in actor.deal_ids][:100]
 
     def approve(self, actor: Actor, ident: str, data: ApprovalInput):
         if actor.role != "approver":
             raise DomainError("role_not_permitted", 403)
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             row = self.row(conn, actor, ident)
             if row["actor_id"] == actor.id:
                 raise DomainError("self_approval", 403)
@@ -208,14 +208,14 @@ class SalesService:
     def match(self, actor, account_id, explicit_deal_id=None):
         if actor.role not in {"operator","worker","approver","auditor"}:
             raise DomainError("role_not_permitted",403)
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             rows=conn.execute("SELECT id,payload FROM deals WHERE tenant=?",(actor.tenant_id,)).fetchall()
         candidates=[{**json.loads(row["payload"]),"id":row["id"]} for row in rows if row["id"] in actor.deal_ids]
         return match_deal(candidates,account_id,explicit_deal_id)
 
     def context(self,actor,deal_id):
         self.scope(actor,deal_id,{'operator','worker','approver','auditor'})
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             row=conn.execute('SELECT payload FROM deals WHERE tenant=? AND id=?',(actor.tenant_id,deal_id)).fetchone()
             if not row:raise DomainError('record_not_found',404)
             sources=[json.loads(r['payload']) for r in conn.execute(
@@ -226,7 +226,7 @@ class SalesService:
 
     def commitment(self, actor, deal_id, data: Commitment):
         self.scope(actor,deal_id,{"operator","worker"})
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             source=conn.execute("SELECT * FROM sources WHERE tenant=? AND deal_id=? AND id=?",
                                 (actor.tenant_id,deal_id,data.evidence.source_id)).fetchone()
             if not source or source["revision"]!=data.evidence.revision:
@@ -249,7 +249,7 @@ class SalesService:
 
     def commitments(self,actor,deal_id):
         self.scope(actor,deal_id,{"operator","worker","approver","auditor"})
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             return [json.loads(row["payload"]) for row in conn.execute(
                 "SELECT payload FROM commitments WHERE tenant=? AND deal_id=? ORDER BY id,revision",
                 (actor.tenant_id,deal_id))]
@@ -257,7 +257,7 @@ class SalesService:
     def due(self,actor,ident,kind):
         if kind not in {"crm","email"}:
             raise DomainError("invalid_operation",422)
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             row=self.row(conn,actor,ident)
             view=self.view(conn,actor,row)
             payload=view["payload"]
@@ -308,7 +308,7 @@ class SalesService:
 
     def prepare_commitment(self,actor,deal_id,data: PrepareCommitmentInput):
         self.scope(actor,deal_id,{"operator","worker"})
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             row=conn.execute("SELECT payload FROM commitments WHERE tenant=? AND deal_id=? AND id=? AND revision=?",
                              (actor.tenant_id,deal_id,data.commitment.id,data.commitment.revision)).fetchone()
             if not row:
@@ -321,7 +321,7 @@ class SalesService:
             due_at=commitment.due_at,draft=f'Thank you for the update: "{commitment.evidence.quote}"\n\nPlease confirm the next step: {commitment.description}.'))
 
     def operation(self,actor,ident):
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             row=conn.execute("SELECT * FROM operations WHERE tenant=? AND id=?",(actor.tenant_id,ident)).fetchone()
             if not row:
                 raise DomainError("record_not_found",404)
@@ -333,7 +333,7 @@ class SalesService:
             return result
 
     def proposal_operations(self,actor,ident):
-        with self.store.connect() as conn:
+        with self.store.connect(actor) as conn:
             self.row(conn,actor,ident)
             ids=[r["id"] for r in conn.execute("SELECT id FROM operations WHERE tenant=? AND proposal_id=?",(actor.tenant_id,ident))]
         return [self.operation(actor,op) for op in ids]

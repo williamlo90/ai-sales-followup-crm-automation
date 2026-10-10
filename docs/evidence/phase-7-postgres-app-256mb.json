@@ -1,0 +1,100 @@
+{
+  "name": "sales-phase7-pg256-20261010131904",
+  "limit_bytes": 268435456,
+  "stop_free_bytes": 805306368,
+  "samples": [
+    {
+      "stage": "startup",
+      "free_bytes": 1775570944
+    },
+    {
+      "stage": "startup",
+      "free_bytes": 1773821952
+    },
+    {
+      "stage": "startup",
+      "free_bytes": 1774620672
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1770278912
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1746063360
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1743966208
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1730424832
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1739182080
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1738846208
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1717227520
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1693265920
+    },
+    {
+      "stage": "probe",
+      "free_bytes": 1701670912
+    }
+  ],
+  "other_running_before": [
+    "e655f0b7f646|invoice-erpnext-frontend-1",
+    "d6e512d85671|invoice-erpnext-scheduler-1",
+    "71623c8bcfa8|invoice-erpnext-websocket-1"
+  ],
+  "container_id": "7becf3a818cffeee22cd5bc1702150def9aa7077debdf477874c870fe93bff56",
+  "probe_exit_code": 0,
+  "probe_result": {
+    "scope": "Real PostgreSQL migration/session plus actual FastAPI ASGI application persistence, approval and concurrency; no external effects",
+    "server": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "checks": [
+      "all_seven_migrations_and_replay",
+      "unscoped_runtime_sees_zero_rows",
+      "tenant_read_isolation",
+      "cross_tenant_write_denied",
+      "transaction_rollback_and_reconnect",
+      "app_concurrent_prepare_8_requests_one_proposal_and_audit",
+      "app_concurrent_approval_8_requests_one_approval_and_audit",
+      "app_role_and_tenant_access_denied",
+      "app_fresh_process_persistence_separate_crm_approval",
+      "app_source_revision_invalidates_approval",
+      "app_no_external_operations",
+      "migration_checksum_drift_denied"
+    ],
+    "passed": 12
+  },
+  "container_stats": "{\"BlockIO\":\"0B / 0B\",\"CPUPerc\":\"0.08%\",\"Container\":\"7becf3a818cffeee22cd5bc1702150def9aa7077debdf477874c870fe93bff56\",\"ID\":\"7becf3a818cf\",\"MemPerc\":\"10.04%\",\"MemUsage\":\"25.71MiB / 256MiB\",\"Name\":\"sales-phase7-pg256-20261010131904\",\"NetIO\":\"140kB / 152kB\",\"PIDs\":\"6\"}",
+  "oom_killed": false,
+  "actual_memory_limit": 268435456,
+  "actual_swap_limit": 268435456,
+  "status": "passed",
+  "container_stopped": true,
+  "other_running_after": [
+    "e655f0b7f646|invoice-erpnext-frontend-1",
+    "d6e512d85671|invoice-erpnext-scheduler-1",
+    "71623c8bcfa8|invoice-erpnext-websocket-1"
+  ],
+  "min_free_bytes": 1693265920,
+  "source_sha256": "e7cdabc2849b0c9a309e11c6b04b8edc703adc9af7995860aa9f120cb5a3b226",
+  "limitations": [
+    "ASGI TestClient transport, real PostgreSQL; no HTTP deployment/load claim.",
+    "Restart check used a fresh Python interpreter, not PostgreSQL server reboot.",
+    "Container memory is a post-probe snapshot, not peak; host RAM sampled every250ms during probe.",
+    "Workflow/connector/end-to-end Phase7 acceptance remains separate."
+  ]
+}

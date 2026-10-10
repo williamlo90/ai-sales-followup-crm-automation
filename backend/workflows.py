@@ -28,7 +28,7 @@ class WorkflowService:
         self.worker(actor);self.sales.scope(actor,data.deal_id)
         payload=data.model_dump(mode='json')
         ident=hashlib.sha256(canonical(payload).encode()).hexdigest()
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             if not conn.execute('SELECT 1 FROM deals WHERE tenant=? AND id=?',(actor.tenant_id,data.deal_id)).fetchone():raise DomainError('record_not_found',404)
             old=conn.execute('SELECT worker_id FROM workflow_jobs WHERE tenant=? AND id=?',(actor.tenant_id,ident)).fetchone()
             if old and old['worker_id']!=actor.id:raise DomainError('job_already_owned')
@@ -43,7 +43,7 @@ class WorkflowService:
         self.worker(worker)
         if worker.tenant_id!=actor.tenant_id:raise DomainError('worker_scope_mismatch',403)
         if kind not in {'crm','email'}:raise DomainError('invalid_operation',422)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             proposal=self.sales.row(conn,actor,proposal_id)
             self.sales.freshness(conn,actor,proposal)
             if proposal['actor_id']!=actor.id:raise DomainError('proposal_owner_required',403)
@@ -63,7 +63,7 @@ class WorkflowService:
         return self.get(actor,ident)
 
     def get(self,actor,ident):
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             row=conn.execute('SELECT * FROM workflow_jobs WHERE tenant=? AND id=?',(actor.tenant_id,ident)).fetchone()
             if not row:raise DomainError('record_not_found',404)
             self.sales.scope(actor,row['deal_id'],{'worker','operator','approver','auditor'})
@@ -71,13 +71,13 @@ class WorkflowService:
 
     def list(self,actor):
         if actor.role not in {'worker','operator','approver','auditor'}:raise DomainError('role_not_permitted',403)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             rows=conn.execute('SELECT id,deal_id FROM workflow_jobs WHERE tenant=? ORDER BY next_at DESC,id LIMIT 200',(actor.tenant_id,)).fetchall()
         return [self.get(actor,r['id']) for r in rows if r['deal_id'] in actor.deal_ids]
 
     def recover(self,actor,ident,action):
         if actor.role not in {'operator','worker'}:raise DomainError('role_not_permitted',403)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             row=conn.execute('SELECT * FROM workflow_jobs WHERE tenant=? AND id=?',(actor.tenant_id,ident)).fetchone()
             if not row:raise DomainError('record_not_found',404)
             self.sales.scope(actor,row['deal_id'])
@@ -106,7 +106,7 @@ class WorkflowService:
     def discover_due(self,actor,kind='email',limit=50):
         self.worker(actor)
         if kind not in {'crm','email'} or type(limit) is not int or not 1<=limit<=100:raise DomainError('invalid_discovery',422)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             scan=conn.execute('SELECT cursor FROM workflow_scans WHERE tenant=? AND worker_id=? AND kind=?',(actor.tenant_id,actor.id,kind)).fetchone()
             cursor=json.loads(scan['cursor']) if scan else ['', '']
             rows=conn.execute('SELECT c.deal_id,c.id,c.revision,c.payload,d.payload AS deal FROM commitments c JOIN deals d ON d.tenant=c.tenant AND d.id=c.deal_id WHERE c.tenant=? AND (c.deal_id>? OR (c.deal_id=? AND c.id>?)) AND NOT EXISTS(SELECT 1 FROM commitments newer WHERE newer.tenant=c.tenant AND newer.deal_id=c.deal_id AND newer.id=c.id AND newer.revision>c.revision) ORDER BY c.deal_id,c.id LIMIT ?',
@@ -125,7 +125,7 @@ class WorkflowService:
             queued.append(job['id'])
         # Advance only after every enqueue succeeded. Crash replay is idempotent.
         next_cursor=[rows[-1]['deal_id'],rows[-1]['id']] if len(rows)==limit else ['', '']
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             conn.execute('INSERT INTO workflow_scans VALUES(?,?,?,?) ON CONFLICT(tenant,worker_id,kind) DO UPDATE SET cursor=excluded.cursor',
                 (actor.tenant_id,actor.id,kind,canonical(next_cursor)))
         return {'job_ids':queued,'scanned':len(rows),'cycle_complete':len(rows)<limit}
@@ -135,7 +135,7 @@ class WorkflowService:
         if journey not in {'intake','due'}:raise DomainError('invalid_journey',422)
         if journey=='due':self.discover_due(actor)
         now=self.sales.clock();lease=str(uuid4())
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             rows=conn.execute("SELECT * FROM workflow_jobs WHERE tenant=? AND worker_id=? AND journey=? AND status NOT IN ('completed','review') AND next_at<=? AND (lease_until IS NULL OR lease_until<=?) ORDER BY next_at,id LIMIT 100",
                 (actor.tenant_id,actor.id,journey,now.isoformat(),now.isoformat())).fetchall()
             row=next((r for r in rows if r['deal_id'] in actor.deal_ids),None)
@@ -148,7 +148,7 @@ class WorkflowService:
         except DomainError as exc:
             result={'status':'review','error_code':exc.code}
         # Unexpected crashes leave a recoverable lease; never infer completion.
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             updated=conn.execute('UPDATE workflow_jobs SET status=?,proposal_id=?,operation_id=?,error_code=?,next_at=?,lease_id=NULL,lease_until=NULL WHERE tenant=? AND id=? AND lease_id=?',
                 (result['status'],result.get('proposal_id',job['proposal_id']),result.get('operation_id',job['operation_id']),result.get('error_code'),
                  (self.sales.clock()+timedelta(seconds=60)).isoformat(),actor.tenant_id,job['id'],lease))

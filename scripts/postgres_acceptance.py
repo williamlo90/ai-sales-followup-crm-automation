@@ -15,7 +15,7 @@ from backend.postgres_session import PostgresSession, PostgresSessionError
 from scripts.migrations import apply
 
 
-def probe(dsn):
+def probe(dsn, application=False):
     suffix = uuid4().hex
     schema = 'sales_probe_' + suffix
     role = 'sales_probe_' + suffix
@@ -70,6 +70,11 @@ def probe(dsn):
             with session.transaction(tenants[0]) as conn:
                 assert conn.execute("SELECT count(*) FROM deals WHERE id='rollback'").fetchone()[0] == 0
             passed.append('transaction_rollback_and_reconnect')
+            if application:
+                from psycopg.conninfo import make_conninfo
+                from scripts.postgres_app_acceptance import check_application
+                runtime_dsn = make_conninfo(dsn, user=role, password=password, options=f'-c search_path={schema}')
+                passed.extend(check_application(owner, runtime_dsn, tenants))
             owner.execute("UPDATE migration_checksums SET sha256=%s WHERE version='001_foundation'", ('0'*64,))
             try:
                 apply(owner)
@@ -78,7 +83,7 @@ def probe(dsn):
                 passed.append('migration_checksum_drift_denied')
             else:
                 raise AssertionError('Checksum drift accepted')
-            return {'scope':'Real PostgreSQL migrations and session/RLS only; application repository not yet wired',
+            return {'scope':('Real PostgreSQL plus FastAPI/shared-core persistence, approval and concurrent requests; no connected effects' if application else 'Real PostgreSQL migrations and session/RLS only'),
                     'server':version, 'checks':passed, 'passed':len(passed)}
         finally:
             # Names are generated in this function, never from user input. These
@@ -92,6 +97,7 @@ def probe(dsn):
 
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--application', action='store_true')
     args = parser.parse_args()
     if os.environ.get('SALES_PHASE7_ACCEPTANCE') != 'enabled':
         raise SystemExit('Explicit SALES_PHASE7_ACCEPTANCE=enabled required')
@@ -100,7 +106,7 @@ def main():
     # Reserve output before touching the database; preserve failed runs as failed.
     with args.output.open('x') as out:
         try:
-            result = probe(dsn)
+            result = probe(dsn, args.application)
         except Exception as exc:
             json.dump({'status':'failed','error_type':type(exc).__name__},out)
             raise SystemExit('PostgreSQL probe failed; output contains sanitized status') from None

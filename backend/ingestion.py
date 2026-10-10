@@ -22,7 +22,7 @@ class GraphIngestion:
         self.stream=hashlib.sha256(client.path.encode()).hexdigest()
 
     def state(self):
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             row=conn.execute('SELECT * FROM ingestion_streams WHERE tenant=? AND stream=?',(self.actor.tenant_id,self.stream)).fetchone()
             return (row['generation'],json.loads(row['checkpoint'])) if row else (0,None)
 
@@ -50,7 +50,7 @@ class GraphIngestion:
         self.client.validate_link(checkpoint.get('url'))
         if not isinstance(page.get('items'),list) or len(page['items'])>1000:raise DomainError('invalid_ingestion_page',422)
         changed=0
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             row=conn.execute('SELECT generation FROM ingestion_streams WHERE tenant=? AND stream=?',(self.actor.tenant_id,self.stream)).fetchone()
             if (row['generation'] if row else 0)!=generation:raise DomainError('checkpoint_changed')
             for item in page['items']:

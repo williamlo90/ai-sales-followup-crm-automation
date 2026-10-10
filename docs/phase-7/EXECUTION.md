@@ -1,6 +1,6 @@
 # Phase 7 execution checkpoint
 
-Status: six real PostgreSQL migration/session probes passed under256MiB on2026-10-10. Application repository/composition and full Phase7A acceptance remain pending. Earlier inventory below is historical.
+Status: six real PostgreSQL migration/session probes passed under256MiB on2026-10-10. Application PostgreSQL wiring and focused approval/concurrency checks subsequently passed; full Phase7A remains pending. Earlier inventory below is historical.
 
 User authorized Phase7 after Phase6 completion. Initial Docker daemon unavailable, host RAM1.85GiB free. User freed RAM; recheck5,311,408KiB (~5.1GiB). Started Docker Desktop hidden; after startup three invoice-erpnext containers were observed running. They were not stopped or modified. Host free memory then1,462,352KiB and latest1,684,436KiB, below the4GiB pre-launch headroom gate. No sales container was launched. Port5444 was unoccupied; C: free460GB.
 
@@ -22,3 +22,10 @@ User explicitly approved256MB and RAM monitoring without touching other containe
 Six real checks passed: all7 migrations plus replay, unscoped runtime sees no rows, two-tenant read isolation, cross-tenant write denied, rollback/reconnect, changed migration checksum rejected. Actual database PostgreSQL17.11. Host RAM sampled minimum1,256,431,616bytes (~1.17GiB). Post-probe Docker usage55.7MiB/256MiB; not a measured peak. No OOM kill. Owned container stopped after probe. Three sibling ERPNext container IDs remained running unchanged. Dedicated stopped container/volume and secret remain local; no volume deletion. Evidence docs/evidence/phase-7-postgres-256mb.json; ignored raw runner local/phase7_pg256_run.py.
 
 This supersedes the earlier4GiB launch gate for this bounded single-database probe only. It does not establish full-stack capacity. Next: implement explicit PostgreSQL repository/schema mapping and authenticated tenant/actor mapping, wire application, test persistence/approval/concurrency under real database. No complete Phase7A or end-to-end claim.
+
+
+## Application PostgreSQL wiring and focused acceptance
+
+Added PostgresStore and explicit SALES_STORAGE=postgresql app-factory configuration, preserving one shared domain implementation. All business callers now pass authenticated actor to transaction boundary. Explicit column/type/placeholder mapping, database actor active/role check, tenant-local RLS context and per-tenant advisory transaction lock support durable read-before-write decisions. No model/effect enabled. Runtime instructions in POSTGRES-RUNTIME.md.
+
+Real test in fresh isolated256MiB container passed12 combined checks.8 concurrent prepare requests ->1 proposal and1 audit;8 concurrent CRM approval requests ->1 approval and1 audit. Operator approval/cross-tenant reads denied; fresh interpreter reconstructed app and read durable approval; source revision invalidated old approval; zero operations. Actual PostgreSQL17.11; ASGI transport, not deployed HTTP load. Evidence phase-7-postgres-app-256mb.json. Container post-probe25.71MiB (not peak); host minimum sampled1,693,265,920bytes (~1.58GiB), no OOM. Owned container stopped; same three sibling IDs remain running. Test schema/role cleaned up, dedicated stopped container/volume retained.

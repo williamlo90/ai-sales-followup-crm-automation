@@ -28,7 +28,7 @@ class ExecutionService:
             raise DomainError("invalid_operation",422)
         if not self.enabled:
             raise DomainError("execution_disabled",403)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             proposal = self.sales.row(conn, actor, proposal_id)
             self.sales.scope(actor, proposal["deal_id"], {"operator","worker"})
             self.sales.freshness(conn,actor,proposal)
@@ -60,7 +60,7 @@ class ExecutionService:
         return self.record(actor, operation["id"], observed)
 
     def record(self,actor,ident,observed):
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             operation = self.load(conn,actor,ident)
             # A late timeout/result must not regress a successful reconciliation.
             if operation["status"] in {"verified","accepted"}:
@@ -83,7 +83,7 @@ class ExecutionService:
     def reconcile(self,actor,ident):
         if actor.role not in {"operator","worker"}:
             raise DomainError("role_not_permitted",403)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             operation = self.load(conn,actor,ident)
         # Observation remains possible after a proposal expires or customer opts out.
         try:

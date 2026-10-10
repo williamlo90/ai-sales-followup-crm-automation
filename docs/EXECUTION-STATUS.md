@@ -324,3 +324,12 @@ User authorized continuation. See docs/phase-7/EXECUTION.md for resource invento
 ## Phase7 PostgreSQL256MiB actual probe passed
 
 User approved bounded256MB database session with RAM monitoring. Cached PostgreSQL17.11 digest used in isolated container/database/volume. Six real migration/session checks passed; all7 migrations applied/replayed, RLS absent-context/read/write, rollback and checksum drift checked. Evidence docs/evidence/phase-7-postgres-256mb.json. Lowest sampled host RAM1.17GiB, post-probe container55.7MiB (not peak), no OOM. Owned container stopped; three sibling ERPNext IDs unchanged/running. No image pull/model/connected external effects. Full app PostgreSQL repository wiring remains next; Phase7A not complete.
+
+
+## Phase7 application PostgreSQL slice passed within256MiB
+
+User authorized application wiring, persistence/approval/concurrency,256MB and sibling isolation. Implemented backend/postgres_store.py plus SALES_STORAGE=postgresql factory selection; all domain/skill/workflow/ingestion/execution/binding transactions pass authenticated actors. Shared business core unchanged; explicit schema/SQL/type mapping and per-tenant transaction locks. Runtime database role checks actor active/role, RLS tenant context, no implicit SQLite fallback or migrations. Documentation docs/phase-7/POSTGRES-RUNTIME.md.
+
+Application acceptance uses actual FastAPI factory via ASGI TestClient against real PostgreSQL17.11.12 checks passed including7 migrations/replay, RLS/rollback/checksum,8 concurrent proposals ->1 record+audit,8 concurrent approvals ->1 CRM approval+audit, role/tenant denial, new-interpreter persistence, stale-source invalidation and zero dispatched operations. Evidence docs/evidence/phase-7-postgres-app-256mb.json. Host RAM sampled minimum1.58GiB; container post-probe25.71MiB/256MiB, no OOM. Owned container stopped; three sibling ERPNext IDs unchanged. No external business write/send/model/cloud.
+
+Full native suite286 passed11.03s, existing Starlette warning; git diff check passed. This closes the requested focused app/database slice, not full Phase7: actual server restart, remaining PostgreSQL workflow paths, connector composition and n8n/Odoo/Graph/load/recovery remain. Historical Phase6 candidate hashes are preserved. User portfolio edits untouched.

@@ -1,0 +1,17 @@
+# PostgreSQL application runtime
+
+The application factory supports `SALES_STORAGE=postgresql`, `SALES_POSTGRES_DSN` and `SALES_IDENTITIES_PATH`. Configuration is read from the process environment; it is not auto-enabled by a DSN in a parent/project .env. Install the explicit driver with `python -m pip install -r backend/requirements-postgres.txt`. Never place a real DSN in committed files or command arguments.
+
+An administrator applies backend/migrations using scripts/migrations.py in the isolated database. Provision tenants and actors separately with UUID identities, active status and roles matching the authenticated identity file. The runtime role must be a non-owner role without SUPERUSER/BYPASSRLS; grant only required table/sequence access. Do not use the migration owner's credentials in the application. The app never creates tenants/actors, applies migrations or silently changes roles. Trusted identity-file deal scopes remain application-enforced; PostgreSQL RLS independently enforces tenant isolation.
+
+PostgresStore maps the existing shared domain SQL contract to PostgreSQL identifiers, explicit insert columns, placeholders and returned JSON/UUID/timestamp types. Every business transaction takes its authenticated actor, establishes transaction-local tenant context and checks the actor's active database role. A transaction-scoped advisory lock serializes each tenant's read-before-write decisions; unrelated tenant keys remain independent. This is a conservative low-throughput design, not a benchmark for a high-concurrency production workload. Lock timeout2s, statement timeout5s; errors roll back without automatic write retries. No network effect runs inside a database transaction.
+
+The default SQLite harness remains available for native tests. PostgreSQL readiness reports storage=postgresql; connected=false still means external business connectors are not enabled. Model and external effects remain disabled in the acceptance run.
+
+## Validated scope
+
+Real PostgreSQL17.11 under256MiB, FastAPI ASGI TestClient calling the actual app factory and shared core (not a mock database): ingestion,8 concurrent prepare requests yielding1 proposal/1 audit,8 concurrent approval requests yielding1 CRM approval/1 audit, role/cross-tenant denial, persistence from a fresh Python interpreter, source revision invalidating approval, and no operations dispatched. Combined with migration/session probes:12 checks passed. API transport is in-process ASGI; this is not an HTTP deployment/load or server-reboot test. See phase-7-postgres-app-256mb.json.
+
+The test provisions a random schema/role and actor identities in the dedicated sales_phase7_acceptance database, then cleans up only those generated test objects. Normal deployment must use its own durable provisioned identities/schema. No ongoing app server or database container is left running after this test.
+
+Remaining acceptance includes real server restart, richer workflow/ingestion/execution paths on PostgreSQL, connector composition, n8n, Odoo/Graph sandbox interactions and stack-level load/recovery. This document does not mark all Phase7 complete.

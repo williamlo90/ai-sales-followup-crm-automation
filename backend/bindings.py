@@ -1,6 +1,7 @@
 """Immutable connector binding, validated remotely then rechecked locally."""
 import json
 import sqlite3
+from backend.postgres_store import StorageIntegrityError
 from typing import Literal
 from uuid import UUID
 from pydantic import Field
@@ -34,24 +35,24 @@ class BindingRepository:
 
     def payload(self,tenant,proposal_id):
         if tenant!=self.actor.tenant_id:raise DomainError('record_not_found',404)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             return json.loads(self.sales.row(conn,self.actor,proposal_id)['payload'])
 
     def load(self,tenant,proposal_id):
         if tenant!=self.actor.tenant_id:raise DomainError('record_not_found',404)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             self.sales.row(conn,self.actor,proposal_id)
             row=conn.execute('SELECT payload FROM connector_bindings WHERE tenant=? AND proposal_id=?',(tenant,proposal_id)).fetchone()
             if not row:raise DomainError('connector_binding_missing',409)
             return json.loads(row['payload'])
 
     def preparation(self,proposal_id,adapter):
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             row=self.sales.row(conn,self.actor,proposal_id)
             self.sales.freshness(conn,self.actor,row)
             digest=row['payload_hash'];payload=json.loads(row['payload'])
         result=adapter.preparation(payload)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             current=self.sales.row(conn,self.actor,proposal_id)
             self.sales.freshness(conn,self.actor,current)
             if current['payload_hash']!=digest:raise DomainError('payload_changed')
@@ -59,7 +60,7 @@ class BindingRepository:
 
     def attach(self,proposal_id,data:ConnectorBindingInput,adapter):
         if self.actor.role not in {'operator','worker'}:raise DomainError('role_not_permitted',403)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             proposal=self.sales.row(conn,self.actor,proposal_id)
             self.sales.freshness(conn,self.actor,proposal)
             if proposal['actor_id']!=self.actor.id:raise DomainError('proposal_owner_required',403)
@@ -70,7 +71,7 @@ class BindingRepository:
         adapter.validate_activity(payload,candidate)
         workspace=adapter.workspace(candidate,check_expiry=True)
         if workspace.get('operation') is not None:raise DomainError('connector_already_executed')
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(self.actor) as conn:
             current=self.sales.row(conn,self.actor,proposal_id)
             self.sales.freshness(conn,self.actor,current)
             if current['payload_hash']!=local_hash:raise DomainError('payload_changed')
@@ -82,6 +83,6 @@ class BindingRepository:
             try:
                 conn.execute('INSERT INTO connector_bindings VALUES(?,?,?,?,?)',
                     (self.actor.tenant_id,proposal_id,candidate['connector_tenant'],candidate['proposal_id'],canonical(candidate)))
-            except sqlite3.IntegrityError:raise DomainError('connector_proposal_already_bound') from None
+            except (sqlite3.IntegrityError, StorageIntegrityError):raise DomainError('connector_proposal_already_bound') from None
             self.sales.audit(conn,self.actor,'connector.binding_attached',proposal_id)
         return candidate

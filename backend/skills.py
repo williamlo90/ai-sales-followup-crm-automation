@@ -46,14 +46,14 @@ class SkillService:
     def extract_commitments(self,actor,data):
         self.sales.scope(actor,data.deal_id,{'operator','worker'})
         if self.model is None:raise DomainError('model_not_configured',503)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             if not conn.execute('SELECT 1 FROM deals WHERE tenant=? AND id=?',(actor.tenant_id,data.deal_id)).fetchone():
                 raise DomainError('record_not_found',404)
         started=time.monotonic()
         run_id=str(uuid4())
         metadata={'provider':self.model.profile.provider,'model':self.model.profile.model,
                   'prompt_version':PROMPT_VERSION,'schema_version':SCHEMA_VERSION,'outcome':'started'}
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             conn.execute('INSERT INTO model_runs VALUES(?,?,?,?,?)',(actor.tenant_id,run_id,actor.id,data.deal_id,json.dumps(metadata)))
         try:
             result=self._extract_commitments(actor,data)
@@ -66,13 +66,13 @@ class SkillService:
             raise
         finally:
             metadata['total_latency_ms']=round((time.monotonic()-started)*1000,2)
-            with self.sales.store.connect() as conn:
+            with self.sales.store.connect(actor) as conn:
                 conn.execute('UPDATE model_runs SET metadata=? WHERE tenant=? AND id=?',(json.dumps(metadata),actor.tenant_id,run_id))
 
     def _extract_commitments(self,actor,data):
         self.sales.scope(actor,data.deal_id,{'operator','worker'})
         if self.model is None:raise DomainError('model_not_configured',503)
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             deal=conn.execute('SELECT payload FROM deals WHERE tenant=? AND id=?',(actor.tenant_id,data.deal_id)).fetchone()
             if not deal:raise DomainError('record_not_found',404)
             sources=[json.loads(r['payload']) for r in conn.execute('SELECT payload FROM sources WHERE tenant=? AND deal_id=? ORDER BY id',(actor.tenant_id,data.deal_id))]
@@ -92,7 +92,7 @@ class SkillService:
             if commitment.observed_at!=datetime.fromisoformat(source['occurred_at']):
                 raise DomainError('model_source_timestamp_mismatch',422)
         # Re-read versions after model latency; a successful response can already be stale.
-        with self.sales.store.connect() as conn:
+        with self.sales.store.connect(actor) as conn:
             current=self.sales.source_snapshot(conn,actor,data.deal_id)
             expected=sorted([{'id':s['external_id'],'revision':s['revision']} for s in sources],key=lambda x:x['id'])
             current_deal=conn.execute('SELECT payload FROM deals WHERE tenant=? AND id=?',(actor.tenant_id,data.deal_id)).fetchone()

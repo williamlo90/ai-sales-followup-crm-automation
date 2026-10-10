@@ -77,7 +77,7 @@ class Store:
             connection.executescript(SCHEMA)
 
     @contextmanager
-    def connect(self):
+    def connect(self, actor=None):
         connection = sqlite3.connect(self.path, timeout=5)
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA foreign_keys=ON")

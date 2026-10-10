@@ -12,6 +12,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from backend.domain import DomainError, SalesService
 from backend.models import Actor, ApprovalInput, DealInput, ProposalInput, SourceInput, PrepareCommitmentInput
 from backend.store import Store
+from backend.postgres_store import PostgresStore, StorageError
 from backend.sales_rules import Commitment
 from fastapi import Query
 from typing import Literal
@@ -68,6 +69,7 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
         return JSONResponse(status_code=503,content={'error':exc.code})
 
     @app.exception_handler(sqlite3.Error)
+    @app.exception_handler(StorageError)
     async def database_error(request, exc):
         return JSONResponse(status_code=503, content={"error": "local_store_unavailable"})
 
@@ -77,6 +79,9 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
 
     @app.get("/health/ready")
     def ready():
+        if isinstance(service.store, PostgresStore):
+            service.store.ready()
+            return {"status":"ready", "storage":"postgresql", "connected":False, "send_enabled":False}
         with service.store.connect() as conn:
             conn.execute("SELECT 1 FROM proposals LIMIT 1")
         return {"status": "ready", "storage": "sqlite-local-harness", "connected": False, "send_enabled": False}
@@ -215,6 +220,14 @@ def from_environment():
         raise RuntimeError("At least one identity is required")
     from backend.config import read_config, openai_profile
     from backend.providers import ModelAdapter
-    service = SalesService(Store(os.environ.get("SALES_DB_PATH", "local/sales.sqlite")))
+    storage = os.environ.get('SALES_STORAGE', 'sqlite')
+    if storage == 'postgresql':
+        dsn = os.environ.get('SALES_POSTGRES_DSN')
+        if not dsn: raise RuntimeError('SALES_POSTGRES_DSN required')
+        store = PostgresStore(dsn)
+    elif storage == 'sqlite':
+        store = Store(os.environ.get('SALES_DB_PATH', 'local/sales.sqlite'))
+    else: raise RuntimeError('Unsupported SALES_STORAGE')
+    service = SalesService(store)
     profile = openai_profile(read_config())
     return create_app(service, identities, SkillService(service, ModelAdapter(profile) if profile else None))
