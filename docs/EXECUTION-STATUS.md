@@ -319,3 +319,8 @@ Final pytest274 passed11.30s (existing Starlette warning); final offline replay4
 ## Phase7 started - transaction foundation and database probe
 
 User authorized continuation. See docs/phase-7/EXECUTION.md for resource inventory, code changes and exact next actions. User freed RAM to5.1GiB; Docker startup reduced free RAM to1.4-1.6GiB and three sibling ERPNext containers were observed running. No sibling service changed and no project container launched. Added explicit PostgreSQL tenant transaction helper and guarded real migration/RLS probe, pinned project driver3.3.6, serialized migration checksum-table initialization. Ten targeted tests pass; real database probe remains unexecuted due headroom. Repository/app and connector composition are still outstanding; no claim that Phase7A is complete. Phase6 freeze remains historical immutable evidence, not a hash assertion about subsequent Phase7 source changes. No model charges/email/cloud. Heartbeat paused.
+
+
+## Phase7 PostgreSQL256MiB actual probe passed
+
+User approved bounded256MB database session with RAM monitoring. Cached PostgreSQL17.11 digest used in isolated container/database/volume. Six real migration/session checks passed; all7 migrations applied/replayed, RLS absent-context/read/write, rollback and checksum drift checked. Evidence docs/evidence/phase-7-postgres-256mb.json. Lowest sampled host RAM1.17GiB, post-probe container55.7MiB (not peak), no OOM. Owned container stopped; three sibling ERPNext IDs unchanged/running. No image pull/model/connected external effects. Full app PostgreSQL repository wiring remains next; Phase7A not complete.
