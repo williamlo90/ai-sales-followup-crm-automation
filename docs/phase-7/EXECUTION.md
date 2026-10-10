@@ -1,0 +1,15 @@
+# Phase 7 execution checkpoint
+
+Status: implementation started; no project container or real PostgreSQL acceptance yet.
+
+User authorized Phase7 after Phase6 completion. Initial Docker daemon unavailable, host RAM1.85GiB free. User freed RAM; recheck5,311,408KiB (~5.1GiB). Started Docker Desktop hidden; after startup three invoice-erpnext containers were observed running. They were not stopped or modified. Host free memory then1,462,352KiB and latest1,684,436KiB, below the4GiB pre-launch headroom gate. No sales container was launched. Port5444 was unoccupied; C: free460GB.
+
+For the first database session: one PostgreSQL container only,512MiB/1CPU, loopback5444, dedicated database sales_phase7_acceptance, project-owned credentials and storage. No n8n/model/Odoo launch in this batch. Require4GiB free host RAM before launch; stop only the owned database if free RAM falls below1GiB or acceptance exceeds60seconds. Other projects are outside cleanup scope. Existing cached postgres17-bookworm digest is postgres@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826; image ID589f742565e4f6d22149176b032974f55f8201a8a37b71ed587ec5c6902e689f. Original17.6 tag is not cached. Use an explicit isolated override if selecting the cached image; record actual server version before acceptance. No image pull performed.
+
+Implemented backend/postgres_session.py: explicit tenant UUID, transaction-local context/timeouts, rejects superuser/BYPASSRLS runtime roles, rollback/close and no retries. This is not yet the application's repository; SQL/schema mappings and authenticated tenant/actor UUID mapping remain necessary. Added migration initialization advisory lock to prevent concurrent checksum-table initialization.
+
+Driver psycopg/binary3.3.6 installed in project virtual environment and pinned in backend/requirements-postgres.txt. API semantics checked against [Psycopg transaction documentation](https://www.psycopg.org/psycopg3/docs/basic/transactions.html) and [PostgreSQL configuration functions](https://www.postgresql.org/docs/17/functions-admin.html). No secrets printed.
+
+scripts/postgres_acceptance.py is ready for explicitly enabled execution against the dedicated database. It creates unique disposable schema/role, applies all7 migrations twice, checks missing-context read denial, two-tenant isolation, cross-tenant write denial, rollback/reconnect and checksum-drift rejection, then removes only its generated objects. This does not establish application, engine or connector acceptance. Script compiled and disabled execution refused as expected; it has not connected to PostgreSQL.
+
+Validation:10 targeted contract tests passed (7 session,3 migration), existing Starlette warning only. These tests use doubles and do not prove server behavior. Next: restore sufficient RAM while Docker is running; run bounded real database probe, implement repository mapping using the existing business core, then test app persistence/concurrency and tenant isolation. Graph/Odoo sandbox configuration and eventual send authorization remain separate. Heartbeat remains paused.

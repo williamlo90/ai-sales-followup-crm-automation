@@ -22,6 +22,7 @@ def apply(connection,root=ROOT):
     # Import/connection lifecycle is owned by the CLI. Each DDL migration and its
     # fingerprint commit atomically. An altered applied file is an explicit error.
     with connection.transaction():
+        connection.execute("SELECT pg_advisory_xact_lock(8040001)")
         connection.execute('CREATE TABLE IF NOT EXISTS migration_checksums(version text PRIMARY KEY,sha256 char(64) NOT NULL)')
     for item in plan(root):
         with connection.transaction():

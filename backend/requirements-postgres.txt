@@ -1,0 +1,2 @@
+# Explicit Phase7 runtime driver; install in the project virtual environment.
+psycopg[binary]==3.3.6
