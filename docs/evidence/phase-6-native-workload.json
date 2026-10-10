@@ -1,0 +1,34 @@
+{
+  "observed_at": "2026-10-10T04:25:31.406117+00:00",
+  "environment": "native Python / temporary SQLite / concurrency 1",
+  "python": "3.13.6",
+  "os": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+  "operations": 100,
+  "mix": {
+    "prepare": 20,
+    "get": 20,
+    "context": 20,
+    "match": 20,
+    "due": 20
+  },
+  "errors": 0,
+  "p50_ms": 0.498,
+  "p90_ms": 3.132,
+  "p95_ms": 3.267,
+  "max_ms": 5.702,
+  "target_p95_ms": 500,
+  "target_met": true,
+  "exclusions": [
+    "setup",
+    "HTTP transport",
+    "model inference",
+    "PostgreSQL",
+    "n8n",
+    "Graph",
+    "Odoo",
+    "UI",
+    "external effects"
+  ],
+  "raw_local_file": "local/phase-6/native-workload-1791606331724191400.json"
+}

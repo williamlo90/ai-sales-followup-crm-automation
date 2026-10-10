@@ -1,0 +1,30 @@
+{
+  "version": "2.0",
+  "frozen_on": "2026-10-10",
+  "dataset_files": {
+    "fixtures/evaluation/development-v2.json": "fa7289ca5857cbc8eb69e557430f79e56a37190ecabcc7895f32319f672e03d4",
+    "fixtures/evaluation/heldout-v2.json": "af3257b2a3ec2e6691cc5b870b193a27f4bc5ec473f255308405dd81fbed7516"
+  },
+  "preflight": {
+    "ready_for_label_review": true,
+    "case_counts": {
+      "development-regression": 20,
+      "held-out": 20
+    },
+    "family_counts": {
+      "development-regression": 20,
+      "held-out": 20
+    },
+    "dataset_sha256": "9a72c0d43eb93a904c80a3af783da1cebdb5a1a2f51d310e7c58c934ea8adf8f",
+    "issues": [],
+    "quality_evaluated": false
+  },
+  "scorer_sha256": "b6f317f093f6368f1f5683249675fc285c2cfe10402afd46cb247f48ccc5bb0c",
+  "provider_calls_on_heldout": 0,
+  "limitations": [
+    "synthetic authored families",
+    "agent label review, no independent human annotator",
+    "shared scenario taxonomy; not unseen task classes",
+    "draft semantic quality requires separate inspection"
+  ]
+}

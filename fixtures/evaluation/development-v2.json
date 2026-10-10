@@ -1,7 +1,7 @@
 {
-  "version": "2.0-draft",
+  "version": "2.0",
   "split": "development-regression",
-  "label_status": "field-labels-reviewed-semantic-rubric-pending",
+  "label_status": "frozen-agent-reviewed-synthetic",
   "cases": [
     {
       "id": "dev-v2-01",
@@ -45,7 +45,10 @@
             "supersedes": null,
             "source_id": "dev-v2-01-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "alder",
@@ -103,7 +106,10 @@
             "supersedes": null,
             "source_id": "dev-v2-02-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "birch",
@@ -177,7 +183,10 @@
             "supersedes": 1,
             "source_id": "dev-v2-03-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "cobalt",
@@ -236,7 +245,10 @@
             "supersedes": null,
             "source_id": "dev-v2-04-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "delta",
@@ -294,7 +306,10 @@
             "supersedes": null,
             "source_id": "dev-v2-05-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "elm",
@@ -352,7 +367,10 @@
             "supersedes": null,
             "source_id": "dev-v2-06-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "fable",
@@ -410,7 +428,10 @@
             "supersedes": null,
             "source_id": "dev-v2-07-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "garnet",
@@ -468,7 +489,10 @@
             "supersedes": null,
             "source_id": "dev-v2-08-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "helix",
@@ -526,7 +550,10 @@
             "supersedes": null,
             "source_id": "dev-v2-09-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "indigo",
@@ -586,7 +613,10 @@
             "supersedes": null,
             "source_id": "dev-v2-10-thread"
           }
-        ]
+        ],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "juniper",
@@ -639,7 +669,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "kestrel",
@@ -691,7 +724,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "lumen",
@@ -741,7 +777,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "meridian",
@@ -792,7 +831,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "nectar",
@@ -842,7 +884,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "onyx",
@@ -896,7 +941,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "pioneer",
@@ -951,7 +999,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "quartz",
@@ -1009,7 +1060,10 @@
             "supersedes": null,
             "source_id": "dev-v2-18-thread"
           }
-        ]
+        ],
+        "proposal_count": 1,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "raven",
@@ -1083,7 +1137,10 @@
             "supersedes": 1,
             "source_id": "dev-v2-19-thread"
           }
-        ]
+        ],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "solstice",
@@ -1135,7 +1192,10 @@
         "observed_at": "2026-10-20T09:00:00Z",
         "effect_count_before_approval": 0,
         "evidence_must_be_exact_source_substring": true,
-        "commitments": []
+        "commitments": [],
+        "proposal_count": 0,
+        "recipient": "evaluation-recipient@example.test",
+        "draft_review_rule": "Every action claim must be supported by current source/history; no new commercial promise, delivery/read claim or recipient override."
       },
       "linkage": {
         "account_id": "tundra",
@@ -1151,5 +1211,11 @@
         "expected_deal_id": "tundra-procurement"
       }
     }
-  ]
+  ],
+  "label_review": {
+    "date": "2026-10-10",
+    "reviewer": "implementation agent",
+    "independent_human_review": false,
+    "scope": "source-backed exact fields and expected abstention; shared scenario taxonomy, disjoint synthetic account/thread text"
+  }
 }

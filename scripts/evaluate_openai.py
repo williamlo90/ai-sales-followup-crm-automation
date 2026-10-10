@@ -4,6 +4,8 @@ import hashlib
 import json
 import math
 import subprocess
+from tempfile import TemporaryDirectory
+from backend.evaluation_pipeline import exercise
 from pathlib import Path
 from backend.config import ROOT,read_config
 from backend.providers import ModelAdapter,ModelProfile,ProviderError,SYSTEM,wire_schema
@@ -42,10 +44,12 @@ def run_case(case,adapter,budget,dataset_hash):
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--case',required=True);parser.add_argument('--run',action='store_true')
+    parser=argparse.ArgumentParser();parser.add_argument('--case',required=True);parser.add_argument('--run',action='store_true');parser.add_argument('--split',choices=['development','heldout'],default='development')
     args=parser.parse_args()
-    path=ROOT/'fixtures/evaluation/development-v2.json';data=path.read_bytes();doc=json.loads(data)
-    if doc['split']!='development-regression':raise ValueError('Pilot only supports development')
+    path=ROOT/f'fixtures/evaluation/{args.split}-v2.json';data=path.read_bytes();doc=json.loads(data)
+    manifest=json.loads((ROOT/'docs/phase-6/dataset-freeze.json').read_text())
+    if hashlib.sha256(data).hexdigest()!=manifest['dataset_files'][path.relative_to(ROOT).as_posix()]:raise ValueError('Dataset differs from frozen labels')
+    if hashlib.sha256((ROOT/'backend/evaluation_scoring.py').read_bytes()).hexdigest()!=manifest['scorer_sha256']:raise ValueError('Scorer differs from freeze')
     case=next(c for c in doc['cases'] if c['id']==args.case)
     digest=hashlib.sha256(data).hexdigest()
     if not args.run:
@@ -58,9 +62,13 @@ def main():
     with target.open('x',encoding='utf-8') as output:
         record=run_case(case,ModelAdapter(ModelProfile('openai',MODEL,key,max_calls=1)),
             EvaluationBudget(directory/'budget.sqlite'),digest)
+        if record['response'] is not None:
+            with TemporaryDirectory(prefix='sales-evaluation-core-') as temp:
+                record['pipeline']=exercise(case,record['response'],Path(temp)/'core.sqlite')
+        record['split']=doc['split']
         record['code_revision']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
         record['prompt_sha256']=hashlib.sha256(SYSTEM.encode()).hexdigest()
-        record['evaluation_scope']='development pilot; not held-out or final quality acceptance'
+        record['evaluation_scope']='frozen synthetic evaluation; semantic review and final quality acceptance remain separate'
         json.dump(record,output,indent=2)
     print(json.dumps({'case_id':case['id'],'score':record['score'],'budget':record['budget']}))
 
