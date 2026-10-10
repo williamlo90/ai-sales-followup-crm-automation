@@ -1,0 +1,68 @@
+{
+  "scope": "Single native Python core process including imports/setup; 100 operations, temporary SQLite. Process lifetime peak, not incremental allocation or full stack.",
+  "budget": {
+    "peak_working_set_bytes": 268435456,
+    "cpu_seconds": 5,
+    "wall_seconds": 10,
+    "concurrency": 1,
+    "operations": 100
+  },
+  "before": {
+    "working_set_bytes": 30302208,
+    "peak_working_set_bytes": 30302208,
+    "peak_pagefile_bytes": 20086784
+  },
+  "after": {
+    "working_set_bytes": 36843520,
+    "peak_working_set_bytes": 37793792,
+    "peak_pagefile_bytes": 21159936
+  },
+  "cpu_seconds": 0.1875,
+  "wall_seconds": 0.4671127999899909,
+  "resource_budget_met": true,
+  "workload": {
+    "observed_at": "2026-10-10T04:45:19.702910+00:00",
+    "environment": "native Python / temporary SQLite / concurrency 1",
+    "python": "3.13.6",
+    "os": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "operations": 100,
+    "mix": {
+      "prepare": 20,
+      "get": 20,
+      "context": 20,
+      "match": 20,
+      "due": 20
+    },
+    "errors": 0,
+    "p50_ms": 0.752,
+    "p90_ms": 3.141,
+    "p95_ms": 3.368,
+    "max_ms": 6.868,
+    "target_p95_ms": 500,
+    "target_met": true,
+    "exclusions": [
+      "setup",
+      "HTTP transport",
+      "model inference",
+      "PostgreSQL",
+      "n8n",
+      "Graph",
+      "Odoo",
+      "UI",
+      "external effects"
+    ]
+  },
+  "exclusions": [
+    "model residency",
+    "GPU",
+    "UI",
+    "PostgreSQL",
+    "n8n",
+    "Graph",
+    "Odoo",
+    "containers",
+    "production capacity"
+  ],
+  "raw_local_file": "local/phase-6/native-resources-1791607519971358400.json"
+}

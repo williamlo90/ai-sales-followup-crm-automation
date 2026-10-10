@@ -242,3 +242,12 @@ User agreed to a real manual session. Prepared frozen four paired/eight task due
 Native Edge headless QA passed eight-task traversal, required fields, pause hiding and JSON download. Automated QA output was not saved as human evidence. Screenshot visually inspected; no overflow at 1100x900. Resource inventory: 16 logical processors, 16,868,962,304 bytes physical RAM, approx 3.73 GiB free at observation; RTX4050 Laptop GPU plus Intel UHD identified (WMI VRAM not trusted as true VRAM capacity), C: 464,784,535,552 bytes free. This is an idle snapshot, not peak workload resource evidence or local-model acceptance.
 
 No new API spend. Next: receive/validate human session, complete native resource/candidate audit and address remaining local/Claude/Grok access. Independent preparatory work progressed this turn; no blocked threshold. Goal active, heartbeat PAUSED, no Phase7 execution.
+
+
+## Phase 6 checkpoint - observed-session validation and native resources
+
+Added scripts/score_manual_review.py: validates fixture hash, complete task order/mode, initial answers, event state/replay, aware timestamps, active/paused durations and edit counts; rejects cached assistance with fabricated system waiting. Outputs per-task correctness and mode totals with explicit no-human-authenticity/no-ROI caveats. Eight new scorer tests plus two CLI timer tests pass. No human session received or synthesized.
+
+Added Windows native resource measurement around the actual 100-operation core workload. Declared before run: concurrency1, peak working set256MiB, CPU5s, wall10s. Observed peak37,793,792 bytes, CPU0.1875s, wall0.467s, zero errors, p95 3.368ms. Evidence docs/evidence/phase-6-native-resources.json; raw samples ignored/local. Process lifetime peak includes imports/setup; no model/GPU/full-stack inference. The previous latency run is preserved separately.
+
+Requirement audit docs/phase-6/COMPLETION-AUDIT.md keeps full goal incomplete: human export, other-provider/local evidence and full candidate freeze remain; earlier PostgreSQL/connector composition gap remains explicit for connected release. No new API spend/external effect, no heartbeat resumption. Previous turn and this turn made concrete progress; blocked threshold not reached. Next: validate user export when supplied; finish model-access preparation without assuming credentials, installing unchosen runtimes or changing approved spend.

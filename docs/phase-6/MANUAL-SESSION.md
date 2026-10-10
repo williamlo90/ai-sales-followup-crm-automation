@@ -14,3 +14,5 @@ Data: interval foreground aktif memakai performance.now, jeda terpisah, event pe
 Sebelum laporan: verifikasi hash, delapan ID unik/urutan/mode, event/timestamp/interval masuk akal dan completed=true. Nilai tiap jawaban, pisahkan per mode/pasangan; laporkan angka mentah dan sampel kecil, jangan mengekstrapolasi ROI. Bukti tes browser otomatis tidak dihitung sebagai sesi manusia.
 
 Regenerasi: .venv/Scripts/python.exe -m scripts.prepare_manual_review. CLI scripts/manual_session.py tersedia untuk pencatatan sesi aplikasi lain dengan interval work/wait eksplisit; hasil CLI tidak dicampur dengan worksheet ini.
+
+Pemeriksaan hasil oleh agent: `.venv/Scripts/python.exe -m scripts.score_manual_review PATH_HASIL.json --output local/phase-6/manual-scored.json`. Output eksklusif tidak menimpa hasil lama. Pemeriksaan tidak mengklaim file otomatis berasal dari manusia; konfirmasi operator tetap diperlukan.
