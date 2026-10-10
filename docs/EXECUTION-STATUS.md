@@ -106,3 +106,12 @@ Artifacts: bounded latest-commitment discovery/cursor, due-before-preparation gu
 Recovery preserves operation IDs and permits observation only for existing effects; expired-proposal renewal requires new approval. Due discovery skips future/cancelled/opted-out/deleted/out-of-scope records and uses idempotent enqueue. No live adapter calls, model spend or engine/container run.
 
 Next: intake extraction → candidate review/record → queue handoff and connector binding/preparation UI; close PostgreSQL persistence/config issues and prepare Phase 6 rubric/evaluation artifacts. Source mapping and restore review, live credentials and provider/local evaluation budgets remain outstanding. Automation active; no complete phase gate claimed.
+
+
+## Latest batch — operator intake review (2026-10-10)
+
+Added a conversation intake panel using the shared extraction, commitment recording and preparation APIs. Operator explicitly checks candidate evidence/owner/date; ambiguous extraction and cancelled candidates cannot prepare through this panel. Server-side evidence/revision checks remain authoritative. No model automatically runs; configuration is unchanged.
+
+Validation: web TypeScript/Vite build passed; five Edge tests passed. New extraction responses are doubles, while candidate recording and proposal preparation use the actual isolated backend. Browser fixtures now isolate intake into a separate tenant after a shared-state regression was detected and fixed. No model spend, connected write or Docker operation occurred.
+
+Remaining Phase 5: explicit intake scheduler handoff and connector preparation/binding review UI; full engine acceptance remains Phase 7. This panel prepares a proposal in the review queue, not a workflow job. A candidate can remain recorded if subsequent preparation fails; replay uses existing core idempotency. Automation remains PAUSED at user request; work continued only in this interactive session. No phase gate closed.
