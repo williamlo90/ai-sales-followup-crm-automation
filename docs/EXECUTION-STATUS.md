@@ -133,3 +133,12 @@ Validation: full Python suite 214 passed (existing Starlette deprecation warning
 Both generated n8n exports now allow 240 seconds for two 65-second HTTP requests and a 60-second wait. Generator parity and reference traversal passed within the full suite. Updated workflow setup documentation covers explicit operator handoff and unique worker configuration.
 
 Goal remains active pending final audit: preparation UX must provide a concrete field mapping/diff (current binding form requires copying the approved connector preview); strengthen positive binding browser coverage and configuration failure tests; verify Phase 5 requirements against current artifacts. PostgreSQL runtime/connected n8n/Odoo acceptance remains unproven, not inferred from local tests. Automation PAUSED. No connected writes, model spend, email or Docker.
+
+
+## Goal checkpoint — mapped Odoo preparation (2026-10-10)
+
+Added read-only connector preparation endpoint and before/proposed-value table for new activities. Expected activity fields now share one adapter function with dispatch/binding validation; source_version comes from scoped opportunity GET. Repository rechecks local freshness after connector latency. UI can prefill binding preview from this result. Remote proposal creation/approval stays in the existing #2 workspace; no connected mutation is invoked.
+
+Validation: 218 Python tests passed; TypeScript/Vite build passed; six Edge tests passed. New cases cover read-only mapping, context changes during remote read and missing/ambiguous worker configuration. Browser binding scenario verifies failed attachment then successful immutable display using boundary mocks; actual validation remains in Python tests. Full integration is not claimed. Existing Starlette deprecation warning remains.
+
+Next: finish requirement-by-requirement Phase 5 audit, including workflow handoff ownership across renewal, connector-ready configuration boundaries, static PostgreSQL/engine deployment dependencies and reference-runner coverage. No phase gate closed yet. Goal active, automation PAUSED; no Docker/model spend/email/connected write.

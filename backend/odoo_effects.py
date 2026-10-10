@@ -52,12 +52,23 @@ class OdooActivityAdapter:
                 if expiry.tzinfo is None or expiry<=self.clock():raise ReadError('connector_approval_expired')
         return data
 
-    def validate_activity(self,payload,binding):
+    def expected_activity(self,payload):
         mapping=self.deal_mapping.get(payload['deal_id'])
         if not mapping:raise ReadError('deal_mapping_required')
         expected={'kind':'activity','company_id':self.client.company_id,'opportunity_id':mapping['opportunity_id'],
                   'assignee_id':mapping['assignee_id'],'due_date':datetime.fromisoformat(payload['due_at']).astimezone(self.zone).date().isoformat(),
                   'summary':payload['summary'],'contract_version':'1.0'}
+        return expected
+
+    def preparation(self,payload):
+        expected=self.expected_activity(payload)
+        record=self.client.opportunity(expected['opportunity_id'])
+        preview={**expected,'source_version':record['version']}
+        self.validate_activity(payload,{'preview':preview})
+        return {'preview':preview,'timezone':str(self.zone),'action':'create_activity','write_performed':False}
+
+    def validate_activity(self,payload,binding):
+        expected=self.expected_activity(payload)
         preview=binding['preview']
         if (len(payload['summary'])>120 or '<' in payload['summary'] or '>' in payload['summary']
             or set(preview)!=set(expected)|{'source_version'} or not isinstance(preview.get('source_version'),str)

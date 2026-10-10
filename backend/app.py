@@ -153,6 +153,12 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
         operation=execution.execute(current,ident,kind)
         return service.operation(current,operation['id'])
 
+    @app.get('/v1/proposals/{ident}/connector-preparation')
+    def connector_preparation(ident: str,current: Actor=Depends(actor)):
+        service.get(current,ident)
+        if connector is None:raise DomainError('connector_not_configured',503)
+        return BindingRepository(service,current).preparation(ident,connector)
+
     @app.get('/v1/proposals/{ident}/connector-binding')
     def binding_get(ident: str,current: Actor=Depends(actor)):
         return BindingRepository(service,current).load(current.tenant_id,ident)

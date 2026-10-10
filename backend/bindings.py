@@ -45,6 +45,18 @@ class BindingRepository:
             if not row:raise DomainError('connector_binding_missing',409)
             return json.loads(row['payload'])
 
+    def preparation(self,proposal_id,adapter):
+        with self.sales.store.connect() as conn:
+            row=self.sales.row(conn,self.actor,proposal_id)
+            self.sales.freshness(conn,self.actor,row)
+            digest=row['payload_hash'];payload=json.loads(row['payload'])
+        result=adapter.preparation(payload)
+        with self.sales.store.connect() as conn:
+            current=self.sales.row(conn,self.actor,proposal_id)
+            self.sales.freshness(conn,self.actor,current)
+            if current['payload_hash']!=digest:raise DomainError('payload_changed')
+        return {**result,'local_payload_hash':digest}
+
     def attach(self,proposal_id,data:ConnectorBindingInput,adapter):
         if self.actor.role not in {'operator','worker'}:raise DomainError('role_not_permitted',403)
         with self.sales.store.connect() as conn:
