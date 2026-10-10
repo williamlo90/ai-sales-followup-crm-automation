@@ -57,7 +57,7 @@ def wire_schema():
 
 
 class ModelAdapter:
-    def __init__(self,profile: ModelProfile,*,transport: httpx.MockTransport | None=None):
+    def __init__(self,profile: ModelProfile,*,transport: httpx.MockTransport | None=None,capture_response=False):
         if profile.provider not in URLS or not profile.model:
             raise ProviderError('invalid_model_profile')
         if profile.local_only and profile.provider!='ollama':
@@ -65,11 +65,14 @@ class ModelAdapter:
         if profile.provider=='ollama' and 'cloud' in profile.model.lower():
             raise ProviderError('remote_model_forbidden')
         self.profile,self.transport=profile,transport
+        self.capture_response=capture_response
+        self.response_envelope=None
         self.calls=0
         self.budget_lock=Lock()
         self.request_lock=Lock()
 
     def extract(self,sources:list[dict],context:dict):
+        self.response_envelope=None
         if self.calls>=self.profile.max_calls:
             raise ProviderError('model_call_budget_exhausted')
         if self.profile.provider!='ollama' and not self.profile.key:
@@ -115,6 +118,7 @@ class ModelAdapter:
                         raw.extend(chunk)
                         if len(raw)>256000:raise ProviderError('model_output_limit')
                     envelope=json.loads(raw)
+            if self.capture_response:self.response_envelope=envelope
             text=self.content(envelope)
             result=Extraction.model_validate_json(text)
         except httpx.HTTPError:
