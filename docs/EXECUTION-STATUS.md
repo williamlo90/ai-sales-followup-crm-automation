@@ -262,3 +262,10 @@ Runtime archive download started in unified exec session 98246. Last authoritati
 Added explicit Ollama think=false profile option and pinned-development runner scripts/evaluate_local.py. Checks runtime version/full model digest/non-thinking support and frozen dataset/scorer before one call; exclusive result and one-active marker; transport/unknown failures retain marker until owned-server observation/stop, no automatic retry. No hosted fallback. Twenty-seven provider/local-metadata tests pass; OpenAI runner/provider combined32 tests passed before local marker refinement. No inference or quality claim from these doubles. Commit124060e.
 
 Next: finish and verify the live runtime download, recheck resource headroom, obtain pinned model using isolated own server only when preconditions hold; run one dev pilot before expanding. User manual export still pending, Claude/Grok access absent. Goal remains active; this turn includes substantive implementation and a verified live download wait, not a blocked/no-progress turn. Heartbeat stays PAUSED.
+
+
+## Local runtime download continuation
+
+Revalidated session98246 repeatedly as live; last measured archive1,069,829,696 bytes of1,468,085,195, no terminal/error output. No retry/new downloader. User agreed to free RAM; most recent sampled free host RAM3,331,300KiB still below4GiB, so no inference/server launch yet. Do not infer the user's agreement means memory is already available.
+
+Added scripts/start-local-evaluation.ps1 with native pre-launch host/GPU headroom checks, occupied-port/owner-record refusal, loopback-only no-cloud environment, one-model/one-request limits, hidden own process and PID/start-time/executable record. PowerShell parser check passed; script not executed. Runtime extraction/checksum remain in existing live download command. Next continuation must poll session98246, inspect final checksum/extraction result and resource headroom; never treat this observation yield as process failure. Goal turn is verified wait plus launch implementation progress. Other work/user manual export and Claude/Grok remain unchanged.
