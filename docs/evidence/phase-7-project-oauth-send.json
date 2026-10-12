@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-12",
+  "scope": "One synthetic email from the project's own Outlook OAuth app to the previously authorized self-test alias",
+  "authorization": "User instructed the controlled send after the read-only OAuth connection passed",
+  "application_path": "FastAPI TestClient using the production application routes and shared SalesService/ExecutionService on an isolated durable SQLite file",
+  "approval": "Separate generated operator and approver lab identities; unapproved execution returned approval_required, then the approver authorized the exact payload hash",
+  "send_attempts": 1,
+  "graph_result": "accepted",
+  "replay": "A second API execution returned the same operation ID without another dispatch",
+  "sent_items": "Exact operation, subject, body and recipient observed by the Graph adapter",
+  "recipient_folder": "Matching subject observed in Junk through a bounded Mail.Read query; no message body requested by this receipt check",
+  "delivery_limit": "A mailbox observation does not prove that a human read the email",
+  "storage_limit": "SQLite local harness was used because host free RAM was about 660 MB; this run does not repeat the earlier PostgreSQL/n8n acceptance",
+  "regular_send_config": "email_send_enabled remained false in ignored local/connectors.json",
+  "checks": "40 focused Python tests passed; one live Graph send and one read-only recipient-folder check",
+  "private_ledger": "local/graph-oauth-send-20261012 (ignored; includes one-attempt reservation and exact payload)"
+}
