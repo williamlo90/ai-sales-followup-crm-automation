@@ -11,7 +11,9 @@ const root=fileURLToPath(new URL('../../',import.meta.url));
 const unwrap=r=>r.structuredContent??JSON.parse(r.content[0].text);
 
 test('real stdio client to native shared core: extraction, replay, scope, stale and disabled effects',async()=>{
-  const process=spawn(fileURLToPath(new URL('../../.venv/Scripts/python.exe',import.meta.url)),['-m','scripts.mcp_fixture'],{cwd:root,stdio:['ignore','pipe','pipe']});
+  const python=globalThis.process.env.SALES_TEST_PYTHON || (globalThis.process.platform==='win32'
+    ? fileURLToPath(new URL('../../.venv/Scripts/python.exe',import.meta.url)) : 'python3');
+  const process=spawn(python,['-m','scripts.mcp_fixture'],{cwd:root,stdio:['ignore','pipe','pipe']});
   const lines=createInterface({input:process.stdout});
   process.stderr.on('data',()=>{});
   const clients=[];
