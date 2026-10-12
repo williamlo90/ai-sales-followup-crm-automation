@@ -18,6 +18,7 @@
 ## Validation evidence
 
 - [Connected sandbox gate](phase-7/COMPLETION-AUDIT.md)
+- [Combined Outlook OAuth journey](evidence/phase-7-outlook-oauth-connected.json)
 - [Local delivery gate](phase-8/DELIVERY-AUDIT.md)
 - [Final clean-install result](evidence/phase-8-release.json)
 - [Phase 9 local-only decision](phase-9/DECISION.md)

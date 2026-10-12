@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "date": "2026-10-12",
+  "scope": "One synthetic Gmail-to-Outlook message, one Sales-owned Odoo sandbox opportunity, project-owned delegated Outlook OAuth, accelerated local n8n schedules",
+  "inbound": {
+    "exact_subject_selected": "Sales OAuth end-to-end 12 Okt",
+    "recent_gmail_sender_checked": true,
+    "selected_message_read_from_graph": true,
+    "unrelated_inbox_messages_not_ingested": true
+  },
+  "ai_and_review": {
+    "provider": "OpenAI",
+    "model": "gpt-5.6-luna",
+    "extraction_status": "review",
+    "extracted_commitments": 0,
+    "missing_fact": "internal owner",
+    "resolution": "A scoped lab operator supplied the owner and a source-backed acknowledgement task; no price was invented",
+    "operator_and_approver_distinct": true
+  },
+  "workflow": {
+    "n8n_version": "2.42.5",
+    "intake_job": "completed",
+    "automatic_due_email_job": "completed",
+    "postgresql_version": "17.11",
+    "postgresql_memory_limit_mib": 256,
+    "operation_count_for_proposal": 2,
+    "odoo_crm_operation": "read_back_verified",
+    "outlook_email_operation": "accepted",
+    "email_send_attempts_reserved": 1,
+    "sent_items_exact_message_verified": true,
+    "recipient_copy_seen_in": "Junk",
+    "recipient_copy_body_requested": false
+  },
+  "controls": {
+    "recipient": "self-test Outlook alias only",
+    "separate_email_approval": true,
+    "attempt_reserved_before_approval": true,
+    "regular_project_email_send_enabled": false,
+    "unrelated_project_containers_changed": false
+  },
+  "verification": {
+    "python_tests": "358 passed",
+    "private_session": "local/phase-7/outlook-combined-20261012-d/probe.json",
+    "receipt_check": "one matching recent message in recipient Junk; read-only",
+    "owned_runtime_containers_stopped_after_test": true
+  },
+  "limits": "The approver was a separate automated lab identity, not a human acceptance session. The reply acknowledged the pricing request; it did not provide an unverified price. Graph acceptance, Sent Items and recipient-folder arrival do not prove the message was read. The test does not enable general customer sending or 24-hour operation."
+}

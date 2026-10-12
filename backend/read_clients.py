@@ -64,6 +64,16 @@ class GraphReadClient:
         self.initial='https://graph.microsoft.com'+self.path+'?$select=id,subject,body,from,receivedDateTime,lastModifiedDateTime,conversationId,changeKey'
         self.reader=BoundedReader(token,transport=transport,sleep=sleep)
 
+    def message(self, ident):
+        """Read one explicitly mapped message without scanning unrelated mailbox items."""
+        if not isinstance(ident,str) or not ident or len(ident)>4096 or any(c.isspace() for c in ident):
+            raise ReadError('invalid_message_id')
+        url='https://graph.microsoft.com/v1.0/users/'+quote(self.mailbox_id,safe='')+'/messages/'+quote(ident,safe='')
+        url+='?$select=id,subject,body,from,receivedDateTime,lastModifiedDateTime,conversationId,changeKey'
+        item=self.reader.get(url,{'Prefer':'outlook.body-content-type="text", IdType="ImmutableId"'})
+        if item.get('id')!=ident:raise ReadError('message_identity_mismatch')
+        return item
+
     def validate_link(self,link):
         if not isinstance(link,str) or len(link)>16000:raise ReadError('invalid_checkpoint')
         try:

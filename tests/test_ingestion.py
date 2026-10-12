@@ -26,6 +26,33 @@ def sources(lab):
     return lab[0].context(lab[1]['operator'],'deal-1')['sources']
 
 
+def test_selected_message_ingests_only_mapped_id_without_delta_scan(lab):
+    paths=[]
+    def respond(request):
+        paths.append(request.url.path)
+        return httpx.Response(200,json=message())
+    client=GraphReadClient('lab','test@example.invalid',lambda:'fake',transport=httpx.MockTransport(respond))
+    ingest=GraphIngestion(lab[0],lab[1]['worker'],client,{'m1':'deal-1'})
+    with pytest.raises(DomainError,match='message_mapping_required'):
+        ingest.selected('unmapped')
+    assert paths==[]
+    assert ingest.selected('m1')['changed']==1
+    assert ingest.selected('m1')['changed']==0
+    assert len(sources(lab))==2
+    assert ingest.state()==(0,None)
+    assert len(paths)==2 and all('/messages/m1' in path for path in paths)
+
+
+def test_selected_message_rejects_wrong_graph_identity(lab):
+    client=GraphReadClient('lab','test@example.invalid',lambda:'fake',transport=httpx.MockTransport(
+        lambda _:httpx.Response(200,json=message('other'))))
+    ingest=GraphIngestion(lab[0],lab[1]['worker'],client,{'m1':'deal-1'})
+    from backend.read_clients import ReadError
+    with pytest.raises(ReadError,match='message_identity_mismatch'):
+        ingest.selected('m1')
+    assert len(sources(lab))==1
+
+
 def test_poll_restart_and_replay_no_revision_inflation(lab):
     ingest,page=setup(lab)
     assert ingest.poll()['changed']==1

@@ -38,3 +38,19 @@ def test_context_scopes_and_complete_output_schema(lab):
         expected=contract.model_json_schema();definitions=expected.pop('$defs',{})
         assert exported['properties']['result']==expected
         assert exported['$defs']==definitions
+
+
+def test_selected_graph_ingest_route_requires_configured_worker(lab):
+    sales, actors, _ = lab
+    class Ingestion:
+        actor = actors['worker']
+        def selected(self, ident):
+            return {'external_id': ident, 'changed': 1, 'checkpoint_advanced': False}
+    client = TestClient(create_app(sales, {hashlib.sha256(k.encode()).hexdigest(): v
+                                           for k, v in actors.items()}, ingestion=Ingestion()))
+    path = '/v1/ingest/graph/selected'
+    assert client.post(path, headers=auth('operator'), json={'id': 'm1'}).status_code == 403
+    assert client.post(path, headers=auth('outsider'), json={'id': 'm1'}).status_code == 403
+    assert client.post(path, headers=auth('worker'), json={'id': 'm1', 'extra': True}).status_code == 422
+    result = client.post(path, headers=auth('worker'), json={'id': 'm1'})
+    assert result.status_code == 200 and result.json()['checkpoint_advanced'] is False

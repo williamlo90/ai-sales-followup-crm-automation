@@ -1,6 +1,6 @@
 # Local V1 operator guide
 
-This release is a **local, connected-sandbox-validated** sales follow-up assistant. The operator owns customer context and the final decision; a separate approver authorizes the exact CRM or email action. A draft is not a sent message. The operator queues a source-backed follow-up; the worker can send an approved email automatically when due. Sending defaults off and requires email_send_enabled=true plus an exact email_recipient_allowlist in ignored local/connectors.json. A separate project-owned OAuth acceptance on 2026-10-12 exercised the application API's operator/approver roles and one allowlisted send in an isolated SQLite harness; it did not activate regular UI dispatch or n8n. Check /health/ready for the effective send_enabled state before expecting dispatch.
+This release is a **local, connected-sandbox-validated** sales follow-up assistant. The operator owns customer context and the final decision; a separate approver authorizes the exact CRM or email action. A draft is not a sent message. The operator queues a source-backed follow-up; the worker can send an approved email automatically when due. Sending defaults off and requires email_send_enabled=true plus an exact email_recipient_allowlist in ignored local/connectors.json. The [combined Outlook OAuth run](../evidence/phase-7-outlook-oauth-connected.json) exercised n8n, PostgreSQL, Odoo and one self-test send; it did not activate regular customer dispatch. Check /health/ready for the effective send_enabled state before expecting dispatch.
 
 ## Install and start
 

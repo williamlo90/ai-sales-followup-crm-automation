@@ -31,6 +31,14 @@ class GraphIngestion:
         page=self.client.page(checkpoint) # No DB transaction spans network I/O.
         return self.commit(generation,page)
 
+    def selected(self, external_id):
+        if external_id not in self.mapping:raise DomainError('message_mapping_required')
+        item=self.client.message(external_id)
+        with self.sales.store.connect(self.actor) as conn:
+            changed=self.ingest(conn,item)
+            self.sales.audit(conn,self.actor,'ingestion.selected',external_id)
+        return {'changed':changed,'external_id':external_id,'checkpoint_advanced':False}
+
     def poll_bounded(self,max_pages=10):
         if type(max_pages) is not int or not 1<=max_pages<=10:raise DomainError('invalid_page_budget',422)
         seen=set();changed=0

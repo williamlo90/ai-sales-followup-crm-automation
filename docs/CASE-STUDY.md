@@ -8,7 +8,7 @@ After a customer conversation, a salesperson must identify the right deal, updat
 
 ## Validated workflow
 
-A synthetic Microsoft 365 email traversed Graph, n8n, OpenAI, the shared domain and Odoo. The system extracted a source-supported commitment, prepared a CRM proposal and draft, and verified one Odoo activity after separate automated lab-role review and approval. The approval UI and domain controls are tested separately; this run was not a human operator study or a general-routing trial.
+A synthetic email traversed project-owned Outlook OAuth, n8n, OpenAI, the shared domain, PostgreSQL and Odoo. AI flagged the missing internal owner; a lab operator resolved that fact using the source quote. Separate lab-role approvals produced one verified Odoo activity and one self-test follow-up, observed in Sent Items and the recipient's Junk folder. This was an automated lab review, not a human operator study or a general-routing trial.
 
 Sending remains off by default. Connected send tests use controlled mailboxes and allowlisted recipients. An accepted request or a Sent Items record is not proof of delivery or reading.
 
@@ -21,7 +21,7 @@ The implementation includes reusable skills, provider adapters and MCP contracts
 ## Measured sandbox evidence
 
 - A 20-case frozen synthetic regression on HTTP/PostgreSQL/OpenAI yielded correct linkage and proposal count/recipient in 20/20; 19/19 invoked extractions were correct. This reused an earlier held-out set and is not new generalization evidence.
-- One real Microsoft 365 → n8n → OpenAI/domain → approved Odoo update/draft path verified exactly one CRM operation. Controlled email sending was a separate authorized test; the second recipient copy was observed in Junk.
+- One [connected Outlook run](evidence/phase-7-outlook-oauth-connected.json) verified two operations for one source-backed proposal: one Odoo activity read back and one allowlisted self-test email accepted by Graph, matched in Sent Items and seen in recipient Junk. AI required an internal owner to be supplied during review; no price was invented.
 - Normal N=2, peak N=3 and short-soak N=4 deterministic n8n/PostgreSQL/Odoo jobs each verified once, with zero errors in those sessions. Their small-sample latency percentiles exclude Graph/model time.
 - Recovery drills covered duplicate/unknown writes, n8n restart and rollback, PostgreSQL restore, Ubuntu distro restart and local readiness alert delivery. The WSL Docker proxy required manual reattachment after distro restart.
 - The equivalent-task manual/assisted comparison used one operator and synthetic tasks. It is not a customer ROI or production throughput claim.

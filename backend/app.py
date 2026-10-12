@@ -18,10 +18,15 @@ from fastapi import Query
 from typing import Literal
 from backend.skills import SkillService
 from backend.providers import ProviderError
-from pydantic import ValidationError
+from pydantic import ValidationError, BaseModel, ConfigDict, Field
 from backend.bindings import BindingRepository, ConnectorBindingInput
 from backend.read_clients import ReadError
 from backend.workflows import WorkflowService, EnqueueInput, RecoveryInput
+
+
+class SelectedGraphMessage(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    id: str = Field(min_length=1, max_length=4096)
 
 
 def create_app(service: SalesService, identities: dict[str, Actor], skills: SkillService | None=None, execution=None, connector=None, ingestion=None) -> FastAPI:
@@ -102,6 +107,14 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
         if current.id!=ingestion.actor.id or current.tenant_id!=ingestion.actor.tenant_id:
             raise DomainError('record_not_found',404)
         return ingestion.poll()  # One bounded page; caller coordinates pagination.
+
+    @app.post('/v1/ingest/graph/selected')
+    def graph_selected(data: SelectedGraphMessage,current: Actor=Depends(actor)):
+        if current.role!='worker':raise DomainError('role_not_permitted',403)
+        if ingestion is None:raise DomainError('graph_not_configured',503)
+        if current.id!=ingestion.actor.id or current.tenant_id!=ingestion.actor.tenant_id:
+            raise DomainError('record_not_found',404)
+        return ingestion.selected(data.id)
 
     @app.put("/v1/ingest/deals/{deal_id}/sources")
     def source(deal_id: str, data: SourceInput, current: Actor = Depends(actor)):
