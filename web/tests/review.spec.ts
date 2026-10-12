@@ -11,7 +11,7 @@ test('operator prepares, independent approver reviews both actions, no dispatch'
   await page.getByRole('button',{name:'Prepare for review'}).click();
   await expect(page.getByRole('heading',{name:'Proposed CRM activity'})).toBeVisible();
   await expect(page.getByRole('button',{name:'Approve CRM activity'})).toHaveCount(0);
-  await expect(page.getByText('To: buyer@example.test')).toBeVisible();
+  await expect(page.getByText('buyer@example.test',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Sign out'}).click();
   await page.getByLabel('Access token').fill('test-only-approver');
   await page.getByRole('button',{name:'Continue'}).click();
@@ -25,6 +25,7 @@ test('operator prepares, independent approver reviews both actions, no dispatch'
   await page.setViewportSize({width:390,height:844});
   await expect(page.getByRole('heading',{name:'Follow-up draft'})).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+  await page.screenshot({path:'../local/browser-review-mobile.png',fullPage:true});
   await page.getByRole('button',{name:'Sign out'}).click();
   await expect(page.getByLabel('Access token')).toHaveValue('');
 });
