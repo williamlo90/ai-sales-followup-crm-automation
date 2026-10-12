@@ -45,3 +45,25 @@ test('unknown operation visibly requires reconciliation, with no resend button',
   await expect(page.getByText('Reconcile the recorded operation before',{exact:false})).toBeVisible();
   await expect(page.getByRole('button',{name:/resend|retry|send now/i})).toHaveCount(0);
 });
+
+test('portfolio view keeps outcomes prominent and technical references collapsed',async({page,request})=>{
+  const prepared=await request.post('/v1/proposals',{headers:{Authorization:'Bearer visual-test-operator'},data:{
+    deal_id:'deal-1',deal_version:1,evidence:[{source_id:'thread-1',revision:1,quote:'15 October 2026 at 14:00 Asia/Jakarta'}],
+    summary:'Confirm rescheduled demo',due_at:'2026-10-15T14:00:00+07:00',draft:'We have noted the revised demo time: 15 October 2026 at 14:00 Asia/Jakarta.'}});
+  expect(prepared.ok()).toBeTruthy();
+  const proposal=await prepared.json();
+  for(const kind of ['crm','email']){
+    const approval=await request.post(`/v1/proposals/${proposal.id}/approvals`,{headers:{Authorization:'Bearer visual-test-approver'},data:{kind,payload_hash:proposal.payload_hash}});
+    expect(approval.ok()).toBeTruthy();
+  }
+  await page.route(`**/v1/proposals/${proposal.id}/operations`,route=>route.fulfill({json:{items:[{id:'synthetic-ui-operation',kind:'crm',status:'verified',recovery:null}]}}));
+  await page.route(`**/v1/proposals/${proposal.id}/connector-binding`,route=>route.fulfill({json:{connector_tenant:'synthetic-sandbox',local_payload_hash:'a'.repeat(64),preview:{summary:'Confirm rescheduled demo'}}}));
+  await page.goto('/');
+  await page.getByLabel('Access token').fill('visual-test-approver');
+  await page.getByRole('button',{name:'Continue'}).click();
+  await page.getByRole('button',{name:/Confirm rescheduled demo/}).click();
+  await expect(page.getByText('CRM result verified')).toBeVisible();
+  await expect(page.getByText('Linked',{exact:true})).toBeVisible();
+  await expect(page.getByText('local payload hash')).toBeHidden();
+  await page.screenshot({path:'../docs/assets/sales-review-verified.png',fullPage:true});
+});

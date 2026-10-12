@@ -14,7 +14,7 @@ test('binding form preserves exact preview and exposes missing connector',async(
   await page.getByRole('button',{name:'Load mapped activity preview'}).click();
   await expect(page.getByRole('table')).toContainText('Confirm rescheduled demo');
   await page.getByText('Attach approved connector proposal',{exact:true}).click();
-  const panel=page.locator('section').filter({has:page.getByRole('heading',{name:'Odoo connector binding'})});
+  const panel=page.locator('section').filter({has:page.getByRole('heading',{name:'Odoo handoff'})});
   for(const label of ['Connector connector tenant','Connector proposal id','Connector approval id','Connector actor id'])await panel.getByLabel(label,{exact:true}).fill('11111111-1111-4111-8111-111111111111');
   for(const label of ['company id','opportunity id','assignee id'])await panel.getByLabel(label,{exact:true}).fill('7');
   await panel.getByLabel('Connector due date').fill('2026-10-15');
@@ -23,8 +23,12 @@ test('binding form preserves exact preview and exposes missing connector',async(
   await panel.getByRole('button',{name:'Validate and attach binding'}).click();
   await expect(panel.getByRole('alert')).toHaveText('connector not configured');
   expect(submitted.preview).toMatchObject({kind:'activity',company_id:7,due_date:'2026-10-15',summary:'Confirm rescheduled demo',source_version:'v1'});
-  await expect(panel.getByText('Immutable binding saved for this proposal.')).toHaveCount(0);
+  await expect(panel.getByText('Approved connector references are saved for this proposal.')).toHaveCount(0);
   await panel.getByRole('button',{name:'Validate and attach binding'}).click();
-  await expect(panel.getByText('Immutable binding saved for this proposal.')).toBeVisible();
+  await expect(panel.getByText('Approved connector references are saved for this proposal.')).toBeVisible();
+  await expect(panel.getByText('Linked',{exact:true})).toBeVisible();
+  await expect(panel.getByText('local payload hash')).toBeHidden();
+  await panel.getByText('View connector references').click();
+  await expect(panel.getByText('local payload hash')).toBeVisible();
   await expect(panel.getByRole('button',{name:'Validate and attach binding'})).toHaveCount(0);
 });

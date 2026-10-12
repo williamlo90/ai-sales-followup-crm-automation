@@ -6,9 +6,9 @@ A customer email becomes a source-backed CRM activity and a reviewable follow-up
 
 [See the synthetic sales walkthrough](docs/phase-8/DEMO.md) · [Operator guide](docs/phase-8/OPERATOR-GUIDE.md) · [MCP tools](mcp-server/README.md) · [Documentation](docs/README.md)
 
-![Synthetic sales review with a verified Odoo activity](docs/assets/sales-review-verified.png)
+![Sales follow-up review workspace showing evidence, decisions and a recorded outcome](docs/assets/sales-review-verified.png)
 
-The screenshot is an automated browser run with synthetic data against the local app, PostgreSQL and Odoo sandbox. It shows a verified CRM activity; email approval remains separate and sending is off. [Browser evidence](docs/evidence/phase-7-connected-browser.json).
+The screenshot uses a synthetic browser fixture to show the current review UI and recorded-outcome state. The separate [connected browser run](docs/evidence/phase-7-connected-browser.json) verifies the local app against PostgreSQL and the Odoo sandbox. Email approval remains separate; sending is off in this UI fixture.
 
 ## Why this project
 

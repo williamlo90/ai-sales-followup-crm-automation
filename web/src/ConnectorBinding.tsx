@@ -25,13 +25,13 @@ export function ConnectorBinding({token,id,role,stale}:{token:string;id:string;r
       const result=await response.json();if(!response.ok)throw Error(result.error||'Binding failed');setBinding(result);setNotice('Binding verified and saved. No CRM action was executed.');
     }).catch(e=>setError(e instanceof Error?e.message:'Binding failed')).finally(()=>setBusy(false));
   }
-  return <section><h3>Odoo connector binding</h3>
-    <p>Use the activity preview above to prepare an activity in the Odoo connector workspace. Obtain its separate approval, then copy the exact approved references and preview below. The backend checks mapping, dates, summary, approval and freshness before saving.</p>
-    <button disabled={busy||stale} onClick={()=>void prepare()}>Load mapped activity preview</button>
-    {preparation&&<><p>Create a new activity · timezone {preparation.timezone}. No existing activity is overwritten.</p><table><thead><tr><th>Field</th><th>Before</th><th>Proposed value</th></tr></thead><tbody>{Object.entries(preparation.preview).map(([field,value])=><tr key={field}><td>{field.replaceAll('_',' ')}</td><td>New activity</td><td>{value}</td></tr>)}</tbody></table></>}
+  return <section className="connector-section"><div className="sectiontitle"><div><p className="eyebrow">03 / CONNECTOR</p><h3>Odoo handoff</h3></div><span className={'badge '+(binding?'complete':'')}>{binding?'Linked':'Not linked'}</span></div>
+    <p className="muted">{binding?'Approved connector references are saved for this proposal.':'Check the mapped activity, obtain separate connector approval, then attach its references.'}</p>
+    {!binding&&<button disabled={busy||stale} onClick={()=>void prepare()}>Load mapped activity preview</button>}
+    {preparation&&<><p>Create a new activity Â· timezone {preparation.timezone}. No existing activity is overwritten.</p><div className="table-scroll"><table><thead><tr><th>Field</th><th>Before</th><th>Proposed value</th></tr></thead><tbody>{Object.entries(preparation.preview).map(([field,value])=><tr key={field}><td>{field.replaceAll('_',' ')}</td><td>New activity</td><td>{value}</td></tr>)}</tbody></table></div></>}
     {error&&<p role="alert">{error.replaceAll('_',' ')}</p>}{notice&&<p role="status">{notice}</p>}
-    {binding?<><p>Immutable binding saved for this proposal.</p><dl className="binding-details">{Object.entries(binding).map(([key,value])=><div key={key}><dt>{key.replaceAll('_',' ')}</dt><dd>{typeof value==='object'?JSON.stringify(value):String(value)}</dd></div>)}</dl></>:
-      ['operator','worker'].includes(role)&&<details><summary>Attach approved connector proposal</summary><form key={JSON.stringify(preparation)} onSubmit={attach}>
+    {binding?<details key="saved-binding" className="technical-details"><summary>View connector references</summary><dl className="binding-details">{Object.entries(binding).map(([key,value])=><div key={key}><dt>{key.replaceAll('_',' ')}</dt><dd>{typeof value==='object'?JSON.stringify(value):String(value)}</dd></div>)}</dl></details>:
+      ['operator','worker'].includes(role)&&<details key="attach-binding"><summary>Attach approved connector proposal</summary><form key={JSON.stringify(preparation)} onSubmit={attach}>
         {['connector_tenant','proposal_id','approval_id','actor_id'].map(name=><label key={name}>{`Connector ${name.replaceAll('_',' ')}`}<input name={name} required maxLength={36} disabled={busy||stale}/></label>)}
         {['company_id','opportunity_id','assignee_id'].map(name=><label key={name}>{name.replaceAll('_',' ')}<input defaultValue={preparation?.preview[name]} name={name} type="number" min="1" step="1" required disabled={busy||stale}/></label>)}
         <label>Connector due date<input defaultValue={preparation?.preview.due_date} name="due_date" type="date" required disabled={busy||stale}/></label>

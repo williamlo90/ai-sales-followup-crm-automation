@@ -22,4 +22,7 @@ if __name__ == "__main__":
         binding_actors = {role: Actor(id=role,tenant_id="browser-binding",role=role,deal_ids={"deal-1"}) for role in ["operator","worker"]}
         seed(service, binding_actors["worker"])
         identities.update({hashlib.sha256(f"binding-test-{role}".encode()).hexdigest(): actor for role,actor in binding_actors.items()})
+        visual_actors = {role: Actor(id=role,tenant_id="browser-visual",role=role,deal_ids={"deal-1"}) for role in ["operator","approver","worker"]}
+        seed(service, visual_actors["worker"])
+        identities.update({hashlib.sha256(f"visual-test-{role}".encode()).hexdigest(): actor for role,actor in visual_actors.items()})
         uvicorn.run(create_app(service,identities),host="127.0.0.1",port=8040,access_log=False)
