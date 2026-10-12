@@ -7,3 +7,7 @@
 *.yml text eol=lf
 *.yaml text eol=lf
 *.md text eol=lf
+# Phase 6 freeze records hashes of the original CRLF bytes.
+docs/phase-6/dataset-freeze.json -text
+fixtures/evaluation/development-v2.json -text
+fixtures/evaluation/heldout-v2.json -text
