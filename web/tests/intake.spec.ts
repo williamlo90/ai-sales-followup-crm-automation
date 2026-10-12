@@ -4,7 +4,7 @@ test('reviewed extraction uses real commitment and proposal endpoints',async({pa
   await page.route('**/v1/skills/extract_commitments',route=>route.fulfill({json:{result:{extraction:{status:'ready',missing_information:[],conflicts:[],commitments:[{
     id:'browser-intake',revision:1,supersedes:null,owner:'Sales',description:'Review extracted demo',state:'active',
     due_at:'2026-10-15T07:00:00Z',observed_at:'2026-10-08T10:00:00Z',
-    evidence:{source_id:'thread-1',revision:1,quote:'15 October 2026 at 14:00 Asia/Jakarta'}
+    evidence:{source_id:'thread-1',revision:1,quote:'Thanks for sharing the revised 25-seat proposal. Please call me on 15 October 2026 at 14:00 Asia/Jakarta to discuss pricing, and email me the call details.'}
   }]}}}}));
   await page.goto('/');await page.getByLabel('Access token').fill('intake-test-operator');await page.getByRole('button',{name:'Continue'}).click();
   await page.getByLabel('Conversation deal ID').fill('deal-1');await page.getByRole('button',{name:'Extract candidates'}).click();

@@ -8,9 +8,9 @@ from backend.store import Store
 
 
 def seed(service, worker):
-    service.put_deal(worker, "deal-1", DealInput(account_id="northstar-lab", title="Northstar demo", recipient="buyer@example.test", version=1))
+    service.put_deal(worker, "deal-1", DealInput(account_id="northstar-lab", title="Northstar 25-seat proposal", recipient="buyer@example.test", version=1))
     service.put_source(worker, "deal-1", SourceInput(external_id="thread-1", revision=1, occurred_at="2026-10-08T10:00:00Z",
-        text="Please move our demo from 14 October 2026 at 10:00 Asia/Jakarta to 15 October 2026 at 14:00 Asia/Jakarta."))
+        text="Thanks for sharing the revised 25-seat proposal. Please call me on 15 October 2026 at 14:00 Asia/Jakarta to discuss pricing, and email me the call details."))
 
 
 def main():

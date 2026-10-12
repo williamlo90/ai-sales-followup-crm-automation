@@ -8,7 +8,7 @@ A customer email becomes a source-backed CRM activity and a reviewable follow-up
 
 ![Sales follow-up review workspace showing evidence, decisions and a recorded outcome](docs/assets/sales-review-verified.png)
 
-The screenshot uses a synthetic browser fixture to show the current review UI and recorded-outcome state. The separate [connected browser run](docs/evidence/phase-7-connected-browser.json) verifies the local app against PostgreSQL and the Odoo sandbox. Email approval remains separate; sending is off in this UI fixture.
+The screenshot uses a synthetic Northstar 25-seat proposal fixture to show the review UI and recorded-outcome state. The separate [connected browser run](docs/evidence/phase-7-connected-browser.json) used an earlier rescheduled-demo case to verify the local app against PostgreSQL and the Odoo sandbox. Email approval remains separate; sending is off in this UI fixture.
 
 ## Why this project
 

@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+const customerQuote='Thanks for sharing the revised 25-seat proposal. Please call me on 15 October 2026 at 14:00 Asia/Jakarta to discuss pricing, and email me the call details.';
+
 test('operator prepares, independent approver reviews both actions, no dispatch',async({page})=>{
   await page.goto('/');
   await page.getByLabel('Access token').fill('invalid');
@@ -15,7 +17,7 @@ test('operator prepares, independent approver reviews both actions, no dispatch'
   await page.getByRole('button',{name:'Sign out'}).click();
   await page.getByLabel('Access token').fill('test-only-approver');
   await page.getByRole('button',{name:'Continue'}).click();
-  await page.getByRole('button',{name:/Confirm rescheduled demo/}).click();
+  await page.getByRole('button',{name:/Call Northstar about 25-seat proposal/}).click();
   await page.getByRole('button',{name:'Approve CRM activity'}).click();
   await expect(page.getByText('Awaiting email approval',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Approve email draft'}).click();
@@ -32,8 +34,8 @@ test('operator prepares, independent approver reviews both actions, no dispatch'
 
 test('unknown operation visibly requires reconciliation, with no resend button',async({page,request})=>{
   const prepared=await request.post('/v1/proposals',{headers:{Authorization:'Bearer test-only-operator'},data:{
-    deal_id:'deal-1',deal_version:1,evidence:[{source_id:'thread-1',revision:1,quote:'15 October 2026 at 14:00 Asia/Jakarta'}],
-    summary:'Recovery review fixture',due_at:'2026-10-15T14:00:00+07:00',draft:'Please confirm the revised demo.'}});
+    deal_id:'deal-1',deal_version:1,evidence:[{source_id:'thread-1',revision:1,quote:customerQuote}],
+    summary:'Recovery review fixture',due_at:'2026-10-15T14:00:00+07:00',draft:'Please confirm our 25-seat proposal call.'}});
   expect(prepared.ok()).toBeTruthy();
   const proposal=await prepared.json();
   // UI presentation fixture only; backend unknown/reconciliation has separate tests.
@@ -49,8 +51,8 @@ test('unknown operation visibly requires reconciliation, with no resend button',
 
 test('portfolio view keeps outcomes prominent and technical references collapsed',async({page,request})=>{
   const prepared=await request.post('/v1/proposals',{headers:{Authorization:'Bearer visual-test-operator'},data:{
-    deal_id:'deal-1',deal_version:1,evidence:[{source_id:'thread-1',revision:1,quote:'15 October 2026 at 14:00 Asia/Jakarta'}],
-    summary:'Confirm rescheduled demo',due_at:'2026-10-15T14:00:00+07:00',draft:'We have noted the revised demo time: 15 October 2026 at 14:00 Asia/Jakarta.'}});
+    deal_id:'deal-1',deal_version:1,evidence:[{source_id:'thread-1',revision:1,quote:customerQuote}],
+    summary:'Call Northstar about 25-seat proposal',due_at:'2026-10-15T14:00:00+07:00',draft:'Thanks for your note about the revised 25-seat proposal. I will call you on 15 October 2026 at 14:00 Asia/Jakarta to discuss pricing.'}});
   expect(prepared.ok()).toBeTruthy();
   const proposal=await prepared.json();
   for(const kind of ['crm','email']){
@@ -58,11 +60,11 @@ test('portfolio view keeps outcomes prominent and technical references collapsed
     expect(approval.ok()).toBeTruthy();
   }
   await page.route(`**/v1/proposals/${proposal.id}/operations`,route=>route.fulfill({json:{items:[{id:'synthetic-ui-operation',kind:'crm',status:'verified',recovery:null}]}}));
-  await page.route(`**/v1/proposals/${proposal.id}/connector-binding`,route=>route.fulfill({json:{connector_tenant:'synthetic-sandbox',local_payload_hash:'a'.repeat(64),preview:{summary:'Confirm rescheduled demo'}}}));
+  await page.route(`**/v1/proposals/${proposal.id}/connector-binding`,route=>route.fulfill({json:{connector_tenant:'synthetic-sandbox',local_payload_hash:'a'.repeat(64),preview:{summary:'Call Northstar about 25-seat proposal'}}}));
   await page.goto('/');
   await page.getByLabel('Access token').fill('visual-test-approver');
   await page.getByRole('button',{name:'Continue'}).click();
-  await page.getByRole('button',{name:/Confirm rescheduled demo/}).click();
+  await page.getByRole('button',{name:/Call Northstar about 25-seat proposal/}).click();
   await expect(page.getByText('CRM result verified')).toBeVisible();
   await expect(page.getByText('Linked',{exact:true})).toBeVisible();
   await expect(page.getByText('local payload hash')).toBeHidden();
