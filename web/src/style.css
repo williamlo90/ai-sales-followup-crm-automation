@@ -96,6 +96,10 @@ dd { margin: 0; font-weight: 630; }
 .approval { display: flex; flex-direction: column; align-items: start; gap: 11px; font-size: 11px; }
 .approval span { color: #58675b; font-weight: 650; }
 .approval .primary { width: 100%; text-align: center; }
+.handoff { padding: 20px 0; border-top: 1px solid #daddd5; }
+.handoff h3 { margin: 0 0 7px; font-size: 12px; font-weight: 760; }
+.handoff p { margin: 0 0 13px; color: #68726a; font-size: 11px; line-height: 1.5; }
+.handoff button { display: block; width: 100%; margin: 8px 0 0; text-align: left; }
 .outcome-section { padding-top: 20px; border-top: 1px solid #daddd5; }
 .outcome-section h3 { margin: 0 0 12px; font-size: 12px; font-weight: 760; }
 .outcome-section .muted { margin: 0; }

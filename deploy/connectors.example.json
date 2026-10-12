@@ -2,6 +2,8 @@
   "local_tenant": "00000000-0000-0000-0000-000000000001",
   "worker_id": "00000000-0000-0000-0000-000000000002",
   "crm_write_enabled": false,
+  "email_send_enabled": false,
+  "email_recipient_allowlist": [],
   "odoo": {
     "base_url": "http://127.0.0.1:8002",
     "connector_tenant": "00000000-0000-0000-0000-000000000003",

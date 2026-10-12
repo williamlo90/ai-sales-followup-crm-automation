@@ -87,8 +87,20 @@ def test_scope_and_disabled_execution(lab,proposal):
     with pytest.raises(DomainError,match="execution_disabled"):
         executor.execute(lab[1]["operator"],p["id"],"crm")
     executor.enabled=True
+    executor.crm_enabled=True
     with pytest.raises(DomainError,match="record_not_found"):
         executor.execute(lab[1]["outsider"],p["id"],"crm")
+
+
+def test_email_only_runtime_rejects_crm_before_ledger_commit(lab,proposal):
+    p=approved(lab,proposal)
+    double=EffectDouble()
+    executor=ExecutionService(lab[0],double,enabled=True,crm_enabled=False,send_enabled=True,
+                              recipients=frozenset({'customer@example.test'}))
+    with pytest.raises(DomainError,match='crm_write_disabled'):
+        executor.execute(lab[1]['operator'],p['id'],'crm')
+    assert lab[0].proposal_operations(lab[1]['operator'],p['id'])==[]
+    assert double.calls==0
 
 
 def test_wrong_receipt_does_not_close_operation(lab,proposal):

@@ -50,9 +50,15 @@ test('unknown operation visibly requires reconciliation, with no resend button',
 });
 
 test('portfolio view keeps outcomes prominent and technical references collapsed',async({page,request})=>{
+  const commitment=await request.post('/v1/deals/deal-1/commitments',{headers:{Authorization:'Bearer visual-test-operator'},data:{
+    id:'northstar-followup',revision:1,supersedes:null,owner:'Sales',description:'Call Northstar about 25-seat proposal',
+    due_at:'2026-10-15T14:00:00+07:00',observed_at:'2026-10-08T10:00:00Z',
+    evidence:{source_id:'thread-1',revision:1,quote:customerQuote},state:'active'}});
+  expect(commitment.ok()).toBeTruthy();
   const prepared=await request.post('/v1/proposals',{headers:{Authorization:'Bearer visual-test-operator'},data:{
     deal_id:'deal-1',deal_version:1,evidence:[{source_id:'thread-1',revision:1,quote:customerQuote}],
-    summary:'Call Northstar about 25-seat proposal',due_at:'2026-10-15T14:00:00+07:00',draft:'Thanks for your note about the revised 25-seat proposal. I will call you on 15 October 2026 at 14:00 Asia/Jakarta to discuss pricing.'}});
+    summary:'Call Northstar about 25-seat proposal',due_at:'2026-10-15T14:00:00+07:00',draft:'Thanks for your note about the revised 25-seat proposal. I will call you on 15 October 2026 at 14:00 Asia/Jakarta to discuss pricing.',
+    commitment:{id:'northstar-followup',revision:1}}});
   expect(prepared.ok()).toBeTruthy();
   const proposal=await prepared.json();
   for(const kind of ['crm','email']){
@@ -62,11 +68,15 @@ test('portfolio view keeps outcomes prominent and technical references collapsed
   await page.route(`**/v1/proposals/${proposal.id}/operations`,route=>route.fulfill({json:{items:[{id:'synthetic-ui-operation',kind:'crm',status:'verified',recovery:null}]}}));
   await page.route(`**/v1/proposals/${proposal.id}/connector-binding`,route=>route.fulfill({json:{connector_tenant:'synthetic-sandbox',local_payload_hash:'a'.repeat(64),preview:{summary:'Call Northstar about 25-seat proposal'}}}));
   await page.goto('/');
-  await page.getByLabel('Access token').fill('visual-test-approver');
+  await page.getByLabel('Access token').fill('visual-test-operator');
   await page.getByRole('button',{name:'Continue'}).click();
   await page.getByRole('button',{name:/Call Northstar about 25-seat proposal/}).click();
   await expect(page.getByText('CRM result verified')).toBeVisible();
   await expect(page.getByText('Linked',{exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Queue CRM activity'})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Queue email follow-up'})).toBeVisible();
   await expect(page.getByText('local payload hash')).toBeHidden();
   await page.screenshot({path:'../docs/assets/sales-review-verified.png',fullPage:true});
+  await page.getByRole('button',{name:'Queue email follow-up'}).click();
+  await expect(page.getByRole('status')).toContainText('Queued email follow-up');
 });

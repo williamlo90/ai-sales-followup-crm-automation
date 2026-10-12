@@ -79,12 +79,13 @@ def create_app(service: SalesService, identities: dict[str, Actor], skills: Skil
 
     @app.get("/health/ready")
     def ready():
+        send_enabled = bool(execution and execution.send_enabled)
         if isinstance(service.store, PostgresStore):
             service.store.ready()
-            return {"status":"ready", "storage":"postgresql", "connected":False, "send_enabled":False}
+            return {"status":"ready", "storage":"postgresql", "connected":False, "send_enabled":send_enabled}
         with service.store.connect() as conn:
             conn.execute("SELECT 1 FROM proposals LIMIT 1")
-        return {"status": "ready", "storage": "sqlite-local-harness", "connected": False, "send_enabled": False}
+        return {"status": "ready", "storage": "sqlite-local-harness", "connected": False, "send_enabled": send_enabled}
 
     @app.get("/v1/me")
     def me(current: Actor = Depends(actor)):

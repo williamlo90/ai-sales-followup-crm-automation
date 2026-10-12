@@ -1,6 +1,6 @@
 # Local V1 operator guide
 
-This release is a **local, connected-sandbox-validated** sales follow-up assistant. The operator owns customer context and the final decision; a separate approver authorizes the exact CRM or email action. A draft is not a sent message. Local V1 has no send button or configuration switch: the Graph send adapter is disabled at runtime. A future send-capable release would require separate implementation and acceptance.
+This release is a **local, connected-sandbox-validated** sales follow-up assistant. The operator owns customer context and the final decision; a separate approver authorizes the exact CRM or email action. A draft is not a sent message. The operator queues a source-backed follow-up; the worker can send an approved email automatically when due. Sending defaults off and requires email_send_enabled=true plus an exact email_recipient_allowlist in ignored local/connectors.json. The new opt-in path has offline regression coverage; it has not been exercised as a new connected send in this UI update. Check /health/ready for the effective send_enabled state before expecting dispatch.
 
 ## Install and start
 
@@ -12,7 +12,7 @@ This release is a **local, connected-sandbox-validated** sales follow-up assista
 
 ## Daily use
 
-Open the workspace as the operator, inspect the source quote, matched customer/deal, current CRM context, proposed field diff, next activity and follow-up draft. Resolve ambiguous dates, unsupported claims, stale context and opt-outs before handoff. Queue CRM and email separately. A distinct approver checks the exact version/payload and approves only the intended effect. The operator then checks the operation status and the Odoo read-back; for email, an accepted Graph response or Sent Items observation is **not** delivery/read proof. Keep a human review of the actual recipient, subject and body before an approved send.
+Open the workspace as the operator, inspect the source quote, matched customer/deal, current CRM context, proposed field diff, next activity and follow-up draft. Resolve ambiguous dates, unsupported claims, stale context and opt-outs before handoff. Record a source-backed commitment through Intake, then queue CRM and email separately in the decision panel. A distinct approver checks the exact version/payload and approves only the intended effect. The operator then checks the operation status and the Odoo read-back; for email, an accepted Graph response or Sent Items observation is **not** delivery/read proof. Keep a human review of the actual recipient, subject and body before an approved send.
 
 `queued` or `awaiting_approval` needs operator/approver work. `review` needs explicit investigation and cannot be silently retried. `unknown` means an external outcome is unresolved: observe the target first, then use the recovery view. `verified` means the target-state observation matched the operation; it does not infer other downstream effects. Use the scoped `/v1/workflows/jobs` list and the UI recovery panel for the owning tenant; do not edit the database ledger by hand.
 

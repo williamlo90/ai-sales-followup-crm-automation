@@ -1,6 +1,7 @@
-"""Project-scoped connectors; CRM writes opt in, email sends remain disabled."""
+"""Project-scoped connectors; CRM writes and allowlisted email sends opt in."""
 from dataclasses import dataclass
 import json
+import re
 from pathlib import Path
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field
@@ -42,6 +43,8 @@ class ConnectorConfig(Strict):
     local_tenant: UUID
     worker_id: UUID
     crm_write_enabled: bool = Field(default=False, strict=True)
+    email_send_enabled: bool = Field(default=False, strict=True)
+    email_recipient_allowlist: list[str] = Field(default_factory=list, max_length=20)
     odoo: OdooConfig | None = None
     graph: GraphConfig | None = None
 
@@ -74,6 +77,13 @@ def compose(service, identities, name, *, root=ROOT):
     cfg = ConnectorConfig.model_validate(json.loads(local_file(name,root).read_text(encoding='utf-8')))
     if cfg.crm_write_enabled and not cfg.odoo:
         raise ValueError('CRM writes require an Odoo connector')
+    if cfg.email_send_enabled and not cfg.graph:
+        raise ValueError('Email sends require a Graph connector')
+    recipients = cfg.email_recipient_allowlist
+    if cfg.email_send_enabled and not recipients:
+        raise ValueError('Email sends require an explicit recipient allowlist')
+    if len(set(recipients)) != len(recipients) or any(not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+', recipient) for recipient in recipients):
+        raise ValueError('Invalid email recipient allowlist')
     workers = {a.id:a for a in identities.values() if a.id==str(cfg.worker_id) and a.tenant_id==str(cfg.local_tenant) and a.role=='worker'}
     if len(workers)!=1:raise ValueError('Configured connector worker identity missing')
     worker = next(iter(workers.values()))
@@ -91,7 +101,10 @@ def compose(service, identities, name, *, root=ROOT):
         token = token_reader(item.token_file,root)
         client = GraphReadClient(str(cfg.local_tenant),item.mailbox,token,folder=item.folder)
         ingestion = GraphIngestion(service,worker,client,item.message_deals)
-        mail = GraphMailAdapter(str(cfg.local_tenant),item.mailbox,token,repository.payload,send_enabled=False)
+        mail = GraphMailAdapter(str(cfg.local_tenant),item.mailbox,token,repository.payload,
+                                recipients=frozenset(recipients),send_enabled=cfg.email_send_enabled)
     if crm is None and ingestion is None:raise ValueError('No connectors configured')
-    execution = ExecutionService(service,EffectRouter(crm,mail),enabled=cfg.crm_write_enabled,send_enabled=False)
+    execution = ExecutionService(service,EffectRouter(crm,mail),enabled=cfg.crm_write_enabled or cfg.email_send_enabled,
+                                 crm_enabled=cfg.crm_write_enabled,send_enabled=cfg.email_send_enabled,
+                                 recipients=frozenset(recipients))
     return Runtime(execution,crm,ingestion)

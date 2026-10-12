@@ -43,6 +43,33 @@ def test_explicit_crm_enable_preserves_mail_block(tmp_path):
     assert runtime.execution.send_enabled is False
 
 
+def test_explicit_allowlisted_email_enable_is_independent_of_crm(tmp_path):
+    worker,cfg = configuration(tmp_path)
+    del cfg['odoo']
+    cfg['email_send_enabled']=True
+    cfg['email_recipient_allowlist']=['buyer@example.test']
+    runtime=build(tmp_path,worker,cfg)
+    assert runtime.execution.enabled is True
+    assert runtime.execution.crm_enabled is False
+    assert runtime.execution.send_enabled is True
+    assert runtime.execution.recipients == frozenset({'buyer@example.test'})
+    assert runtime.execution.adapter.adapters['email'].send_enabled is True
+    assert runtime.execution.adapter.adapters['email'].recipients == frozenset({'buyer@example.test'})
+
+
+@pytest.mark.parametrize('change',['missing_graph','empty_recipients','bad_recipient','duplicate_recipient','non_boolean'])
+def test_email_send_configuration_fails_closed(tmp_path,change):
+    worker,cfg = configuration(tmp_path)
+    cfg['email_send_enabled']=True
+    cfg['email_recipient_allowlist']=['buyer@example.test']
+    if change=='missing_graph':del cfg['graph']
+    if change=='empty_recipients':cfg['email_recipient_allowlist']=[]
+    if change=='bad_recipient':cfg['email_recipient_allowlist']=['not-an-address']
+    if change=='duplicate_recipient':cfg['email_recipient_allowlist'].append('buyer@example.test')
+    if change=='non_boolean':cfg['email_send_enabled']='true'
+    with pytest.raises(ValueError):build(tmp_path,worker,cfg)
+
+
 @pytest.mark.parametrize('value',['true',1,None])
 def test_crm_enable_requires_boolean(tmp_path,value):
     worker,cfg = configuration(tmp_path)

@@ -9,7 +9,7 @@ import { ConnectorBinding } from './ConnectorBinding';
 type Actor = {id:string;role:string;tenant_id:string;deal_ids:string[]};
 type Operation = {id:string;kind:'crm'|'email';status:string;recovery:string|null};
 type Proposal = {id:string;payload_hash:string;status:string;validation_error:string|null;approval_valid:boolean;
-  approvals:{kind:string;actor_id:string}[];payload:{deal_id:string;account_id:string;recipient:string;summary:string;due_at:string;draft:string;evidence:{source_id:string;revision:number;quote:string}[]}};
+  approvals:{kind:string;actor_id:string}[];payload:{deal_id:string;account_id:string;recipient:string;summary:string;due_at:string;draft:string;commitment?:{id:string;revision:number}|null;evidence:{source_id:string;revision:number;quote:string}[]}};
 
 function readableDate(value:string){
   const date=new Date(value);
@@ -64,10 +64,11 @@ function App(){
         </div><aside className="decision-panel"><p className="eyebrow">REVIEW & RELEASE</p><h3>Decision</h3><p className="decision-intro">CRM and email need separate approval. Each decision is tied to this exact proposal.</p>
           <div className="decision-item"><p className="decision-name">CRM activity</p><Approval kind="crm" proposal={selected} actor={actor} busy={busy} onApprove={()=>approve('crm')}/></div>
           <div className="decision-item"><p className="decision-name">Email draft</p><Approval kind="email" proposal={selected} actor={actor} busy={busy} onApprove={()=>approve('email')}/></div>
+          <ProposalHandoff key={selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error} commitmentBound={!!selected.payload.commitment}/>
           <section className="outcome-section"><h3>Action outcomes</h3>{operations.length===0?<p className="muted">No action recorded yet.</p>:operations.map(op=><div key={op.id} className={op.recovery?'alert':'notice'}><strong>{op.kind==='crm'?'CRM activity':'Email'} · {op.status==='unknown'||op.status==='dispatched'?'Outcome unknown':op.status==='verified'?'CRM result verified':op.status==='accepted'?'Accepted / sent observed':op.status}</strong><p>{op.recovery?'Reconcile the recorded operation before attempting another action. A lost response may hide a completed action.':op.kind==='email'?'Acceptance or Sent Items does not establish delivery or read status.':'The recorded outcome is available for review.'}</p><details className="technical-details"><summary>Operation reference</summary><code>{op.id}</code></details></div>)}</section>
-          <p className="release-note">Approval records consent. Email sending is disabled in local V1; running the workflow will not send this draft.</p>
+          <p className="release-note">Approval alone does not send. The worker can send an approved email only when due and when project sending is enabled for its recipient.</p>
         </aside></div>
-        <div className="case-technical"><ConnectorBinding key={'binding-'+selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><ProposalHandoff key={selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><details><summary>Proposal reference</summary><p className="reference">{selected.id}<br/>Payload: {selected.payload_hash}</p></details></div>
+        <div className="case-technical"><ConnectorBinding key={'binding-'+selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><details><summary>Proposal reference</summary><p className="reference">{selected.id}<br/>Payload: {selected.payload_hash}</p></details></div>
       </>}</article>
     </div>}
     {actor?.role==='operator'&&<div id="conversation-intake"><IntakeReview token={token} onPrepared={async()=>{await refresh();}}/></div>}

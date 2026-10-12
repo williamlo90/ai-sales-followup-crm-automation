@@ -12,9 +12,9 @@ class EffectAdapter(Protocol):
 
 class ExecutionService:
     def __init__(self, sales: SalesService, adapter: EffectAdapter, *, enabled=False,
-                 send_enabled=False, recipients: frozenset[str] = frozenset()):
+                 crm_enabled: bool | None = None, send_enabled=False, recipients: frozenset[str] = frozenset()):
         self.sales, self.adapter = sales, adapter
-        self.enabled, self.send_enabled, self.recipients = enabled, send_enabled, recipients
+        self.enabled, self.crm_enabled, self.send_enabled, self.recipients = enabled, enabled if crm_enabled is None else crm_enabled, send_enabled, recipients
 
     def load(self, conn, actor, ident):
         row = conn.execute("SELECT * FROM operations WHERE tenant=? AND id=?", (actor.tenant_id, ident)).fetchone()
@@ -28,6 +28,8 @@ class ExecutionService:
             raise DomainError("invalid_operation",422)
         if not self.enabled:
             raise DomainError("execution_disabled",403)
+        if kind == "crm" and not self.crm_enabled:
+            raise DomainError("crm_write_disabled",403)
         with self.sales.store.connect(actor) as conn:
             proposal = self.sales.row(conn, actor, proposal_id)
             self.sales.scope(actor, proposal["deal_id"], {"operator","worker"})

@@ -8,7 +8,7 @@ A customer email becomes a source-backed CRM activity and a reviewable follow-up
 
 ![Sales follow-up review workspace showing evidence, decisions and a recorded outcome](docs/assets/sales-review-verified.png)
 
-The screenshot uses a synthetic Northstar 25-seat proposal fixture to show the review UI and recorded-outcome state. The separate [connected browser run](docs/evidence/phase-7-connected-browser.json) used an earlier rescheduled-demo case to verify the local app against PostgreSQL and the Odoo sandbox. Email approval remains separate; sending is off in this UI fixture.
+The screenshot uses a synthetic Northstar 25-seat proposal fixture to show the operator's review, queue controls and recorded-outcome state. The separate [connected browser run](docs/evidence/phase-7-connected-browser.json) used an earlier rescheduled-demo case to verify the local app against PostgreSQL and the Odoo sandbox. Email approval remains separate; sending is off in this UI fixture and defaults off in project configuration.
 
 ## Why this project
 
@@ -74,6 +74,8 @@ $env:SALES_IDENTITIES_PATH = 'local/identities.json'
 In another terminal, run `npm.cmd run dev --prefix web` and open http://127.0.0.1:8044. The seed creates private role tokens in ignored `local/access-tokens.json`; use the operator and approver roles separately. For Linux/macOS, use `.venv/bin/python` and `npm` instead. Run `.venv/Scripts/python.exe -m pytest -q` and `npm.cmd run build --prefix web` for offline checks. For MCP checks, run `npm.cmd ci --prefix mcp-server`, then its build and test scripts.
 
 Connected setup requires project-specific credentials, sandbox mappings, PostgreSQL and inactive n8n workflow import. Follow the [operator guide](docs/phase-8/OPERATOR-GUIDE.md); never commit `.env`, tokens or database state. The exported workflows are in [`automation/n8n/`](automation/n8n/README.md).
+
+The operator queue controls and optional allowlisted email dispatch were added after the recorded Phase 8 release archive. The configuration defaults to sending off. Rebuild and validate a new archive before deploying this revision; the earlier release hash documents its own snapshot.
 
 ## Delivery scope
 
