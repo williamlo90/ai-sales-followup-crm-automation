@@ -1,6 +1,6 @@
 # Local V1 operator guide
 
-This release is a **local, connected-sandbox-validated** sales follow-up assistant. The operator owns customer context and the final decision; a separate approver authorizes the exact CRM or email action. A draft is not a sent message. Keep sending disabled unless a separately approved test or deployment policy enables it.
+This release is a **local, connected-sandbox-validated** sales follow-up assistant. The operator owns customer context and the final decision; a separate approver authorizes the exact CRM or email action. A draft is not a sent message. Local V1 has no send button or configuration switch: the Graph send adapter is disabled at runtime. A future send-capable release would require separate implementation and acceptance.
 
 ## Install and start
 
