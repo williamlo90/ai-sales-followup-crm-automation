@@ -3,6 +3,7 @@ from uuid import uuid4
 import pytest
 from fastapi.testclient import TestClient
 from backend.connector_runtime import compose
+from backend.graph_oauth import GraphOAuthToken
 from backend.domain import SalesService
 from backend.store import Store
 from backend.models import Actor
@@ -32,6 +33,29 @@ def test_composition_does_not_read_missing_tokens_or_enable_effects(tmp_path):
     assert runtime.connector.write_enabled is False
     assert runtime.ingestion.actor == worker
     assert runtime.connector.local_tenant == worker.tenant_id
+
+
+def test_graph_oauth_composes_without_login_or_network(tmp_path):
+    worker,cfg = configuration(tmp_path)
+    del cfg['odoo']
+    del cfg['graph']['token_file']
+    cfg['graph']['oauth']={'client_id':str(uuid4()),'cache_file':'local/secrets/msal-cache.bin'}
+    runtime=build(tmp_path,worker,cfg)
+    assert isinstance(runtime.ingestion.client.reader._token,GraphOAuthToken)
+    assert not (tmp_path/'local/secrets/msal-cache.bin').exists()
+
+
+@pytest.mark.parametrize('change',['both','neither','outside_local','invalid_client_id'])
+def test_graph_oauth_configuration_rejects_ambiguous_or_unsafe_sources(tmp_path,change):
+    worker,cfg = configuration(tmp_path)
+    cfg['graph']['oauth']={'client_id':str(uuid4()),'cache_file':'local/secrets/msal-cache.bin'}
+    if change=='neither':
+        del cfg['graph']['token_file'];del cfg['graph']['oauth']
+    if change=='outside_local':
+        del cfg['graph']['token_file'];cfg['graph']['oauth']['cache_file']='../other/cache.bin'
+    if change=='invalid_client_id':
+        del cfg['graph']['token_file'];cfg['graph']['oauth']['client_id']='not-a-uuid'
+    with pytest.raises(ValueError):build(tmp_path,worker,cfg)
 
 
 def test_explicit_crm_enable_preserves_mail_block(tmp_path):

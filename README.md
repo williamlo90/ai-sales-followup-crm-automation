@@ -75,7 +75,7 @@ In another terminal, run `npm.cmd run dev --prefix web` and open http://127.0.0.
 
 Connected setup requires project-specific credentials, sandbox mappings, PostgreSQL and inactive n8n workflow import. Follow the [operator guide](docs/phase-8/OPERATOR-GUIDE.md); never commit `.env`, tokens or database state. The exported workflows are in [`automation/n8n/`](automation/n8n/README.md).
 
-The operator queue controls and optional allowlisted email dispatch were added after the recorded Phase 8 release archive. The configuration defaults to sending off. Rebuild and validate a new archive before deploying this revision; the earlier release hash documents its own snapshot.
+The operator queue controls, optional allowlisted email dispatch, and project-owned Outlook OAuth were added after the recorded Phase 8 release archive. The configuration defaults to sending off. Rebuild and validate a new archive before deploying this revision; the earlier release hash documents its own snapshot. [Outlook setup](docs/phase-7/CONNECTOR-SETUP.md) uses a one-time device login and encrypted local token cache; Graph Explorer tokens remain a short-lived test option.
 
 ## Delivery scope
 

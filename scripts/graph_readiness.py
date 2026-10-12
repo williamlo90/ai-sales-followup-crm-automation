@@ -4,13 +4,13 @@ import json
 from urllib.parse import quote
 
 from backend.config import ROOT
-from backend.connector_runtime import GraphConfig, local_file, token_reader
+from backend.connector_runtime import GraphConfig, graph_token_reader, local_file
 from backend.read_clients import BoundedReader, ReadError
 
 
 def check(config, *, root=ROOT, transport=None):
     cfg = GraphConfig.model_validate(config)
-    token = token_reader(cfg.token_file, root)
+    token = graph_token_reader(cfg, root)
     reader = BoundedReader(token, transport=transport)
     me = reader.get('https://graph.microsoft.com/v1.0/me?$select=id,mail,userPrincipalName')
     expected = cfg.mailbox.strip().casefold()

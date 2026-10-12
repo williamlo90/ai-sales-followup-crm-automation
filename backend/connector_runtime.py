@@ -4,11 +4,12 @@ import json
 import re
 from pathlib import Path
 from uuid import UUID
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from backend.config import ROOT
 from backend.bindings import BindingRepository
 from backend.execution import ExecutionService
 from backend.graph_effects import EffectRouter, GraphMailAdapter
+from backend.graph_oauth import GraphOAuthToken
 from backend.ingestion import GraphIngestion
 from backend.odoo_effects import OdooActivityAdapter
 from backend.read_clients import GraphReadClient, OdooReadClient
@@ -32,11 +33,23 @@ class OdooConfig(Strict):
     deals: dict[str, DealMapping]
 
 
+class GraphOAuthConfig(Strict):
+    client_id: UUID
+    cache_file: str
+
+
 class GraphConfig(Strict):
     mailbox: str = Field(min_length=1)
     folder: str = 'inbox'
-    token_file: str
+    token_file: str | None = None
+    oauth: GraphOAuthConfig | None = None
     message_deals: dict[str,str]
+
+    @model_validator(mode='after')
+    def one_auth_method(self):
+        if (self.token_file is None) == (self.oauth is None):
+            raise ValueError('Select exactly one Graph authentication method')
+        return self
 
 
 class ConnectorConfig(Strict):
@@ -64,6 +77,12 @@ def token_reader(name, root=ROOT):
             raise ValueError('Invalid connector token file')
         return value
     return read
+
+
+def graph_token_reader(cfg: GraphConfig, root=ROOT):
+    if cfg.oauth is not None:
+        return GraphOAuthToken(str(cfg.oauth.client_id),local_file(cfg.oauth.cache_file,root))
+    return token_reader(cfg.token_file,root)
 
 
 @dataclass
@@ -98,7 +117,7 @@ def compose(service, identities, name, *, root=ROOT):
     if cfg.graph:
         item = cfg.graph
         if not set(item.message_deals.values())<=worker.deal_ids:raise ValueError('Graph mapping exceeds worker scope')
-        token = token_reader(item.token_file,root)
+        token = graph_token_reader(item,root)
         client = GraphReadClient(str(cfg.local_tenant),item.mailbox,token,folder=item.folder)
         ingestion = GraphIngestion(service,worker,client,item.message_deals)
         mail = GraphMailAdapter(str(cfg.local_tenant),item.mailbox,token,repository.payload,

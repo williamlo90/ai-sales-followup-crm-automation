@@ -15,7 +15,10 @@
   "graph": {
     "mailbox": "replace-with-project-test-mailbox@example.test",
     "folder": "inbox",
-    "token_file": "local/secrets/graph-token",
+    "oauth": {
+      "client_id": "00000000-0000-0000-0000-000000000004",
+      "cache_file": "local/secrets/graph-msal-cache.bin"
+    },
     "message_deals": {"replace-with-test-message-id": "test-deal"}
   }
 }
