@@ -1,0 +1,33 @@
+{
+  "status": "sent_verified_delivery_pending",
+  "send_result": {
+    "status": "accepted",
+    "send_attempts": 1,
+    "repeat_core_same_operation": true,
+    "sent_items_verified": false,
+    "received_verified": false,
+    "storage": "real PostgreSQL; schema and ledger retained",
+    "approval": "user-authorized send, separate automated lab-role email approval",
+    "scope": "one synthetic allowlisted email; accepted is not delivery proof"
+  },
+  "observation": {
+    "sent_items_verified": true,
+    "recipient_copy_verified": false,
+    "send_attempts": 1,
+    "read_by_human": false
+  },
+  "minimum_sampled_host_free_bytes": 2364370944,
+  "postgres_limit_bytes": 268435456,
+  "postgres_swap_limit_bytes": 268435456,
+  "oom_killed": false,
+  "owned_container_stopped": true,
+  "other_container_ids_unchanged": true,
+  "raw_resource_sha256": "ff7d44e7c0c1f88aaa0e5bd58e8e2ea66229ef5c8d054e055967c669c65a0ef1",
+  "limitations": [
+    "Exactly one user-authorized synthetic email; authorization consumed",
+    "Separate automated lab-role approval, not human UI approval evidence",
+    "Graph202 and exact Sent Items verified; recipient copy not yet observed",
+    "Durable schema/ledger retained; no automatic resend",
+    "Not full Graph/model/n8n/Odoo connected workflow"
+  ]
+}

@@ -63,7 +63,7 @@ class BindingRepository:
         with self.sales.store.connect(self.actor) as conn:
             proposal=self.sales.row(conn,self.actor,proposal_id)
             self.sales.freshness(conn,self.actor,proposal)
-            if proposal['actor_id']!=self.actor.id:raise DomainError('proposal_owner_required',403)
+            self.check_binding_reviewer(conn,proposal)
             local_hash=proposal['payload_hash'];payload=json.loads(proposal['payload'])
         candidate={**data.model_dump(mode='json'),'local_payload_hash':local_hash}
         if candidate['connector_tenant']!=adapter.client.tenant_id:raise DomainError('connector_scope_mismatch',403)
@@ -74,6 +74,7 @@ class BindingRepository:
         with self.sales.store.connect(self.actor) as conn:
             current=self.sales.row(conn,self.actor,proposal_id)
             self.sales.freshness(conn,self.actor,current)
+            self.check_binding_reviewer(conn,current)
             if current['payload_hash']!=local_hash:raise DomainError('payload_changed')
             existing=conn.execute('SELECT payload FROM connector_bindings WHERE tenant=? AND proposal_id=?',
                                   (self.actor.tenant_id,proposal_id)).fetchone()
@@ -86,3 +87,14 @@ class BindingRepository:
             except (sqlite3.IntegrityError, StorageIntegrityError):raise DomainError('connector_proposal_already_bound') from None
             self.sales.audit(conn,self.actor,'connector.binding_attached',proposal_id)
         return candidate
+
+    def check_binding_reviewer(self,conn,proposal):
+        if proposal['actor_id']==self.actor.id:return
+        # An operator may finish a worker's pending review through the UI.
+        # The durable job establishes delegation; unrelated proposals retain
+        # the owner-only rule. row() has already checked tenant/deal scope.
+        if self.actor.role=='operator':
+            job=conn.execute("SELECT id FROM workflow_jobs WHERE tenant=? AND proposal_id=? AND worker_id=? AND deal_id=? AND status='awaiting_approval'",
+                (self.actor.tenant_id,proposal['id'],proposal['actor_id'],proposal['deal_id'])).fetchone()
+            if job:return
+        raise DomainError('proposal_owner_required',403)

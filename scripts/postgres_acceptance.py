@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import secrets
+import traceback
 from uuid import uuid4
 import psycopg
 from psycopg import sql
@@ -15,7 +16,7 @@ from backend.postgres_session import PostgresSession, PostgresSessionError
 from scripts.migrations import apply
 
 
-def probe(dsn, application=False, restart_container=None):
+def probe(dsn, application=False, restart_container=None, graph=False, n8n=False, odoo=False):
     suffix = uuid4().hex
     schema = 'sales_probe_' + suffix
     role = 'sales_probe_' + suffix
@@ -78,6 +79,21 @@ def probe(dsn, application=False, restart_container=None):
                 if owner.closed:
                     owner = psycopg.connect(dsn,autocommit=True,connect_timeout=5)
                     owner.execute(sql.SQL('SET search_path TO {}').format(sql.Identifier(schema)))
+            if odoo:
+                from psycopg.conninfo import make_conninfo
+                from scripts.postgres_odoo_acceptance import check_odoo
+                runtime_dsn = make_conninfo(dsn, user=role, password=password, options=f'-c search_path={schema}')
+                passed.extend(check_odoo(owner, runtime_dsn, tenants[0]))
+            if n8n:
+                from psycopg.conninfo import make_conninfo
+                from scripts.postgres_n8n_acceptance import check_n8n
+                runtime_dsn = make_conninfo(dsn, user=role, password=password, options=f'-c search_path={schema}')
+                passed.extend(check_n8n(owner, runtime_dsn, tenants[0]))
+            if graph:
+                from psycopg.conninfo import make_conninfo
+                from scripts.postgres_graph_acceptance import check_graph
+                runtime_dsn = make_conninfo(dsn, user=role, password=password, options=f'-c search_path={schema}')
+                passed.extend(check_graph(owner, runtime_dsn, tenants[0]))
             owner.execute("UPDATE migration_checksums SET sha256=%s WHERE version='001_foundation'", ('0'*64,))
             try:
                 apply(owner)
@@ -86,7 +102,11 @@ def probe(dsn, application=False, restart_container=None):
                 passed.append('migration_checksum_drift_denied')
             else:
                 raise AssertionError('Checksum drift accepted')
-            return {'scope':('Real PostgreSQL plus FastAPI/shared-core persistence, approval and concurrent requests; no connected effects' if application else 'Real PostgreSQL migrations and session/RLS only'),
+            return {'scope':'Real PostgreSQL migrations and session/RLS; additional selected checks are listed explicitly',
+                    'application_scope':'FastAPI/shared-core persistence, approval and concurrency' if application else 'not run',
+                    'odoo_scope':'Real project-owned Odoo activity approval, write and read-back' if odoo else 'not run',
+                    'n8n_scope':'Real n8n engine with shared domain HTTP/PostgreSQL' if n8n else 'not run',
+                    'graph_scope': 'Real Graph delta and PostgreSQL; no remote writes' if graph else 'not run',
                     'server':version, 'checks':passed, 'passed':len(passed)}
         finally:
             # Names are generated in this function, never from user input. These
@@ -104,6 +124,9 @@ def probe(dsn, application=False, restart_container=None):
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--application', action='store_true')
+    parser.add_argument('--graph', action='store_true', help='Read the explicitly selected synthetic Graph mailbox')
+    parser.add_argument('--n8n', action='store_true', help='Run isolated real n8n workflows against native HTTP/PostgreSQL')
+    parser.add_argument('--odoo', action='store_true', help='Execute synthetic activity in explicitly configured project-owned Odoo lab')
     parser.add_argument('--restart-container', help='Exact owned256MiB acceptance container ID; requires --application')
     args = parser.parse_args()
     if args.restart_container and not args.application: raise SystemExit('Restart requires application probe')
@@ -114,9 +137,12 @@ def main():
     # Reserve output before touching the database; preserve failed runs as failed.
     with args.output.open('x') as out:
         try:
-            result = probe(dsn, args.application, args.restart_container)
+            result = probe(dsn, args.application, args.restart_container, args.graph, args.n8n, args.odoo)
         except Exception as exc:
-            json.dump({'status':'failed','error_type':type(exc).__name__},out)
+            frames=traceback.extract_tb(exc.__traceback__)
+            last=frames[-1]
+            json.dump({'status':'failed','error_type':type(exc).__name__,
+                       'location':Path(last.filename).name+':'+str(last.lineno)},out)
             raise SystemExit('PostgreSQL probe failed; output contains sanitized status') from None
         json.dump(result,out,indent=2)
     print(json.dumps({'passed':result['passed'],'scope':result['scope']}))

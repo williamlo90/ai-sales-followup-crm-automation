@@ -1,4 +1,5 @@
 {
+  "id": "e9ec416da59f5718",
   "name": "Sales intake v1",
   "active": false,
   "nodes": [
@@ -16,7 +17,7 @@
           "interval": [
             {
               "field": "minutes",
-              "minutesInterval": 5
+              "minutesInterval": 3
             }
           ]
         }
@@ -118,7 +119,7 @@
       ],
       "parameters": {
         "resume": "timeInterval",
-        "amount": 60,
+        "amount": 90,
         "unit": "seconds"
       }
     }

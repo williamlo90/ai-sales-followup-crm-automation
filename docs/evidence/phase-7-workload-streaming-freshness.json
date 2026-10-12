@@ -1,0 +1,92 @@
+{
+  "status": "partial_failure",
+  "scope": "Actual n8n/native API/PostgreSQL/Odoo workload; live source arrival invalidated approval",
+  "completed_profiles": [
+    {
+      "profile": "normal",
+      "n": 2,
+      "elapsed_seconds": 231.0047532999888,
+      "throughput_per_minute": 0.5194698303206119,
+      "maximum_backlog": 1,
+      "p50_seconds": 77.79034169996157,
+      "p90_seconds": 151.09260730003007,
+      "p95_seconds": 151.09260730003007,
+      "samples": [
+        {
+          "verified_seconds": 151.09260730003007,
+          "queue_wait_seconds": 80.98475419997703
+        },
+        {
+          "verified_seconds": 77.79034169996157,
+          "queue_wait_seconds": 7.347019599983469
+        }
+      ],
+      "errors": 0,
+      "verified_operations": 2
+    },
+    {
+      "profile": "peak",
+      "n": 3,
+      "elapsed_seconds": 100.20864750002511,
+      "throughput_per_minute": 1.7962521647640728,
+      "maximum_backlog": 3,
+      "p50_seconds": 88.5662865000777,
+      "p90_seconds": 96.81506269995589,
+      "p95_seconds": 96.81506269995589,
+      "samples": [
+        {
+          "verified_seconds": 69.62406379997265,
+          "queue_wait_seconds": 9.025382600026205
+        },
+        {
+          "verified_seconds": 88.5662865000777,
+          "queue_wait_seconds": 17.04337840003427
+        },
+        {
+          "verified_seconds": 96.81506269995589,
+          "queue_wait_seconds": 17.230778299970552
+        }
+      ],
+      "errors": 0,
+      "verified_operations": 3
+    }
+  ],
+  "diagnostic": {
+    "jobs": [
+      [
+        "review",
+        "source_changed",
+        1
+      ],
+      [
+        "completed",
+        null,
+        5
+      ],
+      [
+        "awaiting_approval",
+        null,
+        2
+      ]
+    ],
+    "operations": [
+      [
+        "verified",
+        5
+      ]
+    ]
+  },
+  "minimum_sampled_host_free_bytes": 3074097152,
+  "owned_services_stopped": true,
+  "siblings_unchanged": true,
+  "postgres_memory_bytes": 268435456,
+  "emails_sent": 0,
+  "paid_model_calls": 0,
+  "interpretation": "Expected source freshness guard was reached during short soak; complete workload gate not passed. Freeze source set for steady-input rerun; retain streaming invalidation evidence.",
+  "limitations": [
+    "10-second accelerated cadence",
+    "Automated lab review",
+    "No Graph/model load",
+    "Small sample; not production capacity"
+  ]
+}

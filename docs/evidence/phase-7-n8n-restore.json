@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "comparison": {
+    "same": true,
+    "tables": 147,
+    "executions": 14,
+    "credentials": 1,
+    "configSame": true
+  },
+  "workflows": 2,
+  "credential_decryption_matches": true,
+  "network": "none",
+  "source_stayed_stopped": true,
+  "backup_bytes": 547522,
+  "backup_sha256": "e1814f4965027d72417cf3ac532a8f77c8528a586d7226133aa27422a05a5a44",
+  "other_container_ids_unchanged": true,
+  "min_free_bytes": 2442297344,
+  "scope": "Offline n8n volume restore and actual CLI decryption; same-image recovery, no schedule or external calls",
+  "recorded_at": "2026-10-10T14:51:48.885879+00:00",
+  "memory_limit_bytes": 536870912,
+  "limitations": [
+    "Offline same-image restore; scheduler was not activated",
+    "Host reboot and complete connected-stack recovery still pending"
+  ]
+}

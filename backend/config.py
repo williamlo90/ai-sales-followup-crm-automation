@@ -6,7 +6,7 @@ from dotenv import dotenv_values
 from backend.providers import ModelProfile, ProviderError
 
 ROOT = Path(__file__).resolve().parents[1]
-KEYS = ('OPENAI_API_KEY', 'OPENAI_MODEL', 'SALES_MODEL_ENABLED', 'SALES_MODEL_CALL_LIMIT')
+KEYS = ('OPENAI_API_KEY', 'OPENAI_MODEL', 'OPENAI_REASONING_EFFORT', 'SALES_MODEL_ENABLED', 'SALES_MODEL_CALL_LIMIT')
 CANARY_MODEL = 'gpt-4.1-mini-2025-04-14'
 
 
@@ -34,4 +34,8 @@ def openai_profile(values, *, canary=False):
     # A priced fixed snapshot bounds this synthetic canary independently of app settings.
     if canary and model != CANARY_MODEL:
         raise ProviderError('canary_requires_priced_snapshot')
-    return ModelProfile('openai', model, key, max_calls=1 if canary else int(limit))
+    reasoning=values.get('OPENAI_REASONING_EFFORT') or None
+    if reasoning is not None and reasoning not in {'none','low','medium','high','xhigh','max'}:
+        raise ProviderError('invalid_reasoning_profile')
+    if canary and reasoning is not None:raise ProviderError('canary_reasoning_not_supported')
+    return ModelProfile('openai', model, key, max_calls=1 if canary else int(limit), reasoning_effort=reasoning)

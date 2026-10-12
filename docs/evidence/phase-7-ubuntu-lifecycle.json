@@ -1,0 +1,26 @@
+{
+  "status": "passed_with_recovery",
+  "scope": "User-authorized Ubuntu WSL distro terminate/start and post-start Linux application/PostgreSQL smoke",
+  "distro": "Ubuntu WSL2",
+  "termination_command": "wsl --terminate Ubuntu",
+  "post_start_systemd_time_local": "2026-10-12 15:15:43 WIB",
+  "docker_desktop_daemon_restarted": false,
+  "docker_in_ubuntu_initially_unavailable": true,
+  "docker_in_ubuntu_recovery": "Docker Desktop user-distro proxy restarted in Ubuntu; Docker API became available without daemon restart",
+  "proxy_recovery_mode_at_end": "Hidden Windows WSL process running Docker Desktop user-distro proxy for Ubuntu",
+  "proxy_alive_at_end": true,
+  "postgres_application_checks_passed_after_recovery": 19,
+  "postgres_memory_limit_bytes": 268435456,
+  "postgres_owned_container_stopped": true,
+  "postgres_oom_killed": false,
+  "minimum_sampled_host_free_bytes_during_pass": 3583893504,
+  "other_container_ids_unchanged": true,
+  "external_business_effects": 0,
+  "limitations": [
+    "Distro lifecycle test, not a Windows host or shared WSL kernel reboot",
+    "Post-restart smoke exercised Linux native application and PostgreSQL; n8n/Odoo/Graph were not in that smoke",
+    "Docker Desktop integration did not reconnect automatically and required its user-distro proxy to be restarted",
+    "A transient Ubuntu systemd unit disappeared when WSL idled; the proxy was relaunched through a hidden Windows WSL process for the current session, not installed as a permanent boot configuration",
+    "Application smoke used the previously staged Linux runtime package"
+  ]
+}

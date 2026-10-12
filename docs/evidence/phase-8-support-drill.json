@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-12",
+  "status": "passed",
+  "scope": "Phase 8 local support drill using a native synthetic API and loopback receiver",
+  "observed_wall_seconds": 8.701,
+  "initial_healthy_quiet": true,
+  "outage_alerts": 1,
+  "recovery_alerts": 1,
+  "duplicate_alerts": 0,
+  "pending": 0,
+  "minimum_host_free_bytes": 4103860224,
+  "api_listener_closed_after": true,
+  "failed_jobs_review": "No ongoing project04 deployment active; review procedure documented, no live customer queue sampled",
+  "unknown_outcomes_review": "Phase 7 cloned Graph unknown ledger observation verified; no current unknown state claimed",
+  "limitations": [
+    "Planned API restart and local receiver only",
+    "No human-facing alert channel or production support duration",
+    "No host reboot or new external effect"
+  ]
+}

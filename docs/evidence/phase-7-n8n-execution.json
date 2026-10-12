@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "scope": "Real n8n CLI HTTP/Wait/poll against shared FastAPI and PostgreSQL17.11",
+  "executions": [
+    {
+      "status": "success",
+      "visited_nodes": [
+        "Schedule",
+        "Advance shared workflow",
+        "Backend requests polling",
+        "Wait for review",
+        "Poll shared workflow"
+      ],
+      "started_at": "2026-10-10T14:29:25.362Z",
+      "stopped_at": "2026-10-10T14:30:25.947Z"
+    },
+    {
+      "status": "success",
+      "visited_nodes": [
+        "Schedule",
+        "Advance shared workflow",
+        "Backend requests polling"
+      ],
+      "started_at": "2026-10-10T14:30:40.293Z",
+      "stopped_at": "2026-10-10T14:30:41.686Z"
+    }
+  ],
+  "business_result": {
+    "status": "passed",
+    "job_status": "awaiting_approval",
+    "proposals": 1,
+    "operations": 0,
+    "scope": "Real n8n CLI execution with shared domain HTTP/PostgreSQL; synthetic commitment, no model or effects"
+  },
+  "combined_database_checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "n8n_real_intake_http_postgres_proposal",
+    "n8n_wait_poll_preserves_single_proposal",
+    "n8n_real_due_workflow_execution",
+    "unapproved_flow_zero_effect_operations",
+    "migration_checksum_drift_denied"
+  ],
+  "minimum_sampled_free_host_bytes": 1490083840,
+  "postgres_limit_bytes": 268435456,
+  "n8n_limit_bytes": 536870912,
+  "n8n_oom_killed": false,
+  "postgres_oom_killed": false,
+  "all_owned_containers_stopped": true,
+  "other_container_ids_unchanged": true,
+  "raw_log_sha256": "9f97445b627ac098fa6cdc0201182ec07d9a8a11e6e1f7b76286d808d4bf9d6b",
+  "limitations": [
+    "CLI fixture replaces Schedule Trigger with Execute Workflow Trigger; schedule not validated",
+    "Synthetic seeded commitment; no model, Graph or Odoo in this slice",
+    "Wait completed without a container restart; restart recovery pending",
+    "No remote sends or business writes; approval remains pending",
+    "Disposable database schema removed"
+  ]
+}

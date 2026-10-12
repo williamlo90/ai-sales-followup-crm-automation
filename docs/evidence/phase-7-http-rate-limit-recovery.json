@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "scope": "Actual local TCP rate-limit fault proxy before real Odoo read, plus PostgreSQL/Odoo effect recovery suite",
+  "checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "tcp_two_injected_429_then_actual_odoo_read_recovers",
+    "tcp_persistent_429_bounded_no_upstream_call",
+    "tcp_long_429_bounded_no_upstream_call",
+    "real_connector_invalid_token_rejected",
+    "real_postgres_foreign_tenant_denied_before_effect",
+    "injected_clock_expiry_denied_before_effect",
+    "eight_concurrent_calls_one_real_odoo_dispatch",
+    "injected_lost_success_response_records_unknown",
+    "unknown_repeat_never_redispatches",
+    "real_odoo_observation_recovers_unknown_to_verified",
+    "operator_binds_pending_worker_proposal_without_ownership_transfer",
+    "unapproved_local_effect_denied",
+    "connector_operator_self_approval_denied",
+    "distinct_lab_approver_bound_exact_preview",
+    "real_odoo_activity_read_back_verified",
+    "repeat_execute_reuses_one_local_and_remote_operation",
+    "reconcile_reads_verified_remote_receipt",
+    "migration_checksum_drift_denied"
+  ],
+  "minimum_sampled_host_free_bytes": 3254120448,
+  "postgres_memory_bytes": 268435456,
+  "owned_services_stopped": true,
+  "sibling_ids_unchanged": true,
+  "raw_sha256": "b273fedf8fe68c5252a1eb4338a06b1d79fcdc756fb4c85771a6ab69faf9ba4a",
+  "limitations": [
+    "429 responses deliberately injected by local HTTP proxy, not vendor throttling",
+    "Expired-token candidate not available; expired-token acceptance not passed",
+    "Injected clock expiry/lost success response remain distinct from actual token expiry/network outage",
+    "One synthetic CRM activity; no email/model calls"
+  ]
+}

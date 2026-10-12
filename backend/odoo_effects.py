@@ -63,9 +63,13 @@ class OdooActivityAdapter:
     def preparation(self,payload):
         expected=self.expected_activity(payload)
         record=self.client.opportunity(expected['opportunity_id'])
-        preview={**expected,'source_version':record['version']}
-        self.validate_activity(payload,{'preview':preview})
-        return {'preview':preview,'timezone':str(self.zone),'action':'create_activity','write_performed':False}
+        # The connector fingerprints lead, assignee, company and binding state.
+        # A lead write_date is not that fingerprint and cannot prefill it.
+        if len(payload['summary'])>120 or '<' in payload['summary'] or '>' in payload['summary']:
+            raise ReadError('activity_preview_mismatch')
+        return {'preview':expected,'opportunity_version':record['version'],
+                'connector_preparation_required':True,'timezone':str(self.zone),
+                'action':'create_activity','write_performed':False}
 
     def validate_activity(self,payload,binding):
         expected=self.expected_activity(payload)

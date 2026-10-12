@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-12",
+  "status": "passed",
+  "source_session": "connected-20261012070928",
+  "evidence_scope": "Read-only PostgreSQL query of the proposal created by the real one-session Graph/OpenAI/n8n/Odoo run",
+  "proposal_count": 1,
+  "draft_present": true,
+  "draft_length": 203,
+  "draft_quoted_source": "Untuk proyek demo Northstar, mohon jadwalkan demo pada 15 Oktober 2026 pukul 14.00 WIB (Asia/Jakarta).",
+  "dated_next_step_present": true,
+  "human_delivery": false,
+  "external_writes": 0,
+  "owned_database_stopped_after_read": true,
+  "sibling_ids_unchanged": true,
+  "limitations": [
+    "Single synthetic email and known deal",
+    "Draft factuality assessed from visible quote and next-step text; no independent human review"
+  ]
+}

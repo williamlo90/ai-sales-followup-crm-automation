@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "scope": "Actual expiry of a newly issued session on isolated Odoo connector",
+  "valid_before_expiry": true,
+  "http401_after_actual_database_expiry": true,
+  "adapter_reports_credentials_rejected": true,
+  "existing_session_still_valid": true,
+  "fresh_login_restores_access": true,
+  "business_row_counts_unchanged": true,
+  "expiry_fixture_seconds": 2,
+  "elapsed_to_expiry_seconds": 3.112468999926932,
+  "limitations": [
+    "Only the new test session expiry was shortened in the isolated database",
+    "Connector token expiry, not Microsoft Graph token refresh",
+    "No business writes, model calls or email sends"
+  ],
+  "minimum_sampled_host_free_bytes": 3165368320,
+  "postgres_memory_bytes": 268435456,
+  "owned_services_stopped": true,
+  "sibling_ids_unchanged": true,
+  "raw_sha256": "2c93a9c5bcfc25751d3648f3a3e8b6bd9de1d8963830d4d0a73272e18b49c326"
+}

@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "scope": "Actual API planned shutdown observed over HTTP; local receiver delivery",
+  "initial_healthy": true,
+  "failed_receiver_preserves_pending": true,
+  "retry_event_id_stable": true,
+  "accepted_receipts": 1,
+  "subsequent_check_no_duplicate": true,
+  "limitations": [
+    "Local HTTP receiver only, not email/Slack or human acknowledgement",
+    "Planned application stop, not host reboot",
+    "Receiver failure deliberately injected via503",
+    "No recovery transition in this drill"
+  ]
+}

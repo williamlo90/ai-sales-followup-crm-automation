@@ -1,6 +1,6 @@
 # Phase 7 execution checkpoint
 
-Status: six real PostgreSQL migration/session probes passed under256MiB on2026-10-10. Application PostgreSQL wiring and focused approval/concurrency checks subsequently passed; full Phase7A remains pending. Earlier inventory below is historical.
+Status 2026-10-12: Phase 7 selesai untuk local connected-sandbox candidate sesuai batas pada `COMPLETION-AUDIT.md`. Phase 8 delivery/operator handoff berikutnya. Inventaris awal di bawah adalah riwayat sesi, bukan status sekarang.
 
 User authorized Phase7 after Phase6 completion. Initial Docker daemon unavailable, host RAM1.85GiB free. User freed RAM; recheck5,311,408KiB (~5.1GiB). Started Docker Desktop hidden; after startup three invoice-erpnext containers were observed running. They were not stopped or modified. Host free memory then1,462,352KiB and latest1,684,436KiB, below the4GiB pre-launch headroom gate. No sales container was launched. Port5444 was unoccupied; C: free460GB.
 
@@ -41,3 +41,8 @@ Extended application probe to intake/due discovery, duplicate enqueue/cursor rep
 19 combined checks passed on real PostgreSQL256MiB. Added atomic rollback of invalid Graph page, persistent checkpoint/replay without source inflation,8 concurrent execution calls yielding1 ledger row/1 simulated dispatch, unknown-result read-back without redispatch. Graph/effect adapters are doubles: no vendor integration or real writes. Minimum sampled free RAM2,772,680,704bytes (~2.58GiB), post-probe13.61MiB/256MiB, no OOM; owned container stopped, same3 sibling IDs running. Evidence phase-7-postgres-ingestion-execution.json.
 
 Explicit project-local connector JSON composes Odoo/Graph/router/ingestion into app factory. Strict worker/tenant/deal mapping and local token-file paths; one-page authenticated Graph poll endpoint; Odoo tenant boundary. Runtime effects remain disabled with no enabling config flag.7 composition tests passed0.63s; prior full suite289 passed11s before adding those tests. Setup docs/phase-7/CONNECTOR-SETUP.md and deploy/connectors.example.json. Next requires authorized project sandbox configuration for bounded real read-only connector tests; no credentials borrowed.
+
+
+## Durable n8n review wait
+
+Changed generated review Wait from60 to90 seconds so n8n persists waiting execution state (waits below65 seconds stay in memory). Timeout240 seconds retains room for two bounded65-second HTTP calls plus90-second wait. Business due/approval decisions remain in the shared core. Schedule/restart probe uses real Schedule Trigger at an accelerated10-second cadence and records the same execution ID before/after controlled restart; this cadence is a lab override. The configured schedule is now three minutes, revised 2026-10-11; the revised connected soak is not yet executed. Sources: https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.wait/ and https://docs.n8n.io/hosting/cli-commands/.

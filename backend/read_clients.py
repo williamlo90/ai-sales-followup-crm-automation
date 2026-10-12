@@ -1,7 +1,7 @@
 """Read-only business clients. Credentials are injected; no automatic discovery."""
 import json
 import time
-from urllib.parse import quote, urlsplit
+from urllib.parse import quote, unquote, urlsplit
 import httpx
 
 
@@ -59,6 +59,8 @@ class GraphReadClient:
         if not tenant_id or not mailbox_id or not folder:raise ReadError('scope_missing')
         self.tenant_id,self.mailbox_id=tenant_id,mailbox_id
         self.path='/v1.0/users/'+quote(mailbox_id,safe='')+'/mailFolders/'+quote(folder,safe='')+'/messages/delta'
+        self.checkpoint_paths={unquote(self.path),
+            '/v1.0/users/'+mailbox_id+"/mailFolders('"+folder.replace("'","''")+"')/messages/delta"}
         self.initial='https://graph.microsoft.com'+self.path+'?$select=id,subject,body,from,receivedDateTime,lastModifiedDateTime,conversationId,changeKey'
         self.reader=BoundedReader(token,transport=transport,sleep=sleep)
 
@@ -66,7 +68,7 @@ class GraphReadClient:
         if not isinstance(link,str) or len(link)>16000:raise ReadError('invalid_checkpoint')
         try:
             parsed=urlsplit(link)
-            valid=(parsed.scheme=='https' and parsed.netloc=='graph.microsoft.com' and parsed.path==self.path
+            valid=(parsed.scheme=='https' and parsed.netloc=='graph.microsoft.com' and unquote(parsed.path) in self.checkpoint_paths
                    and not parsed.fragment and not parsed.username and not parsed.password)
         except ValueError:valid=False
         if not valid:raise ReadError('checkpoint_scope_mismatch')

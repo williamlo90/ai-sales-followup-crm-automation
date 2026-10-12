@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "scope": "actual native API process stop/start and loopback alert receiver",
+  "initial_healthy_quiet": true,
+  "outage_alerts": 1,
+  "recovery_alerts": 1,
+  "duplicate_alerts": 0,
+  "pending": 0,
+  "distinct_event_ids": true,
+  "limitation": "Planned native API restart and local receiver; no host reboot or human-facing notification",
+  "min_free_bytes": 1883348992,
+  "date": "2026-10-12"
+}

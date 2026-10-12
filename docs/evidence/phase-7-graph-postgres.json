@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "scope": "Real Microsoft Graph delta ingestion and checkpoint resume against PostgreSQL 17.11",
+  "checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "real_graph_delta_page_committed_to_postgres",
+    "real_page_replay_no_duplicate_or_revision_inflation",
+    "reopened_store_resumes_saved_checkpoint_with_real_graph",
+    "one_source_revision_one_after_resumed_poll",
+    "migration_checksum_drift_denied"
+  ],
+  "passed": 10,
+  "memory_limit_bytes": 268435456,
+  "swap_limit_bytes": 268435456,
+  "minimum_sampled_host_free_bytes": 2206613504,
+  "container_memory_after_probe": "26.43MiB (snapshot, not peak)",
+  "oom_killed": false,
+  "owned_container_stopped": true,
+  "other_running_containers_unchanged": true,
+  "raw_resource_sha256": "69dcb24cd2bf47119b082f2c823b0442100a169decffae0d4c39c9c55a9b6353",
+  "limitations": [
+    "One user-created synthetic message",
+    "Reopened service/store, not process or host restart",
+    "No Odoo/n8n/model/send acceptance",
+    "Disposable probe schema removed after validation"
+  ]
+}

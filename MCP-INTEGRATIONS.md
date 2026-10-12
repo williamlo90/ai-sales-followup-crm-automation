@@ -2,11 +2,11 @@
 
 ## Urutan eksekusi terbaru
 
-Ikuti [PHASES.md](PHASES.md) dan [aturan eksekusi lokal](../LOCAL-FIRST-EXECUTION.md). Phase 0–6: implementasi serta unit/contract/native tests tanpa kewajiban Docker. Phase 7: integrasi nyata, Docker/Linux dan reliability. Phase 8: delivery lokal dan support. Phase 9: cloud/hosting extension opsional, selalu terakhir. Checklist kemampuan di bawah adalah target release, bukan kewajiban menjalankan container pada fase awal. Test double tidak menggantikan connected acceptance.
+Ikuti [PHASES.md](PHASES.md) dan [aturan eksekusi lokal](docs/LOCAL-FIRST-EXECUTION.md). Phase 0–6: implementasi serta unit/contract/native tests tanpa kewajiban Docker. Phase 7: integrasi nyata, Docker/Linux dan reliability. Phase 8: delivery lokal dan support. Phase 9: cloud/hosting extension opsional, selalu terakhir. Checklist kemampuan di bawah adalah target release, bukan kewajiban menjalankan container pada fase awal. Test double tidak menggantikan connected acceptance.
 
 Proyek 04: **AI Sales Follow-up & CRM Automation**
 
-Tanggal rencana: 2026-10-08. Status: **rencana implementasi; belum ada implementasi baru dalam folder ini**. Checklist hanya dicentang setelah artefak dan verifikasinya tersedia.
+Tanggal brief awal: 2026-10-08. Status V1: MCP stdio dan reference client lulus pengujian dari paket rilis bersih; rincian ada di [MCP server](mcp-server/README.md) dan [audit delivery](docs/phase-8/DELIVERY-AUDIT.md). Bagian berikut adalah requirement desain awal.
 
 ## Arsitektur keputusan
 

@@ -36,7 +36,7 @@ function App(){
       evidence:[{source_id:form.get('source'),revision:Number(form.get('revision')),quote:form.get('quote')}]};
     const p=await api('/v1/proposals','POST',data);await refresh();setSelected(p);setNotice('Proposal prepared. Review the source and proposed content before approval.');
   });}
-  function approve(kind:'crm'|'email'){if(!selected)return;void run(async()=>{const p=await api(`/v1/proposals/${selected.id}/approvals`,'POST',{kind,payload_hash:selected.payload_hash});await refresh();setSelected(p);setNotice(`${kind==='crm'?'CRM':'Email'} approval recorded. No external action has run.`);});}
+  function approve(kind:'crm'|'email'){if(!selected)return;void run(async()=>{const p=await api(`/v1/proposals/${selected.id}/approvals`,'POST',{kind,payload_hash:selected.payload_hash});await refresh();setSelected(p);setNotice(`${kind==='crm'?'CRM':'Email'} approval recorded. Check Action outcomes for execution status.`);});}
   return <div className="app"><header><div className="brand">SF<span>Sales follow-up</span></div><div className="lab">LOCAL WORKSPACE <span>Sending off</span></div></header>
     <main><div className="heading"><div><p className="eyebrow">CONVERSATIONS → NEXT STEPS</p><h1>Review the next move.</h1><p>Turn customer commitments into clear, reviewed follow-ups.</p></div>{actor&&<div className="identity"><strong>{actor.role}</strong><span>{actor.tenant_id}</span><button onClick={signOut} disabled={busy}>Sign out</button></div>}</div>
     {error&&<div role="alert" className="alert">{error.replaceAll('_',' ')}</div>}{notice&&<div role="status" className="notice">{notice}</div>}
@@ -52,7 +52,7 @@ function App(){
       <ConnectorBinding key={"binding-"+selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><ProposalHandoff key={selected.id} token={token} id={selected.id} role={actor.role} stale={!!selected.validation_error}/><details><summary>Proposal reference</summary><p className="reference">{selected.id}<br/>Payload: {selected.payload_hash}</p></details></>}</article></div>}
     {actor?.role==='operator'&&<IntakeReview token={token} onPrepared={async()=>{await refresh();}}/>}
     {actor&&<WorkflowQueue token={token} role={actor.role}/>}
-    <footer className="footnote">Local review environment · External CRM changes and email delivery are not enabled.</footer></main></div>;
+    <footer className="footnote">Local review environment · Approved CRM actions may run through the configured workflow. Check Action outcomes for results.</footer></main></div>;
 }
 function Approval({kind,proposal,actor,busy,onApprove}:{kind:'crm'|'email';proposal:Proposal;actor:Actor;busy:boolean;onApprove:()=>void}){
   const approval=proposal.approvals.find(a=>a.kind===kind);

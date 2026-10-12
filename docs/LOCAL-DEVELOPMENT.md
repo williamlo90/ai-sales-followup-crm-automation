@@ -1,6 +1,6 @@
 # Local development
 
-Current slice: authenticated preparation and independent CRM/email approval, durable SQLite harness, React review UI and shared extraction/preparation/draft/reconciliation skills. Model extraction is available through the skill API when configured. External execution remains disabled. PostgreSQL is the target persistence layer; SQLite results are not PostgreSQL evidence.
+This guide starts the **offline SQLite demo** with external execution disabled. The connected PostgreSQL/n8n/Graph/Odoo sandbox was validated separately; use the [Phase 8 operator guide](phase-8/OPERATOR-GUIDE.md) for that deployment and the [Phase 7 audit](phase-7/COMPLETION-AUDIT.md) for its evidence.
 
 From the project directory in PowerShell:
 

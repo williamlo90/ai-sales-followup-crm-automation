@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 from backend.app import create_app
 from backend.models import SourceInput
 from backend.domain import DomainError
+from backend.read_clients import ReadError
 from test_bindings import setup
 from conftest import auth
 
@@ -19,9 +20,12 @@ def test_preparation_uses_shared_mapping_and_read_only_connector(lab,proposal):
     adapter.client.reader.transport=httpx.MockTransport(handler)
     result=repo.preparation(local['id'],adapter)
     assert result['preview']['summary']==proposal['summary']
-    assert result['preview']['source_version']=='current-version'
+    assert result['opportunity_version']=='current-version'
+    assert 'source_version' not in result['preview']
+    assert result['connector_preparation_required'] is True
     assert result['write_performed'] is False
-    adapter.validate_activity(local['payload'],{'preview':result['preview']})
+    with pytest.raises(ReadError,match='activity_preview_mismatch'):
+        adapter.validate_activity(local['payload'],{'preview':result['preview']})
     assert calls==[('GET','/me'),('GET','/v1/opportunities/7')]
 
 

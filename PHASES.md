@@ -1,8 +1,8 @@
 # Phase Plan — AI Sales Follow-up and CRM Automation
 
-Proyek 04: pekerjaan sales setelah percakapan, memakai Odoo, Microsoft 365 dan n8n. Diperbarui 2026-10-08. **Rencana implementasi, bukan hasil yang sudah dicapai.**
+Proyek 04: pekerjaan sales setelah percakapan, memakai Odoo, Microsoft 365 dan n8n. Diperbarui 2026-10-12. Checklist di bawah membedakan hasil tervalidasi dari gate yang masih terbuka.
 
-Urutan V1: **0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8**. **Phase 9 opsional, selalu terakhir.** Ikuti [aturan eksekusi lokal](../LOCAL-FIRST-EXECUTION.md): Phase 0–6 tanpa kewajiban Docker; testing ringan dan security sejak awal. Integrasi nyata/container acceptance tertunda tetap tercatat untuk Phase 7; mock bukan bukti live integration.
+Urutan V1: **0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8**. **Phase 9 opsional, selalu terakhir.** Ikuti [aturan eksekusi lokal](docs/LOCAL-FIRST-EXECUTION.md): Phase 0–6 tanpa kewajiban Docker; testing ringan dan security sejak awal. Integrasi nyata/container acceptance tertunda tetap tercatat untuk Phase 7; mock bukan bukti live integration.
 
 ## Phase 0 — Scope bisnis dan dependency nyata
 
@@ -82,30 +82,34 @@ Evidence native: [Phase 5 acceptance](docs/evidence/phase-5-acceptance.md), 2026
 
 ## Phase 7 — Docker, n8n dan connected acceptance nyata
 
-- [ ] Sesi mesin terbatas mengikuti LOCAL-FIRST-EXECUTION.md: cek read-only, data/ports/volumes khusus, tidak menghentikan stack #1/#2/#3.
-- [ ] **7A Data/adapter:** PostgreSQL nyata, migrations, locking/transactions/tenant isolation; Odoo nyata melalui #2 pada database test khusus, dengan company/record mapping terverifikasi.
-- [ ] **7B Engine:** jalankan n8n versi dipin pada profil minimal; import kedua export, credentials lab, trigger/wait/approval/restart, timezone dan error branches.
-- [ ] **7C Connected slice:** mailbox Microsoft 365 uji → n8n → AI/domain → review → Odoo update/draft → read-back; komponen minimum tersedia bersamaan, bukan fake acceptance.
-- [ ] **7D Controlled send:** aktifkan send switch lab dengan approval eksplisit, hanya recipient uji allowlisted. Verifikasi accepted/sent/received sesuai bukti tenant. Timeout masuk unknown; rekonsiliasi sebelum retry. Jangan mengklaim delivered/read tanpa observasi.
-- [ ] **7E Failure/security:** expired token, rate limit, duplicate trigger, wrong tenant, stale approval, engine/worker restart, unknown write, missed schedule dan partial success. Periksa jumlah efek akhir, bukan node success.
-- [ ] **7F Beban/kualitas:** ulangi kualitas pada stack final; normal/peak/soak dalam budget, pisahkan stub load dan bounded real-provider tests. Ukur p50/p90/p95 verified workflow, errors, throughput, backlog, RAM dan cost per correct task.
-- [ ] **7G Operasi:** restore database/n8n state/encryption configuration, clean import, rollback, Linux/VM startup/reboot dan alert delivery dalam lab terisolasi.
-- [ ] Tutup acceptance provider/local yang masih pending atau nyatakan scope terbatas yang disepakati; jangan menyebut semua requirement terpenuhi bila belum. Perbaikan integrasi diikuti regression dan acceptance ulang.
+- [x] Sesi mesin terbatas mengikuti LOCAL-FIRST-EXECUTION.md: cek read-only, data/ports/volumes khusus, tidak menghentikan stack #1/#2/#3. Seluruh probe terisolasi memakai stop guard RAM dan hanya menghentikan resource milik proyek 04; lihat evidence tiap subfase.
+- [x] **7A Data/adapter:** PostgreSQL nyata, migrations, locking/transactions/tenant isolation; Odoo nyata melalui #2 pada database test khusus, dengan company/record mapping terverifikasi. Bukti: `docs/evidence/phase-7-postgres-app-256mb.json`, `docs/evidence/phase-7-odoo-read.json`, `docs/evidence/phase-7-odoo-effect.json`. Scope: database dan satu aktivitas uji, bukan deployment produksi.
+- [x] **7B Engine:** n8n versi dipin di profil512MiB, import kedua export, credentials lab, trigger/wait/approval/restart dan jalur recovery diuji. Jadwal3menit kedua export terpicu sekali di engine terisolasi (`docs/evidence/phase-7-n8n-three-minute-trigger.json`); wait/restart dengan cadence lab lebih cepat dan backend nyata dibuktikan terpisah (`docs/evidence/phase-7-n8n-schedule-restart.json`, `docs/evidence/phase-7-missed-schedule-recovery.json`). Timezone Asia/Jakarta berasal dari export, bukan uji pergantian DST.
+- [x] **7C Connected slice:** mailbox Microsoft 365 uji → n8n → AI/domain → review → Odoo activity + draft → read-back, komponen minimum tersedia bersamaan. Satu sesi sandbox lolos 2026-10-12 (docs/evidence/phase-7-connected-email-ai-odoo.json). Proposal yang sama menyimpan draft berisi kutipan sumber dan next step bertanggal (docs/evidence/phase-7-connected-draft.json). Review/approval memakai dua peran lab otomatis; bukan sesi pengguna manusia atau cakupan routing umum.
+- [x] **7D Controlled send:** dua email sintetis ke mailbox uji sesuai otorisasi user; penerimaan email kedua diamati di Junk, body/recipient cocok. Ledger unknown hasil injeksi pada clone direkonsiliasi lewat Graph Sent Items nyata tanpa resend (`docs/evidence/phase-7-controlled-send-second.json`, `docs/evidence/phase-7-graph-unknown-reconciliation.json`). Timeout saat live send tidak diinduksi dan penerimaan pertama tidak terbukti; tidak ada izin kirim tambahan.
+- [x] **7E Failure/security:** token kedaluwarsa, HTTP429 terinjeksi pada jalur Odoo nyata, replay/tenant/approval, restart, unknown write, missed schedule dan partial success diperiksa dengan hitungan efek (`docs/evidence/phase-7-connector-token-expiry.json`, `docs/evidence/phase-7-http-rate-limit-recovery.json`, `docs/evidence/phase-7-odoo-faults.json`, `docs/evidence/phase-7-missed-schedule-recovery.json`, `docs/evidence/phase-7-partial-success.json`). Fault injection dibedakan dari outage vendor nyata; partial success memakai clone PostgreSQL dan send tetap nonaktif.
+- [x] **7F Beban/kualitas:** evaluasi berlapis selesai: 20 kasus regresi pada HTTP/PostgreSQL/OpenAI nyata (kualitas dan biaya), satu connected Graph→n8n→AI→Odoo, serta workload n8n/PostgreSQL/Odoo normal2/peak3/short4 dengan input deterministik (`docs/evidence/phase-7-postgres-openai-quality.json`, `docs/evidence/phase-7-connected-email-ai-odoo.json`, `docs/evidence/phase-7-connected-workload.json`). p50/p90/p95 verified workflow, error, throughput, backlog dan RAM berasal dari N kecil tanpa model/Graph; biaya per extraction benar berasal dari model layer. Tidak ada klaim p95 atau generalisasi untuk whole-stack berbayar.
+- [x] **7G Operasi:** restore database/n8n state/encryption configuration, clean import, rollback workflow, Ubuntu distro restart dan alert delivery diuji pada lab terisolasi. Bukti dan batas: `docs/phase-7/COMPLETION-AUDIT.md`. Docker Desktop proxy perlu dipulihkan manual setelah Ubuntu restart; bukan uji reboot Windows atau rollback atomik efek Graph/Odoo.
+- [x] Acceptance provider/local ditutup dengan scope OpenAI-only V1 yang disepakati. Claude/Grok bukan live-validated; Qwen3 lokal diuji dan ditolak atas kualitas. Regresi penuh327 tes lulus; rincian di `docs/phase-7/COMPLETION-AUDIT.md`.
 
-**Gate:** local connected candidate lulus n8n/Odoo/Microsoft 365 nyata; critical bypass/duplicate effect/false-success nol pada declared suite. Hardware/akun belum tersedia berarti acceptance blocked, bukan mock-pass.
+**Gate:** selesai 2026-10-12 untuk **local connected-sandbox candidate** dengan n8n/Odoo/Microsoft 365/OpenAI nyata dan critical bypass/duplicate effect/false-success nol pada declared suite. Batas bukti, fault injection dan pekerjaan delivery ada di `docs/phase-7/COMPLETION-AUDIT.md`. Phase 8 belum selesai; ini bukan klaim produksi atau uptime 24 jam.
 
 ## Phase 8 — Delivery lokal dan support
 
-- [ ] Demo English: conversation → CRM diff/follow-up → approval → hasil Odoo/mailbox → failure/recovery, memakai data uji.
-- [ ] Serahkan user/operator guide, export n8n tersanitasi, credential setup, activation/deactivation, schedule/timezone, troubleshooting, backup/restore dan rollback.
-- [ ] Clean install/import dari release artefact dan versi dipin; evidence cocok dengan source snapshot.
-- [ ] Mulai support lokal: health/failed jobs/unknown outcomes review, incident drill, recovery dan regression setelah perubahan. Catat durasi aktual, bukan klaim customer production support.
-- [ ] Jelaskan laptop sleep/offline menghentikan workflow; buktikan catch-up/checkpoint tanpa pengiriman ulang setelah restart.
-- [ ] Case study berisi hasil terukur, integration/model status dan batas kemampuan. Buktikan reuse skills lintas caller tanpa menyalin logic.
+- [x] Demo English: conversation → CRM diff/follow-up → approval → hasil Odoo/mailbox → failure/recovery, memakai data uji.
+- [x] Serahkan user/operator guide, export n8n tersanitasi, credential setup, activation/deactivation, schedule/timezone, troubleshooting, backup/restore dan rollback.
+- [x] Clean install/import dari release artefact dan versi dipin; evidence cocok dengan source snapshot.
+- [x] Mulai support lokal: health/failed jobs/unknown outcomes review, incident drill, recovery dan regression setelah perubahan. Catat durasi aktual, bukan klaim customer production support.
+- [x] Jelaskan laptop sleep/offline menghentikan workflow; buktikan catch-up/checkpoint tanpa pengiriman ulang setelah restart.
+- [x] Case study berisi hasil terukur, integration/model status dan batas kemampuan. Buktikan reuse skills lintas caller tanpa menyalin logic.
 
 **Gate V1:** **local-delivered / connected-sandbox-validated** dengan n8n. Cloud dan Make.com/Zapier tidak menghalangi release utama; extension tetap tercatat.
 
+> **Gate:** selesai 2026-10-12 untuk local V1. Rincian artefak, perintah dan batas bukti ada di `docs/phase-8/DELIVERY-AUDIT.md`.
+
 ## Phase 9 — Cloud dan varian automation opsional, paling akhir
+
+> **Keputusan owner 2026-10-12:** cukup V1 lokal; cloud 24 jam dan Make.com/Zapier tidak dipilih. Tidak ada provisioning atau validasi extension yang diklaim. Catatan keputusan ada di `docs/phase-9/DECISION.md`.
 
 - [ ] Jika dibutuhkan jadwal 24 jam/shared access, pilih Azure hosting sesuai runtime dan persistent n8n state; siapkan biaya, secrets, access, backup, alerts dan rollback sebelum provisioning.
 - [ ] Setelah Phase 0–8 lulus, deploy bila dipilih; ulangi connected workflow, authorization, quality, bounded load, recovery dan alerts. Bukti lokal bukan bukti cloud.

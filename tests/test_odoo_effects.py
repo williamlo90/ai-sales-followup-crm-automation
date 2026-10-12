@@ -10,6 +10,16 @@ from backend.read_clients import OdooReadClient,ReadError
 from backend.odoo_effects import OdooActivityAdapter
 
 
+def test_preparation_does_not_mislabel_record_version_as_connector_hash(monkeypatch):
+    client=OdooReadClient('http://127.0.0.1:8024','tenant',2,lambda:'unused')
+    monkeypatch.setattr(client,'opportunity',lambda ident:{'version':'2026-10-10 10:00:00'})
+    adapter=OdooActivityAdapter(client,lambda *_:None,{'d1':{'opportunity_id':7,'assignee_id':8}})
+    result=adapter.preparation({'deal_id':'d1','due_at':'2026-10-15T10:00:00Z','summary':'Synthetic'})
+    assert result['opportunity_version']=='2026-10-10 10:00:00'
+    assert result['connector_preparation_required'] and not result['write_performed']
+    assert 'source_version' not in result['preview']
+
+
 def fixture():
     tenant,actor,approver,proposal,approval,remote=[str(uuid4()) for _ in range(6)]
     operation={'id':str(uuid4()),'tenant':'local','proposal_id':str(uuid4()),'payload_hash':'a'*64,'kind':'crm'}

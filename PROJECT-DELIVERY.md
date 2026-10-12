@@ -1,55 +1,15 @@
-# Project Delivery — Panduan untuk Manusia
+# Local V1 delivery
 
-## Urutan eksekusi terbaru
+The product turns a sales conversation into a source-backed CRM proposal and follow-up draft. The sales operator checks the source, customer, date, diff and recipient; a separate approver authorizes the exact action. n8n coordinates the queue and schedule, while the Python domain owns permissions, freshness, approval and effect reconciliation.
 
-Ikuti [PHASES.md](PHASES.md) dan [aturan eksekusi lokal](../LOCAL-FIRST-EXECUTION.md). Phase 0–6: implementasi serta unit/contract/native tests tanpa kewajiban Docker. Phase 7: integrasi nyata, Docker/Linux dan reliability. Phase 8: delivery lokal dan support. Phase 9: cloud/hosting extension opsional, selalu terakhir. Checklist kemampuan di bawah adalah target release, bukan kewajiban menjalankan container pada fase awal. Test double tidak menggantikan connected acceptance.
+The delivery package is `local/releases/sales-followup-local-v1.zip`. Its manifest identifies every file in the source snapshot. The archive contains pinned source/dependencies, synthetic fixtures, inactive n8n exports and the documentation below; project credentials and runtime data remain outside it.
 
-Proyek 04: **AI Sales Follow-up & CRM Automation**
+- [Operator guide](docs/phase-8/OPERATOR-GUIDE.md): installation, credentials, activation, daily review, health, incident response, backup/restore and rollback.
+- [English demo](docs/phase-8/DEMO.md): synthetic conversation → proposal/draft → separate approval → Odoo read-back → recovery.
+- [Delivery audit](docs/phase-8/DELIVERY-AUDIT.md): clean extraction, test/import results, support drill and limitations.
+- [Case study](docs/CASE-STUDY.md): measured results and integration/model scope.
+- [Phase 7 audit](docs/phase-7/COMPLETION-AUDIT.md): connected-sandbox evidence and its boundaries.
 
-Tanggal rencana: 2026-10-08. Status: **rencana implementasi; belum ada implementasi baru dalam folder ini**. Checklist hanya dicentang setelah artefak dan verifikasinya tersedia.
+The local owner keeps the Outlook/Graph and Odoo sandbox mappings, access tokens, OpenAI budget, n8n encryption key, PostgreSQL credentials and backups. Workflow activation, human review and recovery are operator decisions. A laptop that sleeps or disconnects stops scheduled work until the stack returns; persistent queues/checkpoints allow catch-up and prevent blind resend. This is local delivery, not a 24-hour hosted service or a customer production-support contract.
 
-## Penjelasan satu kalimat
-
-Mengurangi pekerjaan setelah percakapan pelanggan dengan mengubah email dan catatan meeting menjadi perubahan CRM serta draft follow-up yang benar.
-
-**Siapa yang memakai:** Sales representative dan sales operations.
-
-**Pekerjaan sehari-hari:** Email/catatan meeting → cocokkan account/deal → ambil komitmen pelanggan → proposal CRM/task/email → review → update CRM → approved send bila diaktifkan → delivery check dan audit.
-
-## Demo penerimaan
-
-Percakapan berisi komitmen yang direvisi; assistant mengusulkan satu perubahan CRM dan satu email, operator menyetujui, lalu replay event membuktikan tidak ada email/tugas ganda.
-
-Demo menggunakan data sintetis/test tenant. Tunjukkan input, bukti, keputusan, tindakan, hasil, dan cara menangani kegagalan. Jangan hanya memperlihatkan chat yang menjawab dengan lancar.
-
-## Dokumen delivery yang dibuat saat implementasi
-
-- [ ] Business brief satu halaman: masalah, owner, scope, hasil yang diukur, dan batas kemampuan.
-- [ ] Quick start: prerequisites, install lokal, seed demo, login roles, startup/shutdown, dan uninstall/cleanup.
-- [ ] User guide berbahasa English: langkah penggunaan dengan contoh dan screenshot, istilah sederhana, arti setiap status, serta kapan harus meminta bantuan.
-- [ ] Acceptance checklist: tugas, hasil yang diharapkan, hasil aktual, evidence, pass/fail; bisa dijalankan sendiri tanpa merekrut demo tester.
-- [ ] Runbook operator: kegagalan umum, langkah diagnosis, pemulihan, eskalasi, backup/restore, serta rollback.
-- [ ] Release/evidence manifest: commit, data/model/config versions, tests, integrations yang benar-benar diuji, limitations yang relevan.
-- [ ] Demo singkat dan case study dengan hasil terukur yang benar; single-operator/synthetic tetap dinyatakan sesuai lingkup.
-- [ ] Handover: pemilik credentials/config, permissions, biaya operasi/asumsi, retention, support owner, dan jadwal pemeliharaan.
-- [ ] Cloud deployment appendix hanya jika varian Phase 9 dipilih: environment, health, monitoring, recovery proof, teardown/ongoing ownership.
-
-## Ongoing support
-
-- Periksa failed jobs, unknown outcomes, stale sync, resource/cost alerts dan review queues pada cadence yang sesuai beban.
-- Review feedback/error clusters dan tambahkan regression cases setelah insiden.
-- Setiap perubahan prompt/model/skill/policy/platform API memicu pengujian yang relevan sebelum release.
-- Perbarui dokumen dan runbook agar sesuai aplikasi; simpan sejarah eksperimen lokal bila berguna, public narrative fokus hasil tervalidasi.
-
-## Definisi selesai
-
-Seorang operator dapat memahami manfaatnya, menjalankan tugas normal, mengenali kasus yang harus ditinjau, menemukan bukti hasil, dan mengikuti pemulihan menggunakan dokumentasi. Local-ready, connected-sandbox-validated, offline-delivered, dan cloud-validated adalah status berbeda; hanya gunakan yang sudah dibuktikan.
-
-## Delivery automation
-
-- [ ] Sertakan export n8n tersanitasi, panduan import, credentials, schedule/timezone, activation/deactivation dan recovery.
-- [ ] Demonstrasikan workflow target beserta failure/replay; hubungkan run ID dengan verified business outcome.
-
-## Delivery lokal yang mandiri
-
-V1 selesai setelah Phase 0–8 dengan n8n/Odoo/Microsoft 365 sandbox tervalidasi. Cloud opsional untuk kebutuhan 24 jam/shared access. Dokumentasikan bahwa sleep/offline laptop menghentikan jadwal, lalu uji catch-up/checkpoint tanpa duplicate sends. Support lokal dimulai Phase 8; catat durasi aktual dan bedakan incident drill dari customer production support.
+Phase 9 cloud deployment and Make.com/Zapier variants are optional extensions. The user selected local V1 and declined those extensions for this release.

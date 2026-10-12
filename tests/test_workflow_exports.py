@@ -22,7 +22,7 @@ def test_export_reference_runner_prepare_wait_approve_execute(lab):
     coordinator,_,_,double=setup(lab)
     client=TestClient(create_app(lab[0],{hashlib.sha256(k.encode()).hexdigest():v for k,v in lab[1].items()},execution=coordinator.execution))
     def wait(seconds,result):
-        assert seconds==60
+        assert seconds==90
         approve(lab,result['proposal_id']);later(lab,seconds)
     outcome=run(workflow('intake'),client,'worker',wait)
     assert outcome['result']['status']=='completed'

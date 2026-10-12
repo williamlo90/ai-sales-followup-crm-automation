@@ -32,3 +32,10 @@ def test_no_interpolation_environment_precedence(tmp_path):
 def test_invalid_config_fails_without_secret(overrides,error):
     values={'OPENAI_API_KEY':'secret-value','SALES_MODEL_ENABLED':'false','SALES_MODEL_CALL_LIMIT':'1'}|overrides
     with pytest.raises(ProviderError,match=error):openai_profile(values,canary=True)
+
+def test_accepted_reasoning_profile_and_invalid_effort():
+    values={'OPENAI_API_KEY':'test-key','OPENAI_MODEL':'gpt-5.6-luna',
+            'SALES_MODEL_ENABLED':'true','SALES_MODEL_CALL_LIMIT':'1','OPENAI_REASONING_EFFORT':'low'}
+    assert openai_profile(values).reasoning_effort=='low'
+    with pytest.raises(ProviderError,match='invalid_reasoning_profile'):
+        openai_profile(values|{'OPENAI_REASONING_EFFORT':'typo'})

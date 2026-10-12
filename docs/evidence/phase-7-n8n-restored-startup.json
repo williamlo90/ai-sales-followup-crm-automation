@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "scope": "restored n8n state starts with no network and no external effects",
+  "healthz_200": true,
+  "restored_volume": "sales04-n8n-restore-29e4c643cc3d-data",
+  "network": "none",
+  "memory_limit_bytes": 536870912,
+  "source_stayed_stopped": true,
+  "external_effects": 0,
+  "limitation": "Same-image restored-state startup only; no host reboot or active workflow recovery",
+  "owned_stopped": true,
+  "oom_killed": false,
+  "siblings_unchanged": true,
+  "min_free_bytes": 1821360128,
+  "date": "2026-10-12"
+}

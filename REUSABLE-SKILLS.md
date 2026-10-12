@@ -1,36 +1,12 @@
-# Reusable Business Skills
+# Reusable sales skills
 
-## Urutan eksekusi terbaru
+These four application skills are implemented once in the Python business core and exposed to callers through typed contracts. Each package in `skills/<name>/` has a `SKILL.md`, schema and binding. Approval, tenant scope and idempotency stay in the shared service rather than being copied into prompts or n8n nodes.
 
-Ikuti [PHASES.md](PHASES.md) dan [aturan eksekusi lokal](../LOCAL-FIRST-EXECUTION.md). Phase 0–6: implementasi serta unit/contract/native tests tanpa kewajiban Docker. Phase 7: integrasi nyata, Docker/Linux dan reliability. Phase 8: delivery lokal dan support. Phase 9: cloud/hosting extension opsional, selalu terakhir. Checklist kemampuan di bawah adalah target release, bukan kewajiban menjalankan container pada fase awal. Test double tidak menggantikan connected acceptance.
+| Skill | Result | Side-effect rule |
+| --- | --- | --- |
+| `extract_commitments` | Source-backed claims and conflicts | Read-only; unsupported/ambiguous claims go to review. |
+| `prepare_crm_update` | Current-to-proposed CRM diff and activity | Requires exact-version independent approval before write. |
+| `draft_followup` | Reviewable email draft from the approved context | Draft creation does not send. |
+| `reconcile_followup` | Observed CRM or mailbox operation state | Unknown outcomes are observed before any new dispatch. |
 
-Proyek 04: **AI Sales Follow-up & CRM Automation**
-
-Tanggal rencana: 2026-10-08. Status: **rencana implementasi; belum ada implementasi baru dalam folder ini**. Checklist hanya dicentang setelah artefak dan verifikasinya tersedia.
-
-Skills di sini adalah paket kemampuan aplikasi yang dipakai assistant dan automation worker. Saat implementasi, setiap skill memiliki `skills/<name>/SKILL.md` beserta schema, implementation binding (Python handler atau n8n sub-workflow sesuai keputusan), dan tests; ini bukan sekadar kumpulan prompt atau asumsi bahwa sebuah Codex skill sudah terpasang.
-
-| Skill | Input | Output | Batas tindakan |
-| --- | --- | --- | --- |
-| `extract_commitments` | conversation + current CRM | claims bersumber + conflicts | read-only |
-| `prepare_crm_update` | verified claims | field diff + tasks | approval sebelum write |
-| `draft_followup` | commitments + communication rules | email draft | tidak mengirim otomatis secara default |
-| `reconcile_followup` | operation ID | CRM/delivery status | sent tidak dianggap delivered tanpa bukti |
-
-## Isi wajib setiap paket skill
-
-- [ ] SKILL.md: masalah bisnis, kapan dipakai/tidak dipakai, owner, preconditions, urutan langkah, exception handling, dan contoh.
-- [ ] Input/output JSON Schema berversi serta implementation binding Python atau n8n sub-workflow; aturan transaksi/izin tetap di service otoritatif dan tidak diduplikasi dalam prompt.
-- [ ] Declared tools dan permissions minimum; approval requirement dan side-effect classification.
-- [ ] Timeout, retries, idempotency, cancellation, postcondition check, dan compensation/manual recovery bila relevan.
-- [ ] Fixtures dengan normal/ambiguous/failure cases; expected results ditulis terpisah dari generation.
-- [ ] Changelog/compatibility metadata dan metrik task correctness, latency, cost, serta error classification.
-
-## Bukti reusable
-
-- Skill yang sama dipanggil dari assistant interaktif dan automation worker tanpa menyalin core logic.
-- Business/tenant configuration kedua menggunakan skill yang sama dengan policy/config berbeda.
-- Menukar hosted model ke local model tidak mengubah aturan izin atau syarat approval.
-- Skill gagal dengan status yang jelas jika data atau izin kurang; worker retry tidak menggandakan side effect.
-
-**Selesai ketika:** semua skill tabel punya implementasi executable, kontrak, dokumentasi, dan tes; satu penggunaan ulang lintas caller dibuktikan dalam evidence.
+The FastAPI app, MCP stdio reference client and n8n HTTP coordination all call the same domain implementation. The [Phase 8 release test](docs/phase-8/DELIVERY-AUDIT.md) exercises the Python suite, MCP client and workflow exports from a clean extraction; [Phase 7](docs/phase-7/COMPLETION-AUDIT.md) supplies the connected engine and Odoo/Graph evidence. Changing model provider does not grant new permissions or bypass approval. OpenAI is the validated hosted V1 profile; Claude/Grok have adapter contracts without live API validation, and the tested local Qwen3 profile did not meet the quality gate.

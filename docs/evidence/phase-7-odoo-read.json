@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "checks": [
+    "isolated_connector_migrations_and_seed",
+    "isolated_real_odoo_init_and_seed",
+    "operator_login_and_tenant_verified",
+    "company_scoped_real_opportunities",
+    "single_record_read_matches_list"
+  ],
+  "opportunities": 1,
+  "minimum_sampled_host_free_bytes": 1755275264,
+  "containers": [
+    {
+      "name": "/sales04-odoo-20261010142205-api-1",
+      "memory_limit": 201326592,
+      "swap_limit": 201326592,
+      "oom_killed": false,
+      "exit_code": 0,
+      "running": false
+    },
+    {
+      "name": "/sales04-odoo-20261010142205-odoo-1",
+      "memory_limit": 536870912,
+      "swap_limit": 536870912,
+      "oom_killed": false,
+      "exit_code": 137,
+      "running": false
+    },
+    {
+      "name": "/sales04-odoo-20261010142205-odoo-seed",
+      "memory_limit": 536870912,
+      "swap_limit": 536870912,
+      "oom_killed": false,
+      "exit_code": 0,
+      "running": false
+    },
+    {
+      "name": "/sales04-odoo-20261010142205-init",
+      "memory_limit": 536870912,
+      "swap_limit": 536870912,
+      "oom_killed": false,
+      "exit_code": 0,
+      "running": false
+    },
+    {
+      "name": "/sales04-odoo-20261010142205-seed",
+      "memory_limit": 201326592,
+      "swap_limit": 201326592,
+      "oom_killed": false,
+      "exit_code": 0,
+      "running": false
+    },
+    {
+      "name": "/sales04-odoo-20261010142205-migrate",
+      "memory_limit": 201326592,
+      "swap_limit": 201326592,
+      "oom_killed": false,
+      "exit_code": 0,
+      "running": false
+    },
+    {
+      "name": "/sales04-odoo-20261010142205-db-1",
+      "memory_limit": 268435456,
+      "swap_limit": 268435456,
+      "oom_killed": false,
+      "exit_code": 0,
+      "running": false
+    }
+  ],
+  "other_container_ids_unchanged": true,
+  "raw_sha256": "6d9a2479c1a6d5b04b0a2234f5108749047d8434954f436ebaf5959d8230cd07",
+  "scope": "Fresh project04-owned synthetic Odoo and connector databases; authenticated read acceptance",
+  "limitations": [
+    "No business update/approval/read-back acceptance",
+    "No n8n connected slice",
+    "Sibling services not modified; unchanged IDs do not imply uptime",
+    "Own services stopped; configuration is not an always-on deployment"
+  ]
+}

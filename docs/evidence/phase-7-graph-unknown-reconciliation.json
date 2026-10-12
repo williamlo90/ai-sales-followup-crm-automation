@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "scope": "restored PostgreSQL ledger with injected unknown state; actual Graph Sent Items reconciliation; no sends",
+  "source_unchanged": true,
+  "initial_cloned_status": "unknown",
+  "final_status": "accepted",
+  "receipt_state": "sent",
+  "same_operation_id": true,
+  "repeat_same_result": true,
+  "dispatch_calls": 0,
+  "observation_calls": 2,
+  "graph_send_enabled": false,
+  "memory_limit": 268435456,
+  "limitation": "Unknown state injected into restored clone; no live send timeout was caused",
+  "container_stopped": true,
+  "other_container_ids_unchanged": true,
+  "min_free_bytes": 1376456704,
+  "date": "2026-10-12"
+}

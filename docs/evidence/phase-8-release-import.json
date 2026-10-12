@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "release_sha256": "840786e67567a9ecd98d25b634ac423e37e22bfc7670f01469d24da3dfe02180",
+  "workflow_count": 2,
+  "workflow_names": [
+    "Sales due v1",
+    "Sales intake v1"
+  ],
+  "active_count": 0,
+  "timezone": "Asia/Jakarta",
+  "network": "none",
+  "external_effects": 0,
+  "memory_limit_bytes": 536870912,
+  "minimum_host_free_bytes": 3647815680,
+  "sibling_ids_unchanged": true,
+  "container_removed": true,
+  "scope": "Fresh volume actual pinned n8n CLI import/export from extracted release; no execution"
+}

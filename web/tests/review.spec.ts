@@ -20,7 +20,7 @@ test('operator prepares, independent approver reviews both actions, no dispatch'
   await expect(page.getByText('Awaiting email approval',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Approve email draft'}).click();
   await expect(page.getByText('Approved by approver',{exact:true})).toHaveCount(2);
-  await expect(page.getByRole('status')).toContainText('No external action has run');
+  await expect(page.getByRole('status')).toContainText('Check Action outcomes for execution status');
   await page.screenshot({path:'../local/browser-review.png',fullPage:true});
   await page.setViewportSize({width:390,height:844});
   await expect(page.getByRole('heading',{name:'Follow-up draft'})).toBeVisible();

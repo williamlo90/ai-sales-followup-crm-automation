@@ -2,9 +2,9 @@
 
 ## Urutan eksekusi terbaru
 
-Ikuti [PHASES.md](PHASES.md) dan [aturan eksekusi lokal](../LOCAL-FIRST-EXECUTION.md). Phase 0–6: implementasi serta unit/contract/native tests tanpa kewajiban Docker. Phase 7: integrasi nyata, Docker/Linux dan reliability. Phase 8: delivery lokal dan support. Phase 9: cloud/hosting extension opsional, selalu terakhir. Checklist kemampuan di bawah adalah target release, bukan kewajiban menjalankan container pada fase awal. Test double tidak menggantikan connected acceptance.
+Ikuti [PHASES.md](PHASES.md) dan [aturan eksekusi lokal](docs/LOCAL-FIRST-EXECUTION.md). Phase 0–6: implementasi serta unit/contract/native tests tanpa kewajiban Docker. Phase 7: integrasi nyata, Docker/Linux dan reliability. Phase 8: delivery lokal dan support. Phase 9: cloud/hosting extension opsional, selalu terakhir. Checklist kemampuan di bawah adalah target release, bukan kewajiban menjalankan container pada fase awal. Test double tidak menggantikan connected acceptance.
 
-Status: **rencana; belum menjadi hasil benchmark atau implementasi baru**.
+Status V1: dua export n8n dipakai pada sandbox dan diuji impor, jadwal serta recovery. Lihat [workflow exports](automation/n8n/README.md), [audit Phase 7](docs/phase-7/COMPLETION-AUDIT.md) dan [audit delivery](docs/phase-8/DELIVERY-AUDIT.md). Uraian berikut adalah alasan dan requirement desain awal.
 
 **Keputusan:** Pakai n8n sebagai orchestrator utama workflow bisnis.
 
@@ -12,7 +12,7 @@ Status: **rencana; belum menjadi hasil benchmark atau implementasi baru**.
 
 **Alasan:** Make.com dan Zapier menjadi varian pembanding satu workflow Sales yang sama, bukan runtime tambahan yang wajib berada di semua jalur.
 
-Dokumen ini menggantikan kewajiban lama memasang n8n di semua proyek. Lihat [keputusan portfolio](../AUTOMATION-DECISIONS.md).
+Dokumen ini menggantikan kewajiban lama memasang n8n di semua proyek. Keputusan V1 proyek ini adalah satu engine n8n; lihat [keputusan Phase 9](docs/phase-9/DECISION.md) untuk extension yang tidak dipilih.
 
 ## Workflow target
 

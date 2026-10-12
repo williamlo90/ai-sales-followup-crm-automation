@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "scope": "Linux-native application plus actual n8n/PostgreSQL/Odoo; controlled n8n restart",
+  "python": "3.13.6",
+  "downtime": {
+    "actual_engine_downtime_seconds": 35.18149157600055,
+    "lab_interval_seconds": 10,
+    "minimum_missed_intervals": 3,
+    "queued_observations": [
+      {
+        "status": "queued",
+        "elapsed_seconds": 0.10517863900167868
+      },
+      {
+        "status": "queued",
+        "elapsed_seconds": 5.1150768930001504
+      },
+      {
+        "status": "queued",
+        "elapsed_seconds": 10.1264573440003
+      },
+      {
+        "status": "queued",
+        "elapsed_seconds": 15.143797586000801
+      },
+      {
+        "status": "queued",
+        "elapsed_seconds": 20.153952514001503
+      },
+      {
+        "status": "queued",
+        "elapsed_seconds": 25.16924432200176
+      },
+      {
+        "status": "queued",
+        "elapsed_seconds": 30.18138769899997
+      }
+    ],
+    "container_start_changed": true
+  },
+  "verified_operations": 1,
+  "enqueue_to_verified_seconds": 154.51699283800008,
+  "minimum_sampled_host_free_bytes": 2528047104,
+  "postgres_memory_bytes": 268435456,
+  "owned_services_stopped": true,
+  "sibling_ids_unchanged": true,
+  "limitations": [
+    "10-second lab cadence",
+    "Controlled engine stop/start, not host reboot",
+    "Seeded input and automated separate lab approval",
+    "No model or email calls"
+  ],
+  "raw_sha256": "0411f4f90b0e258836143a94e4283c6a12d32f99f2a3ecafe0b778a2786b69eb"
+}

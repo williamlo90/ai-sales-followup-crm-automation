@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "scope": "Actual shared PostgreSQL core to isolated connector/Odoo activity with automated distinct lab roles",
+  "checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "unapproved_local_effect_denied",
+    "connector_operator_self_approval_denied",
+    "distinct_lab_approver_bound_exact_preview",
+    "real_odoo_activity_read_back_verified",
+    "repeat_execute_reuses_one_local_and_remote_operation",
+    "reconcile_reads_verified_remote_receipt",
+    "migration_checksum_drift_denied"
+  ],
+  "passed": 12,
+  "minimum_sampled_host_free_bytes": 1609990144,
+  "owned_containers_stopped": true,
+  "other_container_ids_unchanged": true,
+  "raw_sha256": "f000735a3af072eb85c0e05e72269c3abd889d79249cc86a3889fb97d3fff911",
+  "limits_mib": {
+    "postgres": 256,
+    "odoo": 512,
+    "connector_api": 192
+  },
+  "limitations": [
+    "Synthetic automated role fixtures, not observed human approval",
+    "No email send, Graph/model/n8n in this slice",
+    "One activity; not load/soak evidence",
+    "App probe schema removed, sandbox Odoo activity retained"
+  ]
+}

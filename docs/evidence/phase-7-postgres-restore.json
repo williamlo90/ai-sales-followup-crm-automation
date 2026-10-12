@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "scope": "same-cluster database restore; existing roles retained; no external dispatch",
+  "table_count": 19,
+  "row_count": 29,
+  "all_table_hashes_equal": true,
+  "source_unchanged": true,
+  "restored_ledger_unchanged": true,
+  "repeat_same_operation": true,
+  "dispatch_calls": 0,
+  "backup_bytes": 70391,
+  "backup_sha256": "383472c05f791e14ce3c8ff81c0e0b37e5289c93112be480fa0a6cfa9b1f1e9e",
+  "memory_limit": 268435456,
+  "container_stopped": true,
+  "other_container_ids_unchanged": true,
+  "min_free_bytes": 2954670080,
+  "recorded_at": "2026-10-10T14:49:43.308638+00:00",
+  "commands": [
+    "pg_dump -Fc",
+    "createdb <isolated restore database>",
+    "pg_restore --exit-on-error",
+    "all-table canonical row hashes",
+    "shared ExecutionService repeat request with no-dispatch sentinel"
+  ],
+  "limitations": [
+    "Same PostgreSQL cluster retains existing roles; not clean-cluster recovery",
+    "No n8n/configuration/encryption-key or host reboot recovery in this probe",
+    "No additional external email send; delivery status remains separate"
+  ]
+}

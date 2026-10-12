@@ -41,6 +41,17 @@ def test_graph_wrong_tenant_and_response_scope():
     with pytest.raises(ReadError,match='scope_mismatch'):client.page()
 
 
+def test_graph_actual_odata_folder_checkpoint_and_scope():
+    client=graph(lambda r: None)
+    url="https://graph.microsoft.com/v1.0/users/test@example.invalid/mailFolders('inbox')/messages/delta?$deltatoken=opaque"
+    assert client.validate_link(url)==url
+    for bad in (url.replace("'inbox'", "'archive'"),
+                url.replace('test@example.invalid','other@example.invalid'),
+                url.replace('graph.microsoft.com','evil.invalid')):
+        with pytest.raises(ReadError,match='checkpoint_scope_mismatch'):
+            client.validate_link(bad)
+
+
 def test_graph_expired_delta_and_cursor_cycle():
     with pytest.raises(ReadError,match='checkpoint_expired'):
         graph(lambda r:httpx.Response(400,json={'error':{'code':'syncStateNotFound','message':'private'}})).page()

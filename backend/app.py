@@ -240,10 +240,17 @@ def from_environment():
     else: raise RuntimeError('Unsupported SALES_STORAGE')
     service = SalesService(store)
     profile = openai_profile(read_config())
+    model = ModelAdapter(profile) if profile else None
+    budget_path = os.environ.get('SALES_MODEL_BUDGET_PATH')
+    if model and budget_path:
+        from backend.connector_runtime import local_file
+        from backend.evaluation_budget import EvaluationBudget
+        from backend.budgeted_model import BudgetedModel
+        model = BudgetedModel(model,EvaluationBudget(local_file(budget_path)))
     path = os.environ.get('SALES_CONNECTORS_PATH')
     if path:
         from backend.connector_runtime import compose
         runtime = compose(service,identities,path)
-        skills = SkillService(service,ModelAdapter(profile) if profile else None,execution=runtime.execution)
+        skills = SkillService(service,model,execution=runtime.execution)
         return create_app(service,identities,skills,execution=runtime.execution,connector=runtime.connector,ingestion=runtime.ingestion)
-    return create_app(service, identities, SkillService(service, ModelAdapter(profile) if profile else None))
+    return create_app(service, identities, SkillService(service, model))

@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "scope": "One actual scheduled trigger for each of the two current three-minute n8n workflow exports",
+  "configured_interval_seconds": 180,
+  "successful_trigger_executions": {
+    "intake": 1,
+    "due": 1
+  },
+  "first_success_observed_after_start_seconds": 164.48,
+  "network": "none",
+  "http_target": "local synthetic stub",
+  "external_effects": 0,
+  "n8n_memory_limit_bytes": 536870912,
+  "minimum_sampled_host_free_bytes": 1312727040,
+  "oom_killed": false,
+  "owned_container_stopped": true,
+  "other_container_ids_unchanged": true,
+  "export_sha256": {
+    "intake": "d095e339a84733345f6ab730ddf1c878de1935b42f502f689d4ad6a0d30b70c1",
+    "due": "73c845623869520cec4fcfb320ad13c50b975bc13f0aba2765217d72557d3ab9"
+  },
+  "limitations": [
+    "One trigger each, not a measured sustained cadence or stability test",
+    "Local stub response; prior separate evidence covers connected backend execution",
+    "No email, Odoo, Graph, model or PostgreSQL call in this probe"
+  ]
+}

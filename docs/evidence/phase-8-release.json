@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-12",
+  "status": "passed",
+  "release": "sales-followup-local-v1-candidate",
+  "archive_sha256": "840786e67567a9ecd98d25b634ac423e37e22bfc7670f01469d24da3dfe02180",
+  "archive_bytes": 344314,
+  "manifest_files": 236,
+  "source_git_head": "a640980ddf2474bf00759b72b7065d87f524eed9",
+  "source_worktree": "snapshot_includes_current_uncommitted_files",
+  "extract_target": "fresh external directory under user AppData Local, release-delivered-20261012",
+  "runtime_versions": {
+    "python": "3.13.6",
+    "node": "22.19.0",
+    "npm": "11.17.0",
+    "docker_compose": "5.5.1"
+  },
+  "commands_results": [
+    {
+      "command": "python -m scripts.package_release; python -m scripts.verify_release --extract-to <fresh>",
+      "result": "236 files, SHA-256 verified, final fresh extraction passed"
+    },
+    {
+      "command": "python -m venv .venv; python -m pip install -r backend/requirements.lock -r backend/requirements-postgres.txt; python -m pip check",
+      "result": "fresh pinned install and dependency check passed"
+    },
+    {
+      "command": "python -m pytest -q",
+      "result": "332 passed, 1 existing StarletteDeprecationWarning, 15.86s on final extraction"
+    },
+    {
+      "command": "npm ci --prefix web; npm run build --prefix web",
+      "result": "passed; 24 packages installed, Vite/TypeScript built"
+    },
+    {
+      "command": "npm ci --prefix mcp-server; npm run build --prefix mcp-server; npm run test --prefix mcp-server",
+      "result": "passed; 17 packages installed, build and 2 stdio reference-client tests"
+    },
+    {
+      "command": "docker compose -f deploy/compose.yaml --profile data --profile engine config --quiet",
+      "result": "passed with disposable placeholder secret files removed immediately; no services started"
+    },
+    {
+      "command": "actual pinned n8n import/export from extracted automation/n8n on fresh isolated volume",
+      "result": "2 exact workflows, inactive, Asia/Jakarta; see phase-8-release-import.json"
+    }
+  ],
+  "sanitization": {
+    "local_paths_in_archive": false,
+    "dot_env_in_archive": false,
+    "project_secret_files_checked": 2,
+    "secret_values_detected": 0
+  },
+  "limitations": [
+    "No production install or continuously running service",
+    "n8n import was offline and inactive; actual schedules and connected workflow were validated in Phase 7",
+    "No new Graph send or Odoo write"
+  ]
+}

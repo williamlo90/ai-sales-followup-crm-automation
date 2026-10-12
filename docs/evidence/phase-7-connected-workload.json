@@ -1,0 +1,131 @@
+{
+  "status": "passed",
+  "scope": "Real n8n/API/PostgreSQL/Odoo workload; deterministic seeded input, model disabled; automated lab review",
+  "stage": "database_setup",
+  "profiles": [
+    {
+      "profile": "normal",
+      "n": 2,
+      "elapsed_seconds": 239.50140259996988,
+      "throughput_per_minute": 0.5010409070565297,
+      "maximum_backlog": 1,
+      "p50_seconds": 78.22168670000974,
+      "p90_seconds": 159.1793259999249,
+      "p95_seconds": 159.1793259999249,
+      "samples": [
+        {
+          "verified_seconds": 159.1793259999249,
+          "queue_wait_seconds": 88.21254119998775
+        },
+        {
+          "verified_seconds": 78.22168670000974,
+          "queue_wait_seconds": 7.476526600075886
+        }
+      ],
+      "errors": 0,
+      "verified_operations": 2
+    },
+    {
+      "profile": "peak",
+      "n": 3,
+      "elapsed_seconds": 100.94469409994781,
+      "throughput_per_minute": 1.7831546432918761,
+      "maximum_backlog": 3,
+      "p50_seconds": 88.42648830008693,
+      "p90_seconds": 97.56382989999838,
+      "p95_seconds": 97.56382989999838,
+      "samples": [
+        {
+          "verified_seconds": 78.772947999998,
+          "queue_wait_seconds": 7.885435200063512
+        },
+        {
+          "verified_seconds": 88.42648830008693,
+          "queue_wait_seconds": 16.933984600007534
+        },
+        {
+          "verified_seconds": 97.56382989999838,
+          "queue_wait_seconds": 17.075042300042696
+        }
+      ],
+      "errors": 0,
+      "verified_operations": 3
+    },
+    {
+      "profile": "short_soak",
+      "n": 4,
+      "elapsed_seconds": 159.1395527999848,
+      "throughput_per_minute": 1.5081103080743539,
+      "maximum_backlog": 3,
+      "p50_seconds": 67.91798929998185,
+      "p90_seconds": 78.07777199998964,
+      "p95_seconds": 78.07777199998964,
+      "samples": [
+        {
+          "verified_seconds": 78.05796380003449,
+          "queue_wait_seconds": 7.427177799982019
+        },
+        {
+          "verified_seconds": 78.07777199998964,
+          "queue_wait_seconds": 8.748267299961299
+        },
+        {
+          "verified_seconds": 67.91798929998185,
+          "queue_wait_seconds": 6.782905200030655
+        },
+        {
+          "verified_seconds": 67.20110780000687,
+          "queue_wait_seconds": 6.656532400054857
+        }
+      ],
+      "errors": 0,
+      "verified_operations": 4
+    }
+  ],
+  "emails_sent": 0,
+  "paid_model_calls": 0,
+  "scheduler_interval_seconds": 10,
+  "review": "automated separate lab roles",
+  "limitations": [
+    "Seeded deterministic input; Graph/model performance excluded",
+    "Accelerated 10-second lab cadence, not production five-minute latency",
+    "Small N: p90/p95 are descriptive near-maximum samples",
+    "Short soak only; no long-duration reliability claim"
+  ],
+  "minimum_sampled_host_free_bytes": 2725912576,
+  "resources": {
+    "sales04-odoo-20261010142205-db-1": {
+      "sampled_max_cpu_percent": 5.48,
+      "sampled_max_memory_bytes": 42802872,
+      "memory_limit_bytes": 268435456,
+      "stopped": true,
+      "oom_killed": false
+    },
+    "sales04-odoo-20261010142205-odoo-1": {
+      "sampled_max_cpu_percent": 2.28,
+      "sampled_max_memory_bytes": 129499136,
+      "memory_limit_bytes": 536870912,
+      "stopped": true,
+      "oom_killed": false
+    },
+    "sales04-odoo-20261010142205-api-1": {
+      "sampled_max_cpu_percent": 7.38,
+      "sampled_max_memory_bytes": 61194895,
+      "memory_limit_bytes": 201326592,
+      "stopped": true,
+      "oom_killed": false
+    },
+    "sales04-connected-234e547b4987": {
+      "sampled_max_cpu_percent": 50.81,
+      "sampled_max_memory_bytes": 504994202,
+      "memory_limit_bytes": 536870912,
+      "stopped": true,
+      "oom_killed": false
+    }
+  },
+  "resource_sample_batches": 42,
+  "resource_scope": "Docker per-container CPU and memory snapshots approximately every12 seconds; not continuous peaks or whole-host CPU",
+  "owned_services_stopped": true,
+  "sibling_ids_unchanged": true,
+  "raw_sha256": "92ca6eb319add19b8f4762b54a2d552a12ed4b18d2ccda6d50f2ed7b9a9a6496"
+}

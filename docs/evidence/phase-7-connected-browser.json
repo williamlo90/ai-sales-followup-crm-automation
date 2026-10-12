@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "recorded_at": "2026-10-10T15:13:23.874577+00:00",
+  "scope": "Headless Edge review UI against actual native app factory, PostgreSQL and Odoo; no route mocks",
+  "checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "real_browser_operator_binding_without_approval_bypass",
+    "real_browser_distinct_approver_crm_only",
+    "real_browser_verified_odoo_outcome",
+    "operator_binds_pending_worker_proposal_without_ownership_transfer",
+    "unapproved_local_effect_denied",
+    "connector_operator_self_approval_denied",
+    "distinct_lab_approver_bound_exact_preview",
+    "real_odoo_activity_read_back_verified",
+    "repeat_execute_reuses_one_local_and_remote_operation",
+    "reconcile_reads_verified_remote_receipt",
+    "migration_checksum_drift_denied"
+  ],
+  "passed": 16,
+  "postgres_memory_bytes": 268435456,
+  "minimum_free_bytes": 3733004288,
+  "owned_stopped": true,
+  "sibling_ids_unchanged": true,
+  "screenshots_visually_checked": true,
+  "source_sha256": {
+    "scripts/connected_browser.mjs": "cac8829ebb2e800856567e6fc39ad4a394e5f028f46c4e1cc0cb0eab412db39e",
+    "scripts/odoo_browser_review.py": "9e8aed67f2abca642be43ddc6787faa539d33c257e553ca7fdd6fa4eac17297e",
+    "web/src/main.tsx": "75446a67c2b03090f4f026edfcf57a1ad22d3edeb2a372971cdc2c8c57d24f84",
+    "web/src/ConnectorBinding.tsx": "1062d95e55066aedaaa98f2e4dba66101f155ab61f8bebc84dbadad152b66a0d",
+    "web/src/style.css": "ab3d7789113eeaaa6459a85cfc0bf1a241f3c0d95a3b15452278e24ead39f17e"
+  },
+  "limitations": [
+    "Browser actions automated under separate lab identities, not a human usability study",
+    "Remote Odoo approval prepared by test harness; local CRM approval performed in browser",
+    "Graph/model/n8n not running in this focused browser slice; CRM execution used shared core directly"
+  ]
+}

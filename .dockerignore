@@ -1,7 +1,7 @@
-.git
-.venv
-local
-**/node_modules
-**/__pycache__
-web/dist
-.env*
+*
+!backend/
+!backend/**
+!deploy/
+!deploy/Dockerfile
+backend/**/__pycache__/
+backend/**/*.pyc

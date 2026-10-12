@@ -1,0 +1,67 @@
+{
+  "recorded_at": "2026-10-10T15:02:44.926804+00:00",
+  "status": "connected_recovery_verified",
+  "initial_passes": [
+    {
+      "status": "failed",
+      "stage": "n8n_graph_model",
+      "model_status": null,
+      "error_type": "KeyError"
+    },
+    {
+      "status": "failed",
+      "stage": "awaiting_n8n_proposal",
+      "model_status": "review",
+      "error_type": "RuntimeError"
+    },
+    {
+      "status": "failed",
+      "stage": "n8n_graph_model",
+      "model_status": "review",
+      "error_type": "RuntimeError"
+    }
+  ],
+  "recovery": {
+    "status": "passed",
+    "scope": "simultaneous real Graph/OpenAI/n8n/API/PostgreSQL/Odoo; automated lab review roles",
+    "stage": "awaiting_n8n_effect",
+    "resumes_prior_graph_model_pipeline": true,
+    "paid_calls_this_resume": 0,
+    "job_status": "completed",
+    "operation_status": "verified",
+    "operation_count": 1,
+    "emails_sent": 0,
+    "review": "automated lab reviewer selects supported demo; separate approver approves exact payload"
+  },
+  "minimum_free_bytes": 2096893952,
+  "postgres_limit_bytes": 268435456,
+  "odoo_limit_bytes": 536870912,
+  "connector_limit_bytes": 201326592,
+  "n8n_limit_bytes": 536870912,
+  "owned_stopped": true,
+  "other_container_ids_unchanged": true,
+  "budget": {
+    "cap_microusd": 1000000,
+    "committed_microusd": 635109,
+    "remaining_microusd": 364891,
+    "reported_actual_microusd": 24010,
+    "calls": 71,
+    "pending": 0,
+    "unknown": 9,
+    "overrun": false
+  },
+  "source_hashes": {
+    "scripts/connected_acceptance.py": "1d23a9714da619ba976c330cbe4eb81448497e3695e02a050da22535956efa63",
+    "scripts/connected_resume.py": "be0c91e894ecae4b7602dd900bfc413cc2ba1657747f1f59174196293a657255",
+    "scripts/connected_lab_app.py": "980e5f51b9f336eb748d0d45e603471fbda932c41899fd196b165048d302eae2",
+    "backend/budgeted_model.py": "0eac3446e2fa7300786ccc61d667e89a932c72cb5221e6fd1b73aa0d922ac611"
+  },
+  "scope": "Real Graph read by n8n, real budgeted model extraction, persisted PostgreSQL proposal, stopped/restarted stack, separate automated lab-role approval, n8n execution, real Odoo read-back. Native application with containerized n8n/Odoo/PostgreSQL.",
+  "limitations": [
+    "Recovered two-session pipeline, not uninterrupted happy path",
+    "Graph/model intake is a dedicated lab workflow; production coordination exports remain intake/due",
+    "Automated lab review and approver, not human UI study",
+    "Synthetic disclaimer caused model output variation: one review with demo candidate, another review with no commitments; neither output was auto-approved",
+    "No new email send or delivery proof; no normal/peak/soak or host-reboot claim"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "scope": "cloned real connected ledger; CRM verified, email send disabled",
+  "crm_status": "verified",
+  "email_approval_count": 1,
+  "email_operations": 0,
+  "dispatch_calls": 0,
+  "repeated_email_denials": 2,
+  "limitation": "Send-disabled fault, not a live Graph partial write; source database untouched",
+  "owned_stopped": true,
+  "siblings_unchanged": true,
+  "free_bytes_after": 1721077760,
+  "date": "2026-10-12"
+}

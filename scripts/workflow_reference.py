@@ -7,19 +7,20 @@ VERSIONS={'scheduleTrigger':1.4,'httpRequest':4.5,'if':2.3,'wait':1.1}
 def validate(document):
     assert document['active'] is False
     assert document['settings']['timezone']=='Asia/Jakarta'
-    assert 190<=document['settings']['executionTimeout']<=300
+    assert 220<=document['settings']['executionTimeout']<=300
     nodes={n['name']:n for n in document['nodes']}
     assert len(nodes)==len(document['nodes'])==5
     assert len({n['id'] for n in nodes.values()})==5
     for n in nodes.values():
         kind=n['type'].removeprefix('n8n-nodes-base.')
         assert n['typeVersion']==VERSIONS[kind]
+        if kind=='scheduleTrigger':assert n['parameters']=={'rule':{'interval':[{'field':'minutes','minutesInterval':3}]}}
         if kind=='httpRequest':
             assert n['retryOnFail'] is False and n['parameters']['method']=='POST'
             assert n['parameters']['genericAuthType']=='httpHeaderAuth'
             assert n['parameters']['options']['timeout']<=65000
             assert urlsplit(n['parameters']['url']).path in {'/v1/workflows/intake/tick','/v1/workflows/due/tick'}
-        if kind=='wait':assert n['parameters']=={'resume':'timeInterval','amount':60,'unit':'seconds'}
+        if kind=='wait':assert n['parameters']=={'resume':'timeInterval','amount':90,'unit':'seconds'}
     for source,connections in document['connections'].items():
         assert source in nodes
         for branch in connections['main']:

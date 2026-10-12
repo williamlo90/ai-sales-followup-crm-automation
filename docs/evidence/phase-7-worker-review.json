@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-10-10T15:05:21.525466+00:00",
+  "status": "passed",
+  "scope": "Real PostgreSQL/Odoo worker-proposal review delegation; automated lab roles, no browser study",
+  "checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "operator_binds_pending_worker_proposal_without_ownership_transfer",
+    "unapproved_local_effect_denied",
+    "connector_operator_self_approval_denied",
+    "distinct_lab_approver_bound_exact_preview",
+    "real_odoo_activity_read_back_verified",
+    "repeat_execute_reuses_one_local_and_remote_operation",
+    "reconcile_reads_verified_remote_receipt",
+    "migration_checksum_drift_denied"
+  ],
+  "passed": 13,
+  "postgres_memory_bytes": 268435456,
+  "minimum_free_bytes": 2694995968,
+  "owned_stopped": true,
+  "other_container_ids_unchanged": true,
+  "binding_source_sha256": "aa01a2b1b08e9f03d7457f9d763e3912ea66e9ed3de9102e0e0ec9677d44fb8a"
+}

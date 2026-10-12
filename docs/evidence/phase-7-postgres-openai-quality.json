@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "scope": "HTTP/native application + PostgreSQL + actual OpenAI; frozen regression set",
+  "dataset_sha256": "af3257b2a3ec2e6691cc5b870b193a27f4bc5ec473f255308405dd81fbed7516",
+  "dataset_use": "Regression reuse of frozen Phase6 cases, not a new holdout",
+  "linkage": {
+    "correct": 20,
+    "total": 20
+  },
+  "extraction": {
+    "automated_extraction": {
+      "correct": 19,
+      "total": 19
+    },
+    "review_cases": {
+      "correct": 7,
+      "total": 7
+    },
+    "missing_results": 0,
+    "semantic_quality_pass": true,
+    "note": "Agent semantic review completed for this fixed regression set; broader deployment quality is separate."
+  },
+  "proposal_count_and_recipient_correct": {
+    "correct": 20,
+    "total": 20
+  },
+  "draft_factuality": {
+    "correct": 11,
+    "total": 11,
+    "reviewer": "Codex agent compared each actual draft with source and prior commitment history; not an independent human review"
+  },
+  "pre_model_abstention": {
+    "correct": 1,
+    "total": 1
+  },
+  "unapproved_effects": 0,
+  "approvals_created": 0,
+  "http_extraction_latency_seconds": {
+    "p50": 2.854609400033951,
+    "p90": 4.19086850003805,
+    "p95": 5.183053700020537
+  },
+  "paid_calls": 19,
+  "estimated_api_cost_usd": 0.007313,
+  "estimated_cost_per_correct_extraction_usd": 0.0003848947368421053,
+  "budget_after": {
+    "cap_microusd": 1000000,
+    "committed_microusd": 786892,
+    "remaining_microusd": 213108,
+    "reported_actual_microusd": 31323,
+    "calls": 90,
+    "pending": 0,
+    "unknown": 9,
+    "overrun": false
+  },
+  "minimum_sampled_host_free_bytes": 3760160768,
+  "postgres_memory_bytes": 268435456,
+  "owned_database_stopped": true,
+  "sibling_ids_unchanged": true,
+  "raw_sha256": "baccf1cc79097b45a89d6a7e2cf67c94c1526e08f5e8ac54c929876b40305bbb",
+  "limitations": [
+    "Native HTTP application/PostgreSQL/OpenAI; n8n/Graph/Odoo not exercised in this quality layer",
+    "No claim of generalization from reused synthetic cases",
+    "Small-N latency; no p99",
+    "Cost is usage-based estimate at accepted budget rates, not invoice",
+    "Full Phase7 remains incomplete"
+  ]
+}

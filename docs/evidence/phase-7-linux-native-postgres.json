@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "scope": "Native Linux Python3.13.6 in existing Ubuntu WSL plus real PostgreSQL17.11 container; no WSL reboot",
+  "runtime": {
+    "version": "Python 3.13.6",
+    "download": "https://github.com/astral-sh/python-build-standalone/releases/download/20250808/cpython-3.13.6%2B20250808-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz",
+    "sha256": "d04ef88e4e5b8647fd892d96f44be7edbaaffbcf43950ca715fb5ed3290d5100",
+    "isolated_prefix": "/home/william/.local/share/sales04-phase7/7bcc982cc581",
+    "pip_check": "No broken requirements found."
+  },
+  "native_tests": {
+    "passed": 327,
+    "seconds": 16.67
+  },
+  "postgres_checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "app_concurrent_prepare_8_requests_one_proposal_and_audit",
+    "app_concurrent_approval_8_requests_one_approval_and_audit",
+    "app_role_and_tenant_access_denied",
+    "app_fresh_process_persistence_separate_crm_approval",
+    "workflow_duplicate_enqueue_and_concurrent_ticks_one_claim",
+    "due_discovery_cursor_replay_no_duplicate_job_or_proposal",
+    "real_database_restart_preserves_approval_job_schedule_and_lease",
+    "app_source_revision_invalidates_approval",
+    "app_no_external_operations",
+    "postgres_ingestion_invalid_page_atomic_rollback_mock_graph",
+    "postgres_ingestion_checkpoint_reconnect_and_replay_mock_graph",
+    "postgres_concurrent_execution_one_ledger_and_one_simulated_dispatch",
+    "postgres_unknown_reconciliation_no_redispatch_simulated_remote",
+    "migration_checksum_drift_denied"
+  ],
+  "postgres_checks_passed": 19,
+  "postgres_memory_bytes": 268435456,
+  "minimum_sampled_host_free_during_postgres_bytes": 2921140224,
+  "owned_database_stopped": true,
+  "siblings_unchanged": true,
+  "limitations": [
+    "PostgreSQL application transport is ASGI in this suite",
+    "Graph/effect adapter boundaries simulated in this suite",
+    "Full Linux n8n/Odoo slice and WSL lifecycle acceptance still pending",
+    "No system Python/service/startup changes or Ubuntu/Docker Desktop restart"
+  ]
+}

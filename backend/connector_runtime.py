@@ -1,4 +1,4 @@
-"""Explicit project-scoped connector composition; writes/sends remain disabled."""
+"""Project-scoped connectors; CRM writes opt in, email sends remain disabled."""
 from dataclasses import dataclass
 import json
 from pathlib import Path
@@ -41,6 +41,7 @@ class GraphConfig(Strict):
 class ConnectorConfig(Strict):
     local_tenant: UUID
     worker_id: UUID
+    crm_write_enabled: bool = Field(default=False, strict=True)
     odoo: OdooConfig | None = None
     graph: GraphConfig | None = None
 
@@ -71,6 +72,8 @@ class Runtime:
 
 def compose(service, identities, name, *, root=ROOT):
     cfg = ConnectorConfig.model_validate(json.loads(local_file(name,root).read_text(encoding='utf-8')))
+    if cfg.crm_write_enabled and not cfg.odoo:
+        raise ValueError('CRM writes require an Odoo connector')
     workers = {a.id:a for a in identities.values() if a.id==str(cfg.worker_id) and a.tenant_id==str(cfg.local_tenant) and a.role=='worker'}
     if len(workers)!=1:raise ValueError('Configured connector worker identity missing')
     worker = next(iter(workers.values()))
@@ -80,7 +83,7 @@ def compose(service, identities, name, *, root=ROOT):
         item = cfg.odoo
         if not set(item.deals)<=worker.deal_ids:raise ValueError('Odoo deal mapping exceeds worker scope')
         client = OdooReadClient(item.base_url,str(item.connector_tenant),item.company_id,token_reader(item.token_file,root))
-        crm = OdooActivityAdapter(client,repository.load,{k:v.model_dump() for k,v in item.deals.items()},timezone_name=item.timezone,write_enabled=False)
+        crm = OdooActivityAdapter(client,repository.load,{k:v.model_dump() for k,v in item.deals.items()},timezone_name=item.timezone,write_enabled=cfg.crm_write_enabled)
         crm.local_tenant = str(cfg.local_tenant)
     if cfg.graph:
         item = cfg.graph
@@ -90,5 +93,5 @@ def compose(service, identities, name, *, root=ROOT):
         ingestion = GraphIngestion(service,worker,client,item.message_deals)
         mail = GraphMailAdapter(str(cfg.local_tenant),item.mailbox,token,repository.payload,send_enabled=False)
     if crm is None and ingestion is None:raise ValueError('No connectors configured')
-    execution = ExecutionService(service,EffectRouter(crm,mail),enabled=False,send_enabled=False)
+    execution = ExecutionService(service,EffectRouter(crm,mail),enabled=cfg.crm_write_enabled,send_enabled=False)
     return Runtime(execution,crm,ingestion)

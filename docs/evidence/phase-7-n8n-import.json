@@ -1,0 +1,20 @@
+{
+  "name": "sales04-n8n-import-20261010142454",
+  "image": "sha256:673cf422821d5dda078bda7962e5c48be400745a843041618a2ad2263972a3b9",
+  "status": "passed",
+  "workflow_names": [
+    "Sales due v1",
+    "Sales intake v1"
+  ],
+  "scope": "Actual engine CLI import/export persistence; no workflow execution",
+  "minimum_free_bytes": 1828298752,
+  "memory_limit_bytes": 536870912,
+  "swap_limit_bytes": 536870912,
+  "oom_killed": false,
+  "container_stopped": true,
+  "export_sha256": "8c4c31adb168dffa2c565440d7bd4481140be4d7038685fc3104020cccc680b0",
+  "limitations": [
+    "CLI import/export only; execution, credentials, waits and restart pending",
+    "No network access during import; workflows inactive"
+  ]
+}

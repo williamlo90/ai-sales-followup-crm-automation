@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "recorded_at": "2026-10-10T15:26:06.478608+00:00",
+  "scope": "Actual unchanged five-minute Schedule Triggers, native domain/PostgreSQL; pending approval, no external effects",
+  "cadence": {
+    "status": "passed",
+    "schedule_interval_seconds": 300,
+    "observed_intervals_seconds": [
+      300.237,
+      300.022
+    ],
+    "completed_cycles_per_workflow": [
+      2,
+      2
+    ],
+    "executions": [
+      {
+        "id": 1,
+        "status": "success",
+        "mode": "trigger",
+        "workflowId": "e9ec416da59f5718",
+        "startedAt": "2026-10-10 15:15:43.044"
+      },
+      {
+        "id": 2,
+        "status": "success",
+        "mode": "trigger",
+        "workflowId": "cebdfa5ff838575a",
+        "startedAt": "2026-10-10 15:20:35.277"
+      },
+      {
+        "id": 3,
+        "status": "success",
+        "mode": "trigger",
+        "workflowId": "e9ec416da59f5718",
+        "startedAt": "2026-10-10 15:20:43.281"
+      },
+      {
+        "id": 4,
+        "status": "success",
+        "mode": "trigger",
+        "workflowId": "cebdfa5ff838575a",
+        "startedAt": "2026-10-10 15:25:35.299"
+      }
+    ],
+    "elapsed_seconds": 672.63,
+    "scope": "Actual unchanged five-minute Schedule Triggers, native domain/PostgreSQL; pending approval, no external effects"
+  },
+  "checks": [
+    "all_seven_migrations_and_replay",
+    "unscoped_runtime_sees_zero_rows",
+    "tenant_read_isolation",
+    "cross_tenant_write_denied",
+    "transaction_rollback_and_reconnect",
+    "n8n_real_intake_http_postgres_proposal",
+    "n8n_wait_poll_preserves_single_proposal",
+    "n8n_real_due_workflow_execution",
+    "unapproved_flow_zero_effect_operations",
+    "actual_five_minute_cadence_two_completed_cycles_each_workflow",
+    "migration_checksum_drift_denied"
+  ],
+  "minimum_sampled_host_free_bytes": 3756933120,
+  "postgres_memory_bytes": 268435456,
+  "postgres_swap_limit_bytes": 268435456,
+  "postgres_oom_killed": false,
+  "n8n_memory_bytes": 536870912,
+  "n8n_oom_killed": false,
+  "owned_n8n_stopped": true,
+  "owned_postgres_stopped": true,
+  "sibling_container_ids_unchanged": true,
+  "resource_record_sha256": "7761e8df65d5236a029c2425ba395a4424b7e11bc058b121227d05140befbf1f",
+  "native_regression": {
+    "passed": 322,
+    "seconds": 14.88
+  },
+  "limitations": [
+    "Synthetic seeded commitment; no Graph/model/Odoo in this slice",
+    "Two cycles per workflow, not a soak test",
+    "No email or CRM effects; proposal waits for approval",
+    "Success logging enabled for observation; production success logging remains disabled"
+  ]
+}

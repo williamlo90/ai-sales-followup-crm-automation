@@ -1,8 +1,9 @@
-# Static preparation only. Build/start and Linux acceptance belong to Phase 7.
+# Optional container runtime; currently validated application profile is native.
 FROM python:3.13.6-slim
 WORKDIR /app
 COPY backend/requirements.lock /app/requirements.lock
-RUN pip install --no-cache-dir -r /app/requirements.lock
+COPY backend/requirements-postgres.txt /app/requirements-postgres.txt
+RUN pip install --no-cache-dir -r /app/requirements.lock -r /app/requirements-postgres.txt
 COPY backend /app/backend
 RUN useradd --create-home --uid 10001 sales && mkdir /app/local && chown sales:sales /app/local
 USER sales

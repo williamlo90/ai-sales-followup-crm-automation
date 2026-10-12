@@ -9,9 +9,9 @@ from backend.models import ProposalInput,SourceInput
 from test_odoo_effects import fixture
 
 
-def setup(lab,proposal):
+def setup(lab,proposal,local=None):
     sales,actors,_=lab
-    local=sales.prepare(actors['operator'],ProposalInput(**proposal))
+    local=local or sales.prepare(actors['operator'],ProposalInput(**proposal))
     repository=BindingRepository(sales,actors['operator'])
     adapter,_,_,binding,state=fixture()
     adapter.deal_mapping={'deal-1':{'opportunity_id':7,'assignee_id':8}}
@@ -93,3 +93,45 @@ def test_binding_api_default_off_and_scoped_read(lab,proposal):
     assert client.get(path,headers=auth('approver')).json()['local_payload_hash']==local['payload_hash']
     assert client.get(path,headers=auth('outsider')).status_code==404
     assert all(method=='GET' for method,path in state['calls'])
+
+
+def worker_review(lab):
+    from test_workflows import setup as workflow_setup
+    workflow,job,_,_=workflow_setup(lab)
+    outcome=workflow.tick(lab[1]['worker'],'intake')
+    local=lab[0].get(lab[1]['operator'],outcome['proposal_id'])
+    return setup(lab,None,local=local),job
+
+
+def test_operator_can_bind_pending_worker_job_without_approving(lab):
+    (repo,adapter,local,data,state),job=worker_review(lab)
+    repo.attach(local['id'],data,adapter)
+    persisted=lab[0].get(lab[1]['operator'],local['id'])
+    assert persisted['actor_id']=='worker' and persisted['approvals']==[]
+    assert all(method=='GET' for method,path in state['calls'])
+
+
+@pytest.mark.parametrize('change',['no_job','other_worker','completed','other_deal'])
+def test_operator_delegation_requires_exact_pending_job(lab,change):
+    (repo,adapter,local,data,state),job=worker_review(lab)
+    with lab[0].store.connect() as conn:
+        if change=='no_job':conn.execute('DELETE FROM workflow_jobs')
+        if change=='other_worker':conn.execute("UPDATE workflow_jobs SET worker_id='unrelated'")
+        if change=='completed':conn.execute("UPDATE workflow_jobs SET status='completed'")
+        if change=='other_deal':
+            conn.execute("INSERT INTO deals(tenant,id,version,payload) SELECT tenant,'different',version,payload FROM deals WHERE id='deal-1'")
+            conn.execute("UPDATE workflow_jobs SET deal_id='different'")
+    with pytest.raises(DomainError,match='owner_required'):repo.attach(local['id'],data,adapter)
+    assert state['calls']==[]
+
+
+def test_worker_review_delegation_rechecked_after_remote_read(lab,monkeypatch):
+    (repo,adapter,local,data,_),job=worker_review(lab)
+    original=adapter.workspace
+    def changed(*args,**kwargs):
+        result=original(*args,**kwargs)
+        with lab[0].store.connect() as conn:conn.execute("UPDATE workflow_jobs SET status='review'")
+        return result
+    monkeypatch.setattr(adapter,'workspace',changed)
+    with pytest.raises(DomainError,match='owner_required'):repo.attach(local['id'],data,adapter)
+    with pytest.raises(DomainError,match='binding_missing'):repo.load('lab',local['id'])

@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-12",
+  "status": "passed",
+  "scope": {
+    "status": "passed",
+    "scope": "simultaneous real Graph/OpenAI/n8n/API/PostgreSQL/Odoo; automated lab review roles",
+    "stage": "awaiting_n8n_effect",
+    "model_status": "review",
+    "model_trace": {
+      "provider": "openai",
+      "model": "gpt-5.6-luna",
+      "prompt_version": "extract-v3",
+      "schema_version": "extraction-1.0",
+      "schema_hash": "00c376875a08975947c402e68331ba112533b9f81be54ede443149e891a95ba4",
+      "latency_ms": 8327.33,
+      "usage": {
+        "input_tokens": 885,
+        "output_tokens": 605,
+        "total_tokens": 1490
+      },
+      "cost_usd": null,
+      "validation": "provider-response",
+      "outcome": "review"
+    },
+    "job_status": "completed",
+    "operation_status": "verified",
+    "operation_count": 1,
+    "emails_sent": 0,
+    "review": "automated lab reviewer selects supported demo; separate approver approves exact payload"
+  },
+  "host_min_free_bytes": 1104474112,
+  "owned_resources": [
+    {
+      "name": "sales04-connected-81caff0ecb11",
+      "running": false,
+      "oom_killed": false,
+      "memory_limit_bytes": 536870912
+    },
+    {
+      "name": "sales04-odoo-20261010142205-db-1",
+      "running": false,
+      "oom_killed": false,
+      "memory_limit_bytes": 268435456
+    },
+    {
+      "name": "sales04-odoo-20261010142205-odoo-1",
+      "running": false,
+      "oom_killed": false,
+      "memory_limit_bytes": 536870912
+    },
+    {
+      "name": "sales04-odoo-20261010142205-api-1",
+      "running": false,
+      "oom_killed": false,
+      "memory_limit_bytes": 201326592
+    }
+  ],
+  "sibling_container_ids_unchanged": true,
+  "budget_after": {
+    "cap_microusd": 1000000,
+    "committed_microusd": 794934,
+    "remaining_microusd": 205066,
+    "reported_actual_microusd": 32271,
+    "calls": 91,
+    "pending": 0,
+    "unknown": 9,
+    "overrun": false
+  },
+  "limitations": [
+    "One preselected synthetic email mapped to a known sandbox deal; not general mailbox routing coverage",
+    "Automated lab operator and distinct approver; not a human usability session",
+    "Accelerated 10-second lab coordination; configured 3-minute production schedule not timed in this run",
+    "Verified CRM activity path; no outgoing email or email-draft acceptance in this run"
+  ]
+}

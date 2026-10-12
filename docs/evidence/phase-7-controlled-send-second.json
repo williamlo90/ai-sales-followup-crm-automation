@@ -1,0 +1,14 @@
+{
+  "status": "received_in_junk",
+  "subject": "[SALES-P04] Email percobaan 8ab3fd95",
+  "receivedDateTime": "2026-10-10T15:08:52Z",
+  "body_and_recipient_match": true,
+  "read_by_human": false,
+  "additional_send_attempts": 1,
+  "postgres_limit_bytes": 268435456,
+  "minimum_free_bytes": 1280004096,
+  "owned_container_stopped": true,
+  "sibling_ids_unchanged": true,
+  "authorization": "User explicitly requested one additional send after reporting first email not visible",
+  "original_send_ledger_preserved": true
+}

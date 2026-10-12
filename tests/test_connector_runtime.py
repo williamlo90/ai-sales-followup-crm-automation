@@ -34,6 +34,29 @@ def test_composition_does_not_read_missing_tokens_or_enable_effects(tmp_path):
     assert runtime.connector.local_tenant == worker.tenant_id
 
 
+def test_explicit_crm_enable_preserves_mail_block(tmp_path):
+    worker,cfg = configuration(tmp_path)
+    cfg['crm_write_enabled']=True
+    runtime=build(tmp_path,worker,cfg)
+    assert runtime.connector.write_enabled is True
+    assert runtime.execution.enabled is True
+    assert runtime.execution.send_enabled is False
+
+
+@pytest.mark.parametrize('value',['true',1,None])
+def test_crm_enable_requires_boolean(tmp_path,value):
+    worker,cfg = configuration(tmp_path)
+    cfg['crm_write_enabled']=value
+    with pytest.raises(ValueError):build(tmp_path,worker,cfg)
+
+
+def test_crm_enable_requires_connector(tmp_path):
+    worker,cfg = configuration(tmp_path)
+    cfg['crm_write_enabled']=True
+    del cfg['odoo']
+    with pytest.raises(ValueError):build(tmp_path,worker,cfg)
+
+
 @pytest.mark.parametrize('change',['worker','tenant','scope','token_path','send_flag'])
 def test_invalid_scope_or_attempted_send_enable_rejected(tmp_path,change):
     worker,cfg = configuration(tmp_path)

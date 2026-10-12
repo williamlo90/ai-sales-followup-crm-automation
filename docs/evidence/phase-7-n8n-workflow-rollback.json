@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "scope": "Disposable n8n state/workflow rollback using the current three-minute lab exports",
+  "failed_candidate_execution_observed": true,
+  "restored_workflow_count": 2,
+  "failed_candidate_absent_after_restore": true,
+  "new_successful_scheduled_triggers_after_restore": 2,
+  "network": "none",
+  "external_effects": 0,
+  "n8n_memory_limit_bytes": 536870912,
+  "minimum_sampled_host_free_bytes": 3940806656,
+  "both_owned_containers_stopped": true,
+  "oom_killed": false,
+  "other_container_ids_unchanged": true,
+  "limitations": [
+    "Failed candidate was an intentionally misconfigured lab workflow credential, not a production incident",
+    "Rollback restored n8n volume state and used a loopback HTTP stub; connected backend effects were not repeated",
+    "No host or VM reboot in this drill"
+  ]
+}

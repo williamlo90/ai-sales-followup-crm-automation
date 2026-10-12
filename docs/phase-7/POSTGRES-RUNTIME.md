@@ -6,7 +6,7 @@ An administrator applies backend/migrations using scripts/migrations.py in the i
 
 PostgresStore maps the existing shared domain SQL contract to PostgreSQL identifiers, explicit insert columns, placeholders and returned JSON/UUID/timestamp types. Every business transaction takes its authenticated actor, establishes transaction-local tenant context and checks the actor's active database role. A transaction-scoped advisory lock serializes each tenant's read-before-write decisions; unrelated tenant keys remain independent. This is a conservative low-throughput design, not a benchmark for a high-concurrency production workload. Lock timeout2s, statement timeout5s; errors roll back without automatic write retries. No network effect runs inside a database transaction.
 
-The default SQLite harness remains available for native tests. PostgreSQL readiness reports storage=postgresql; connected=false still means external business connectors are not enabled. Model and external effects remain disabled in the acceptance run.
+The default SQLite harness remains available for native tests. PostgreSQL readiness reports storage=postgresql; connected=false still means external business connectors are not enabled. The early isolated PostgreSQL acceptance below intentionally disabled model and external effects; later connected acceptance is in [the Phase 7 audit](COMPLETION-AUDIT.md).
 
 ## Validated scope
 
@@ -14,7 +14,7 @@ Real PostgreSQL17.11 under256MiB, FastAPI ASGI TestClient calling the actual app
 
 The test provisions a random schema/role and actor identities in the dedicated sales_phase7_acceptance database, then cleans up only those generated test objects. Normal deployment must use its own durable provisioned identities/schema. No ongoing app server or database container is left running after this test.
 
-Controlled database-server restart plus intake/due job persistence are now validated in phase-7-postgres-workflow-restart.json. Remaining acceptance includes abrupt failure, richer ingestion/execution paths on PostgreSQL, connector composition, n8n, Odoo/Graph sandbox interactions and stack-level load/recovery. This document does not mark all Phase7 complete.
+Controlled database-server restart plus intake/due job persistence were validated in phase-7-postgres-workflow-restart.json. The subsequent connected n8n/Odoo/Graph and recovery evidence is indexed in [the completion audit](COMPLETION-AUDIT.md). Do not infer production uptime or cloud readiness from the local drills.
 
 
 Restart/workflow evidence:15 real checks passed under256MiB. Duplicate intake enqueue is idempotent;2 concurrent ticks yield one awaiting-approval and one idle. Due discovery/replay creates no duplicate job/proposal and stores its cursor. A controlled restart of the exact owned container changes pg_postmaster_start_time; approval, intake/due jobs, schedule and released lease remain intact, with subsequent intake tick idle. No dispatch.14 targeted native tests pass, including3 restart guard cases that reject wrong ID/owner label/memory limit before any mutation.
