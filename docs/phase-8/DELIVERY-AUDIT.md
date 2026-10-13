@@ -1,5 +1,7 @@
 # Phase 8 local delivery audit
 
+This page records the original 2026-10-12 snapshot. The [current source release](../evidence/current-release-20261013.json) was separately extracted and checked on 2026-10-13, including the newer browser and OAuth code. Its offline checks do not repeat this page's n8n import or connected acceptance.
+
 **Candidate:** `sales-followup-local-v1-candidate`, 2026-10-12. The source snapshot includes the current uncommitted worktree and is identified by the archive SHA-256 plus its per-file manifest; the Git HEAD alone does not identify the release. Final archive hash and extraction results are recorded outside the ZIP in `docs/evidence/phase-8-release.json`, avoiding a self-referential manifest.
 
 | Gate | Evidence and boundary |

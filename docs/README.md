@@ -23,6 +23,7 @@
 - [Combined Outlook OAuth journey](evidence/phase-7-outlook-oauth-connected.json)
 - [Local delivery gate](phase-8/DELIVERY-AUDIT.md)
 - [Final clean-install result](evidence/phase-8-release.json)
+- [Current source archive clean-install result](evidence/current-release-20261013.json)
 - [Phase 9 local-only decision](phase-9/DECISION.md)
 
 The evidence describes synthetic local runs and the exact scope indicated in each report. It does not establish production uptime, customer ROI or cloud validation. Credentials and raw runtime state stay under ignored `local/`.
