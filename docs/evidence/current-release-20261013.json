@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-13",
+  "candidate": "sales-followup-local-v1-candidate",
+  "source_git_head": "7e0c6e2",
+  "source_worktree_at_build": "clean",
+  "archive": "local/releases/sales-followup-local-v1-current.zip",
+  "archive_sha256": "c0868edc0a876b629ff5f4d15b87942bc32775b9f6c3c7827f4b33d88d1ce111",
+  "manifest_file_count": 251,
+  "verification": "scripts.verify_release checked the exact file set and SHA-256 for every entry; extracted to a previously empty directory",
+  "fresh_extraction_checks": {
+    "python": "Python 3.13 venv; pinned lock plus PostgreSQL requirements installed; pip check passed; 360 pytest passed (one existing Starlette deprecation warning)",
+    "web": "npm ci and production build passed; seven Playwright Chromium browser tests passed",
+    "mcp": "npm ci, TypeScript build and two stdio reference-client tests passed"
+  },
+  "scope": "Offline source-archive acceptance for current queue UI, OAuth code and documentation. No Odoo, Graph, OpenAI, n8n import or email dispatch was rerun for this archive; earlier connected and engine evidence belongs to its recorded snapshots.",
+  "distribution_note": "The ZIP is under ignored local/releases and can be rebuilt from the source commit. It is not a GitHub release asset. This evidence file is deliberately outside the ZIP to avoid a self-referential archive hash."
+}
