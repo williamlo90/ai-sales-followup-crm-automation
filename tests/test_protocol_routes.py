@@ -54,3 +54,16 @@ def test_selected_graph_ingest_route_requires_configured_worker(lab):
     assert client.post(path, headers=auth('worker'), json={'id': 'm1', 'extra': True}).status_code == 422
     result = client.post(path, headers=auth('worker'), json={'id': 'm1'})
     assert result.status_code == 200 and result.json()['checkpoint_advanced'] is False
+
+
+def test_readiness_reports_configured_adapters_without_claiming_network_health(lab):
+    sales, _, client = lab
+    offline = client.get('/health/ready')
+    assert offline.status_code == 200
+    assert offline.json()['connectors_configured'] == {'odoo': False, 'graph': False}
+    assert 'connected' not in offline.json()
+    configured = TestClient(create_app(sales, {}, connector=object(), ingestion=object()))
+    ready = configured.get('/health/ready')
+    assert ready.status_code == 200
+    assert ready.json()['connectors_configured'] == {'odoo': True, 'graph': True}
+    assert ready.json()['send_enabled'] is False

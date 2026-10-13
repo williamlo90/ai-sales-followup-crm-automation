@@ -13,11 +13,13 @@
 - [MCP server and reference client](../mcp-server/README.md)
 - [n8n workflow exports](../automation/n8n/README.md)
 - [Project-scoped connector configuration](phase-7/CONNECTOR-SETUP.md)
+- [Pinned Odoo sandbox reproduction](phase-7/ODOO-SANDBOX-REPRO.md)
 - [PostgreSQL runtime](phase-7/POSTGRES-RUNTIME.md)
 
 ## Validation evidence
 
 - [Connected sandbox gate](phase-7/COMPLETION-AUDIT.md)
+- [Current browser regression and source hashes](evidence/browser-current-20261013.json)
 - [Combined Outlook OAuth journey](evidence/phase-7-outlook-oauth-connected.json)
 - [Local delivery gate](phase-8/DELIVERY-AUDIT.md)
 - [Final clean-install result](evidence/phase-8-release.json)

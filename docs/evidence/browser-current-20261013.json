@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-13",
+  "scope": "Offline synthetic browser regression on current checkout; no Graph/Odoo/model calls or email dispatch",
+  "command": "npm.cmd run test:e2e --prefix web",
+  "result": "7 passed",
+  "browser": "Playwright Chromium headless shell v1248",
+  "source_sha256": {
+    "web/src/main.tsx": "68ffad7ea3534050fc9939def3324972317a94f76b2d0dbc3153521496d516dc",
+    "web/src/ProposalHandoff.tsx": "e9b70feb618b8e89a268d2b6cf5f988af91768fe0a5aa6505952c45642b74fd5",
+    "web/src/WorkflowQueue.tsx": "11a07f3341ab520cf65484f82b83ba742358cac14e6136c51977de39c8695189",
+    "web/src/style.css": "a31041d05b96495148d44fda081cc7bf1ce7eafc83419433cf73973de178527e",
+    "web/tests/review.spec.ts": "844b94c7100543076794dada05b5ce3afeae431bc0a0832dc847a31fa85769f2",
+    "web/tests/workflow.spec.ts": "ee851245a686c3c565c0036562e5b39e78163d88a2280e0382ee5c66de7d9726",
+    "web/playwright.config.ts": "4306e3e9c46d61700ca37fe629e5bca2ef56822b12d5ef3c192d7955803f7abe"
+  },
+  "coverage": ["intake and ambiguity", "operator/independent approval", "connector binding", "unknown outcome without resend", "workflow recovery", "mobile review layout"],
+  "note": "The separate Phase 7 connected-browser report belongs to its earlier UI snapshot. This report verifies the present offline UI source and is enforced by CI."
+}

@@ -82,3 +82,5 @@ The operator queue controls, optional allowlisted email dispatch, and project-ow
 This is a **local-delivered, connected-sandbox-validated** V1. It is not an internet-facing production service or a 24-hour scheduler: a sleeping laptop stops the workflows until the stack returns. The owner selected local V1 and did not select cloud hosting or Make.com/Zapier variants for Phase 9. [Decision record](docs/phase-9/DECISION.md).
 
 [Security and disclosure](SECURITY.md) · [Phase plan](PHASES.md) · [Delivery evidence](docs/phase-8/DELIVERY-AUDIT.md)
+
+Licensed under [MIT](LICENSE).

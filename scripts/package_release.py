@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TOP = (
-    '.env.example', 'README.md', 'PHASES.md', 'PROJECT-DELIVERY.md',
+    '.env.example', 'README.md', 'LICENSE', 'PHASES.md', 'PROJECT-DELIVERY.md',
     'pyproject.toml', 'AI-AGENTS.md', 'REUSABLE-SKILLS.md',
     'MCP-INTEGRATIONS.md', 'N8N-AUTOMATION.md', 'BUSINESS-PLATFORM.md',
     'LOCAL-AI-AND-PROVIDERS.md', 'SECURITY-TESTING-MONITORING.md',
@@ -17,7 +17,7 @@ TOP = (
 DIRS = ('backend', 'scripts', 'skills', 'automation/n8n', 'deploy',
         'fixtures', 'tests', 'web', 'mcp-server')
 DOCS = ('docs/CASE-STUDY.md', 'docs/phase-7/COMPLETION-AUDIT.md',
-        'docs/phase-7/CONNECTOR-SETUP.md', 'docs/phase-7/POSTGRES-RUNTIME.md',
+        'docs/phase-7/CONNECTOR-SETUP.md', 'docs/phase-7/ODOO-SANDBOX-REPRO.md', 'docs/phase-7/POSTGRES-RUNTIME.md',
         'docs/phase-7/READINESS-ALERTS.md',
         'docs/phase-6/openai-profile-freeze.json', 'docs/phase-6/dataset-freeze.json',
         'docs/phase-8/OPERATOR-GUIDE.md', 'docs/phase-8/DEMO.md',
@@ -73,14 +73,18 @@ def build(output):
     required.update({'docs/phase-6/openai-profile-freeze.json',
                      'docs/phase-6/dataset-freeze.json',
                      'docs/phase-8/OPERATOR-GUIDE.md', 'docs/phase-8/DEMO.md',
-                     'docs/phase-8/DELIVERY-AUDIT.md'})
+                     'docs/phase-8/DELIVERY-AUDIT.md', 'LICENSE',
+                     'docs/phase-7/ODOO-SANDBOX-REPRO.md'})
     present = {path.as_posix() for path in paths}
     if missing := required - present:
         raise RuntimeError('Missing release inputs: ' + ', '.join(sorted(missing)))
     manifest = {
         'release': 'sales-followup-local-v1-candidate',
         'source_git_head': git_head(),
-        'source_worktree': 'snapshot_includes_current_uncommitted_files',
+        'source_worktree': ('clean' if not subprocess.run(
+            ['git', 'status', '--porcelain'], cwd=ROOT, text=True,
+            capture_output=True, check=False).stdout.strip()
+            else 'snapshot_includes_current_uncommitted_files'),
         'scope': 'Source, example configuration and synthetic fixtures; no secrets or local state',
         'files': {path.as_posix(): hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
                   for path in paths},

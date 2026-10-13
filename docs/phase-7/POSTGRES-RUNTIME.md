@@ -6,7 +6,7 @@ An administrator applies backend/migrations using scripts/migrations.py in the i
 
 PostgresStore maps the existing shared domain SQL contract to PostgreSQL identifiers, explicit insert columns, placeholders and returned JSON/UUID/timestamp types. Every business transaction takes its authenticated actor, establishes transaction-local tenant context and checks the actor's active database role. A transaction-scoped advisory lock serializes each tenant's read-before-write decisions; unrelated tenant keys remain independent. This is a conservative low-throughput design, not a benchmark for a high-concurrency production workload. Lock timeout2s, statement timeout5s; errors roll back without automatic write retries. No network effect runs inside a database transaction.
 
-The default SQLite harness remains available for native tests. PostgreSQL readiness reports storage=postgresql; connected=false still means external business connectors are not enabled. The early isolated PostgreSQL acceptance below intentionally disabled model and external effects; later connected acceptance is in [the Phase 7 audit](COMPLETION-AUDIT.md).
+The default SQLite harness remains available for native tests. PostgreSQL readiness reports `storage=postgresql`. The `connectors_configured` object reports whether Odoo and Graph adapters were composed at startup; it does not probe their network or credentials. `send_enabled` reports the effective dispatch switch. The early isolated PostgreSQL acceptance below intentionally disabled model and external effects; later connected acceptance is in [the Phase 7 audit](COMPLETION-AUDIT.md).
 
 ## Validated scope
 

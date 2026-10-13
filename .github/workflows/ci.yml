@@ -28,6 +28,10 @@ jobs:
       - run: python -m pytest -q
       - run: npm ci --prefix web
       - run: npm run build --prefix web
+      - name: Install Playwright Chromium
+        run: npm run install:browser --prefix web -- --with-deps
+      - name: Browser approval and recovery regression
+        run: npm run test:e2e --prefix web
       - run: npm ci --prefix mcp-server
       - run: npm run build --prefix mcp-server
       - run: npm run test --prefix mcp-server
